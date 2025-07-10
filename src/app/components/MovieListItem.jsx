@@ -6,7 +6,7 @@ import { imagePath } from "@/lib/utils"
 
 export default function({ movie }) {
   return (
-    <div className="flex flex-col">
+    <Link href={`/movie/${movie.id}`} className="flex flex-col hover:bg-gray-950 rounded-2xl">
       <Image
         src={imagePath(movie.poster_path, 'w780')}
         alt=""
@@ -22,6 +22,6 @@ export default function({ movie }) {
           <div>{movie.release_date.split('-')[0]}</div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }

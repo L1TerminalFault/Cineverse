@@ -81,7 +81,8 @@ export const TrayUpcoming = () => {
             className="flex w-full bg-gray-800 gap-5"
           >
           </div>
-        ) : !upcomingMovies.length ? null : (
+        ) : error ? <div>{Object(error).keys}</div> 
+        : !upcomingMovies.length ? null : (
           <Swiper
             spaceBetween={20}
             cssMode
@@ -145,10 +146,11 @@ export const TrayNowPlaying = () => {
         </div>
       </div>
 
-      <div className="w-full xl flex px-1">
+      <div className="w-full sm flex px-1">
         {loading ? (
           <div></div>
-        ) : !nowPlayingMovies.length ? null : (
+        ) : error ? <div>{Object(error).keys}</div> 
+        : !nowPlayingMovies.length ? null : (
           <Swiper
             spaceBetween={15}
             cssMode
@@ -157,23 +159,26 @@ export const TrayNowPlaying = () => {
               0: {
                 slidesPerView: 3,
               },
-              550: {
+              400: {
                 slidesPerView: 4,
               },
-              750: {
+              600: {
                 slidesPerView: 5,
               },
-              900: {
+              800: {
                 slidesPerView: 6,
               },
-              1100: {
+              1000: {
                 slidesPerView: 7,
               },
-              1280: {
+              1200: {
                 slidesPerView: 8,
               },
               1500: {
                 slidesPerView: 10,
+              },
+              1800: {
+                slidesPerView: 12,
               },
             }}
           >
