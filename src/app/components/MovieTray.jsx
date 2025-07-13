@@ -13,7 +13,7 @@ export const TrayUpcoming = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [carouselHeight, setCarouselHeight] = useState(null);
-  const [carouselWidth, setCarouselWidth] = useState(null)
+  const [carouselWidth, setCarouselWidth] = useState(null);
 
   const carousel = useCallback((node) => {
     if (node) {
@@ -21,21 +21,27 @@ export const TrayUpcoming = () => {
 
       const calculateHeight = () => {
         if (window.innerWidth < 1280) {
-          setCarouselHeight(Math.floor((carouselFullWidth - 20) / 2 / (16 / 9)))
-          setCarouselWidth(Math.floor((carouselFullWidth - 20) / 2))
+          setCarouselHeight(
+            Math.floor((carouselFullWidth - 20) / 2 / (16 / 9))
+          );
+          setCarouselWidth(Math.floor((carouselFullWidth - 20) / 2));
         } else if (window.innerWidth < 1800) {
-          setCarouselHeight(Math.floor((carouselFullWidth - 40) / 3 / (16 / 9)))
-          setCarouselWidth(Math.floor((carouselFullWidth - 40) / 3))
+          setCarouselHeight(
+            Math.floor((carouselFullWidth - 40) / 3 / (16 / 9))
+          );
+          setCarouselWidth(Math.floor((carouselFullWidth - 40) / 3));
         } else {
-          setCarouselHeight(Math.floor((carouselFullWidth - 60) / 4 / (16 / 9)))
-          setCarouselWidth(Math.floor((carouselFullWidth - 60) / 4))
+          setCarouselHeight(
+            Math.floor((carouselFullWidth - 60) / 4 / (16 / 9))
+          );
+          setCarouselWidth(Math.floor((carouselFullWidth - 60) / 4));
         }
         const carouselCalcHeight = Math.floor(
           window.innerWidth < 1280
             ? (carouselFullWidth - 20) / 2 / (16 / 9)
-            // : window.screen.width < 1800
-            // ? (carouselFullWidth - 40) / 3 / (16 / 9)
-            : (carouselFullWidth - 60) / 4 / (16 / 9)
+            : // : window.screen.width < 1800
+              // ? (carouselFullWidth - 40) / 3 / (16 / 9)
+              (carouselFullWidth - 60) / 4 / (16 / 9)
         );
 
         setCarouselHeight(carouselCalcHeight);
@@ -79,16 +85,19 @@ export const TrayUpcoming = () => {
           <div
             style={{ height: carouselHeight }}
             className="flex w-full bg-gray-800 gap-5"
-          >
-          </div>
-        ) : error ? <div>{Object(error).keys}</div> 
-        : !upcomingMovies.length ? null : (
+          ></div>
+        ) : error ? (
+          <div>{Object(error).keys}</div>
+        ) : !upcomingMovies.length ? null : (
           <Swiper
             spaceBetween={20}
             cssMode
             mousewheel
             breakpoints={{
               0: {
+                slidesPerView: 1,
+              },
+              640: {
                 slidesPerView: 2,
               },
               1280: {
@@ -121,9 +130,9 @@ export const TrayNowPlaying = () => {
   const fetchNowPlayingMovies = async () => {
     setLoading(true);
     try {
-      const response = await (await fetch('/api/getNowPlayingMovies')).json()
-      if (response.ok) setNowPlayingMovies(response.response.results)
-      else throw Error(response.error)
+      const response = await (await fetch("/api/getNowPlayingMovies")).json();
+      if (response.ok) setNowPlayingMovies(response.response.results);
+      else throw Error(response.error);
     } catch (error) {
       setError(error);
     } finally {
@@ -132,8 +141,8 @@ export const TrayNowPlaying = () => {
   };
 
   useEffect(() => {
-    fetchNowPlayingMovies()
-  }, [])
+    fetchNowPlayingMovies();
+  }, []);
 
   return (
     <div className="flex flex-col w-full pt-2">
@@ -149,47 +158,20 @@ export const TrayNowPlaying = () => {
       <div className="w-full sm flex px-1">
         {loading ? (
           <div></div>
-        ) : error ? <div>{Object(error).keys}</div> 
-        : !nowPlayingMovies.length ? null : (
-          <Swiper
-            spaceBetween={15}
-            cssMode
-            mousewheel
-            breakpoints={{
-              0: {
-                slidesPerView: 3,
-              },
-              400: {
-                slidesPerView: 4,
-              },
-              600: {
-                slidesPerView: 5,
-              },
-              800: {
-                slidesPerView: 6,
-              },
-              1000: {
-                slidesPerView: 7,
-              },
-              1200: {
-                slidesPerView: 8,
-              },
-              1500: {
-                slidesPerView: 10,
-              },
-              1800: {
-                slidesPerView: 12,
-              },
-            }}
-          >
+        ) : error ? (
+          <div>{Object(error).keys}</div>
+        ) : !nowPlayingMovies.length ? null : (
+          <div className="flex overflow-scroll scrollbar-hidden gap-4 w-max">
             {nowPlayingMovies.map((movie) => {
               return (
-                <SwiperSlide key={movie.id}>
-                  <MovieListItem movie={movie} />
-                </SwiperSlide>
+                <div key={movie.id}>
+                  <SwiperSlide>
+                    <MovieListItem movie={movie} />
+                  </SwiperSlide>
+                </div>
               );
             })}
-          </Swiper>
+          </div>
         )}
       </div>
     </div>
