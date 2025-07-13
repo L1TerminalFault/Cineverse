@@ -36,4 +36,17 @@ body {
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }
+
+  .swipe {
+    animation: swipe 2.3s infinite;
+  }
+}
+
+@keyframes swipe {
+  from {
+    transform: translateX(-200px);
+  }
+  to {
+    transform: translateX(800px)
+  }
 }
