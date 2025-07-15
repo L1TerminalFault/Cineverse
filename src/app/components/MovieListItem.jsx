@@ -17,6 +17,7 @@ export default function ({ movie }) {
           className="absolute rounded-2xl duration-500 transition-all group-hover:w-0 group-hover:opacity-0 w-[145px]"
           width={780}
           height={1170}
+          loading="lazy"
         />
         <Image
           src={imagePath(movie.backdrop_path)}
@@ -24,6 +25,7 @@ export default function ({ movie }) {
           className="absolute left-0 rounded-2xl duration-500 transition-all opacity-0 group-hover:opacity-100 group-hover:w-[386px] w-0"
           width={1280}
           height={720}
+          loading="lazy"
         />
 
         <div className="absolute opacity-0 transition-all duration-500 p-2 px-4 group-hover:opacity-100 left-[6px] bottom-14 rounded-xl backdrop-blur-md bg-[#0006] max-w-[70%]">
@@ -43,7 +45,11 @@ export default function ({ movie }) {
               ))}
           </div>
 
-          <div className={`${movie.original_language === "en" ? "hidden" : "flex"} text-nowrap overflow-scroll scrollbar-hidden mb-2 text-xs text-gray-200 px-3`}>Original Title: {movie.original_title}</div>
+          <div
+            className={`${movie.original_language === "en" ? "hidden" : "flex"} text-nowrap overflow-scroll scrollbar-hidden mb-2 text-xs text-gray-200 px-3`}
+          >
+            Original Title: {movie.original_title}
+          </div>
 
           <div className="flex items-center justify-between overflow-hidden">
             <div className="flex gap-1 items-center text-xs rounded-full bg-[#0003] mr-3 p-2 px-3 text-gray-400">
@@ -53,10 +59,14 @@ export default function ({ movie }) {
               <div>{movie.release_date.split("-")[0]}</div>
             </div>
             <div className="flex gap-1">
-            <div className="p-0 px-3 flex items-center rounded-full text-xs bg-[#0004]">
-              <div className="text-nowrap">{movie.adult ? "18+" : "All Ages"}</div>
-            </div>
-            <div className="p-2 rounded-full text-xs bg-[#0004]">{movie.original_language.toUpperCase()}</div>
+              <div className="p-0 px-3 flex items-center rounded-full text-xs bg-[#0004]">
+                <div className="text-nowrap">
+                  {movie.adult ? "18+" : "All Ages"}
+                </div>
+              </div>
+              <div className="p-2 rounded-full text-xs bg-[#0004]">
+                {movie.original_language.toUpperCase()}
+              </div>
             </div>
           </div>
         </div>

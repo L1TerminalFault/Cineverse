@@ -1,21 +1,31 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
+import { useEffect } from "react";
 
-import TopBar from "@/app/components/TopBar"
-import { TrayNowPlaying, TrayUpcoming } from "@/app/components/MovieTray"
+import TopBar from "@/app/components/TopBar";
+import { Tray, Carousel } from "@/app/components/MovieTray";
 
-export default function() {
+export default function () {
   return (
-    <div>
-      <TopBar/>
+    <div className="">
+      <TopBar />
 
-      <div className="p-3 pt-16">
-        
-        <TrayUpcoming />
-        <TrayNowPlaying />
-
+      <div className="relative flex">
+        <div className="p-3 pt-16">
+          <div>
+            <Carousel type={"upcomingMovies"} title={"Upcoming Movies"} />
+          </div>
+          <div>
+            <Tray type={"nowPlayingMovies"} title={"Now In Theaters"} />
+          </div>
+          <div>
+            <Carousel type={"topRatedMovies"} title={"Top Rated"} />
+          </div>
+          <div>
+            <Tray type={"popularMovies"} title={"Popular Movies"} />
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }

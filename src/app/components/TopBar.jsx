@@ -23,7 +23,7 @@ export default function () {
         <label
           htmlFor="toggle"
           onClick={() => setTopBarExpand((prev) => !prev)}
-          className="absolute top-2 left-2 z-50 p-2 rounded-full peer transition-all bg-[#2b2d318c] hover:bg-[#3b3b3bd0]"
+          className={`${topBarExpand ? "rounded-full" : "-translate-x-6 rounded-r-full pl-3"} absolute top-2 left-2 z-50 p-2 peer transition-all bg-[#22232c] hover:bg-[#32333c]`}
         >
           <div className="relative flex items-center justify-center">
             <div className={`${topBarExpand ? "inline" : "hidden"}`}>
@@ -37,11 +37,11 @@ export default function () {
 
         <input type="checkbox" id="toggle" className="peer hidden" />
 
-        <div className="backdrop-blur-lg flex peer-checked:-translate-y-32 peer-checked:opacity-0 duration-500 transition-all rounded-full pl-[47px] bg-[#23242b59] px-2 py-[6px] justify-between">
+        <div className="backdrop-blur-lg flex peer-checked:-translate-y-32 peer-checked:opacity-0 duration-500 transition-all rounded-full pl-[47px] bg-[#20212a80] px-2 py-[6px] justify-between">
           <div className="flex items-center gap-[7px]">
             <Link
               href={"/"}
-              className="flex gap-2 p-1 px-4 transition-all bg-[#26282c5d] hover:bg-[#6a728233] rounded-full items-center"
+              className="flex gap-2 p-1 px-4 transition-all bg-[#22232c] hover:bg-[#32333c] rounded-full items-center"
             >
               <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-600">
                 Cineverse
@@ -59,17 +59,17 @@ export default function () {
               className="outline-none rounded-l-full text-xs bg-transparent pl-5 h-full"
             />
 
-            <div className="p-[6px] m-1 ml-0 rounded-full bg-[#151525cc] hover:bg-[#151525ff] transition-all">
+            <div className="p-[6px] m-1 ml-0 rounded-full bg-[#151525cc] hover:bg-[#1a1a2aff] transition-all">
               <SearchIcon />
             </div>
           </div>
 
           <div className="gap-[7px] items-center flex rounded-full">
-            <div className="p-[10px] rounded-full bg-[#2e2e3b81] hover:bg-[#424253b0] transition-all">
+            <div className="p-[10px] rounded-full bg-[#22232c] hover:bg-[#32333c] transition-all">
               <NotificationIcon strokeWidth={1.5} />
             </div>
 
-            <div className="flex items-center gap-1 bg-[#2a2a318e] pl-3 p-[5px] rounded-full hover:bg-[#373742b0] transition-all">
+            <div className="flex items-center gap-1 bg-[#22232c] pl-3 p-[5px] rounded-full hover:bg-[#32333c] transition-all">
               <PersonIcon />
 
               <div className="text-xs hidden sm:inline text-gray-400">
