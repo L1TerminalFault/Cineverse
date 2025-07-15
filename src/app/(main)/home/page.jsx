@@ -7,21 +7,21 @@ import { Tray, Carousel } from "@/app/components/MovieTray";
 
 export default function () {
   return (
-    <div className="">
+    <div className="w-full flex items-center justify-center">
       <TopBar />
 
-      <div className="relative flex">
-        <div className="p-3 pt-16">
-          <div>
-            <Carousel type={"upcomingMovies"} title={"Upcoming Movies"} />
+      <div className="relative lg:w-4/5 flex items-center justify-center z-0">
+        <div className="p-3 pt-16 w-full flex flex-col gap-10">
+          <div className="">
+	  	<Carousel type={"upcomingMovies"} title={"Upcoming Movies"} />
           </div>
-          <div>
+          <div className="w-full">
             <Tray type={"nowPlayingMovies"} title={"Now In Theaters"} />
           </div>
           <div>
-            <Carousel type={"topRatedMovies"} title={"Top Rated"} />
+	  <Carousel type={"topRatedMovies"} title={"Top Rated"} />
           </div>
-          <div>
+          <div className="w-full">
             <Tray type={"popularMovies"} title={"Popular Movies"} />
           </div>
         </div>
