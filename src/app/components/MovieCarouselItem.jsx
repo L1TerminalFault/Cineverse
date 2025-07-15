@@ -7,7 +7,7 @@ import carouselLoader from "@/../public/loader1280x720.jpg";
 
 export default function ({ movie, loading }) {
   return (
-    <>
+    <div className=" relative">
       {loading ? (
         <div className="rounded-3xl overflow-hidden relative flex items-center justify-center">
           <Image
@@ -97,6 +97,6 @@ export default function ({ movie, loading }) {
           </div>
         </Link>
       )}
-    </>
+    </div>
   );
 }

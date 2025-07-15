@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import "swiper/swiper-bundle.css";
 
 import MovieCarouselItem from "./MovieCarouselItem";
 import MovieListItem from "./MovieListItem";
@@ -50,7 +50,7 @@ export const Carousel = ({ type, title }) => {
         </div>
       </div>
 
-      <div className={`flex`}>
+      <div className={`flex w-full h-min`}>
         {error ? (
           <div>{Object(error).keys}</div>
         ) : (
@@ -84,7 +84,7 @@ export const Carousel = ({ type, title }) => {
                       className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
                       key={item}
                     >
-                      <SwiperSlide key={item}>
+                      <SwiperSlide key={item} className="h-10">
                         <MovieCarouselItem
                           swiperLoaded={swiperLoaded}
                           loading={true}
@@ -95,15 +95,17 @@ export const Carousel = ({ type, title }) => {
                 })}
               </>
             ) : (
-              <>
+              <div className="">
                 {upcomingMovies.map((movie) => {
                   return (
+			  <div className="h-8">
                     <SwiperSlide key={movie.id}>
-                      <MovieCarouselItem movie={movie} />
+			  <MovieCarouselItem movie={movie} loading={loading}/>
                     </SwiperSlide>
+			  </div>
                   );
                 })}
-              </>
+              </div>
             )}
           </Swiper>
         )}
@@ -170,13 +172,13 @@ export const Tray = ({ type, title }) => {
         ) : error ? (
           <div>{Object(error).keys}</div>
         ) : !nowPlayingMovies.length ? null : (
-          <div className="flex overflow-scroll scrollbar-hidden gap-4 w-full">
+          <div className="flex overflow-scroll scrollbar-hidden gap-4 w-s">
             {nowPlayingMovies.map((movie) => {
               return (
-                <div key={movie.id}>
-                  <SwiperSlide>
+                <div key={movie.id} className="w-max flex">
+		      <SwiperSlide>
                     <MovieListItem movie={movie} />
-                  </SwiperSlide>
+		      </SwiperSlide>
                 </div>
               );
             })}
