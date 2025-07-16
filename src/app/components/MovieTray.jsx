@@ -98,11 +98,11 @@ export const Carousel = ({ type, title }) => {
               <div className="">
                 {upcomingMovies.map((movie) => {
                   return (
-			  <div className="h-8">
-                    <SwiperSlide key={movie.id}>
-			  <MovieCarouselItem movie={movie} loading={loading}/>
-                    </SwiperSlide>
-			  </div>
+                    <div className="h-8">
+                      <SwiperSlide key={movie.id}>
+                        <MovieCarouselItem movie={movie} loading={loading} />
+                      </SwiperSlide>
+                    </div>
                   );
                 })}
               </div>
@@ -172,13 +172,13 @@ export const Tray = ({ type, title }) => {
         ) : error ? (
           <div>{Object(error).keys}</div>
         ) : !nowPlayingMovies.length ? null : (
-          <div className="flex overflow-scroll scrollbar-hidden gap-4 w-s">
+          <div className="flex overflow-scroll scrollbar-hidden gap-5">
             {nowPlayingMovies.map((movie) => {
               return (
                 <div key={movie.id} className="w-max flex">
-		      <SwiperSlide>
+                  <SwiperSlide>
                     <MovieListItem movie={movie} />
-		      </SwiperSlide>
+                  </SwiperSlide>
                 </div>
               );
             })}
