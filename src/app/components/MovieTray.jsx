@@ -8,7 +8,7 @@ import "swiper/swiper-bundle.css";
 import MovieCarouselItem from "./MovieCarouselItem";
 import MovieListItem from "./MovieListItem";
 
-export const Carousel = ({ type, title }) => {
+export const Carousel = ({ type, title, url = null }) => {
   const [upcomingMovies, setUpcomingMovies] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -16,8 +16,9 @@ export const Carousel = ({ type, title }) => {
 
   const fetchUpcomingMovies = async () => {
     setLoading(true);
-    const endpoint =
-      type === "upcomingMovies"
+    const endpoint = url
+      ? url
+      : type === "upcomingMovies"
         ? "/api/getUpcomingMovies"
         : type === "topRatedMovies"
           ? "/api/getTopRatedMovies"
@@ -96,15 +97,17 @@ export const Carousel = ({ type, title }) => {
               </>
             ) : (
               <div className="">
-                {upcomingMovies.map((movie) => {
-                  return (
-                    <div className="h-8">
-                      <SwiperSlide key={movie.id}>
-                        <MovieCarouselItem movie={movie} loading={loading} />
-                      </SwiperSlide>
-                    </div>
-                  );
-                })}
+                {upcomingMovies
+                  .filter((movie) => movie.backdrop_path)
+                  .map((movie) => {
+                    return (
+                      <div className="h-8">
+                        <SwiperSlide key={movie.id}>
+                          <MovieCarouselItem movie={movie} loading={loading} />
+                        </SwiperSlide>
+                      </div>
+                    );
+                  })}
               </div>
             )}
           </Swiper>
@@ -114,15 +117,16 @@ export const Carousel = ({ type, title }) => {
   );
 };
 
-export const Tray = ({ type, title }) => {
+export const Tray = ({ type, title, url = null }) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchNowPlayingMovies = async () => {
     setLoading(true);
-    const endpoint =
-      type === "nowPlayingMovies"
+    const endpoint = url
+      ? url
+      : type === "nowPlayingMovies"
         ? "/api/getNowPlayingMovies"
         : type === "popularMovies"
           ? "/api/getPopularMovies"
@@ -155,14 +159,14 @@ export const Tray = ({ type, title }) => {
 
       <div className="w-full sm flex px-1">
         {loading ? (
-          <div className="overflow-scroll flex scrollbar-hidden gap-4 w-max">
+          <div className="overflow-scroll flex scrollbar-hidden gap-5 w-max">
             {Array.from({ length: 30 }, (_, i) => i + 1).map((item) => (
               <div key={item} className="w-max flex flex-col">
-                <div className="relative bg-[#2f364b3b] overflow-hidden w-[145px] h-[217.5px] rounded-2xl">
+                <div className="relative bg-[#2f364b3b] overflow-hidden w-[145px] h-[217.5px] rounded-3xl">
                   <div className="swipe p-1 h-full bg-gradient-to-r from-[#0000] via-gray-900 to-[#0000]"></div>
                 </div>
 
-                <div className="flex flex-col gap-[6px] p-2 px-1 ">
+                <div className="flex flex-col gap-[6px] p-2 px-3 ">
                   <div className="h-4 rounded-full bg-[#2f364b2f] w-3/4"></div>
                   <div className="h-3 rounded-full bg-[#2f364b2a] w-1/3"></div>
                 </div>

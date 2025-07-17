@@ -8,13 +8,13 @@ export default function ({ movie }) {
   return (
     <Link
       href={`/movie/${movie.id}`}
-      className="flex flex-col group rounded-2xl h-max w-[145px] duration-500 transition-all hover:w-[386px]"
+      className="flex flex-col group rounded-3xl h-max w-[145px] duration-500 transition-all hover:w-[386px]"
     >
       <div className="flex items-center justify-center z-50 h-[217.5px]">
         <Image
           src={imagePath(movie.poster_path, "w780")}
           alt=""
-          className="absolute rounded-2xl duration-500 transition-all group-hover:w-0 group-hover:opacity-0 w-[145px]"
+          className="absolute rounded-3xl duration-500 transition-all group-hover:w-0 group-hover:opacity-0 w-[145px]"
           width={780}
           height={1170}
           loading="lazy"
@@ -22,7 +22,7 @@ export default function ({ movie }) {
         <Image
           src={imagePath(movie.backdrop_path)}
           alt=""
-          className="absolute left-0 rounded-2xl duration-500 transition-all opacity-0 group-hover:opacity-100 group-hover:w-[386px] w-0"
+          className="absolute left-0 rounded-3xl duration-500 transition-all opacity-0 group-hover:opacity-100 group-hover:w-[386px] w-0"
           width={1280}
           height={720}
           loading="lazy"
@@ -72,7 +72,7 @@ export default function ({ movie }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-[6px] p-2 px-1 duration-500 group-hover:-translate-y-20 group-hover:opacity-0 transition-all">
+      <div className="flex flex-col gap-[6px] p-2 px-3 duration-500 group-hover:-translate-y-20 group-hover:opacity-0 transition-all">
         <div className="text-xs text-nowrap overflow-hidden relative">
           {movie.title}
           <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div>

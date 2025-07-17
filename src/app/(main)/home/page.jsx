@@ -4,6 +4,7 @@ import { useEffect } from "react";
 
 import TopBar from "@/app/components/TopBar";
 import { Tray, Carousel } from "@/app/components/MovieTray";
+import DiscoverTray from "@/app/components/DiscoverTray";
 
 export default function () {
   return (
@@ -17,6 +18,9 @@ export default function () {
           </div>
           <div className="w-full">
             <Tray type={"nowPlayingMovies"} title={"Now In Theaters"} />
+          </div>
+          <div>
+            <DiscoverTray />
           </div>
           <div>
             <Carousel type={"topRatedMovies"} title={"Top Rated"} />
