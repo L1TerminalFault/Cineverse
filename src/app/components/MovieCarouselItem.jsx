@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
+import { BsFilter } from "react-icons/bs";
 
 import { imagePath, genres } from "@/lib/utils";
 import carouselLoader from "@/../public/loader1280x720.jpg";
@@ -45,6 +46,9 @@ export default function ({ movie, loading }) {
             className="group-hover:scale-110 duration-300"
             src={imagePath(movie.backdrop_path)}
             alt=""
+            blurDataURL={imagePath(movie.backdrop_path, "w300")}
+            quality={100}
+            placeholder="blur"
             width={1280}
             height={720}
             loading="lazy"

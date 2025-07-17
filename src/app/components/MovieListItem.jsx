@@ -15,6 +15,9 @@ export default function ({ movie }) {
           src={imagePath(movie.poster_path, "w780")}
           alt=""
           className="absolute rounded-3xl duration-500 transition-all group-hover:w-0 group-hover:opacity-0 w-[145px]"
+          placeholder="blur"
+          blurDataURL={imagePath(movie.poster_path, "w342")}
+          quality={100}
           width={780}
           height={1170}
           loading="lazy"
@@ -23,6 +26,9 @@ export default function ({ movie }) {
           src={imagePath(movie.backdrop_path)}
           alt=""
           className="absolute left-0 rounded-3xl duration-500 transition-all opacity-0 group-hover:opacity-100 group-hover:w-[386px] w-0"
+          placeholder="blur"
+          blurDataURL={imagePath(movie.backdrop_path, "w342")}
+          quality={100}
           width={1280}
           height={720}
           loading="lazy"
