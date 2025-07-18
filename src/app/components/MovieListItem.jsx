@@ -2,9 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
-import { imagePath, genres } from "@/lib/utils";
+import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
 
-export default function ({ movie }) {
+export default function ({ movie, type }) {
+  const genres = type === "movie" ? movieGenres : tvGenres;
+
   return (
     <Link
       href={`/movie/${movie.id}`}
@@ -36,7 +38,7 @@ export default function ({ movie }) {
 
         <div className="absolute opacity-0 transition-all duration-500 p-2 px-4 group-hover:opacity-100 left-[6px] bottom-14 rounded-xl backdrop-blur-md bg-[#0006] max-w-[70%]">
           <div className="text-nowrap overflow-scroll scrollbar-hidden">
-            {movie.title}
+            {type === "movie" ? movie.title : movie.name}
           </div>
           <div className="max-h-0 max-w-0 items-center gap-2 overflow-scroll scrollbar-hidden duration-700 transition-all flex group-hover:mt-1 group-hover:mb-2 group-hover:max-h-10 group-hover:max-w-64 md:group-hover:max-w-96">
             {movie.genre_ids
@@ -54,7 +56,8 @@ export default function ({ movie }) {
           <div
             className={`${movie.original_language === "en" ? "hidden" : "flex"} text-nowrap overflow-scroll scrollbar-hidden mb-2 text-xs text-gray-200 px-3`}
           >
-            Original Title: {movie.original_title}
+            Original Title:{" "}
+            {type === "movie" ? movie.original_title : movie.original_name}
           </div>
 
           <div className="flex items-center justify-between overflow-hidden">
@@ -62,7 +65,11 @@ export default function ({ movie }) {
               <FaStar color="#ffaa11" />
               <div className="">{movie.vote_average.toFixed(1)}</div>
               <div className="text-gray-500">|</div>
-              <div>{movie.release_date.split("-")[0]}</div>
+              <div>
+                {type === "movie"
+                  ? movie.release_date?.split("-")[0]
+                  : movie.first_air_date?.split("-")[0]}
+              </div>
             </div>
             <div className="flex gap-1">
               <div className="p-0 px-3 flex items-center rounded-full text-xs bg-[#0004]">
@@ -79,15 +86,19 @@ export default function ({ movie }) {
       </div>
 
       <div className="flex flex-col gap-[6px] p-2 px-3 duration-500 group-hover:-translate-y-20 group-hover:opacity-0 transition-all">
-        <div className="text-xs text-nowrap overflow-hidden relative">
-          {movie.title}
+        <div className="text-xs h-4 text-nowrap overflow-hidden relative">
+          {type === "movie" ? movie.title : movie.name}
           <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div>
         </div>
         <div className="flex gap-1 items-center text-xs/3 text-gray-500">
           <FaStar color="#ffaa11" />
           <div className="">{movie.vote_average.toFixed(1)}</div>
           <div className="text-gray-700">|</div>
-          <div>{movie.release_date.split("-")[0]}</div>
+          <div>
+            {type === "movie"
+              ? movie.release_date?.split("-")[0]
+              : movie.first_air_date?.split("-")[0]}
+          </div>
         </div>
       </div>
     </Link>

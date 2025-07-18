@@ -3,14 +3,18 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import { BsFilter } from "react-icons/bs";
 
-import { imagePath, genres } from "@/lib/utils";
+import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
 import carouselLoader from "@/../public/loader1280x720.jpg";
 
-export default function ({ movie, loading }) {
+export default function ({ movie, loading, swiperLoaded, type }) {
+  const genres = type === "movie" ? movieGenres : tvGenres;
+
   return (
     <div className=" relative">
       {loading ? (
-        <div className="rounded-3xl overflow-hidden relative flex items-center justify-center">
+        <div
+          className={`${loading ? "max-h-6 opacity-100" : "max-h-0 opacity-0"} transition-all duration-500 rounded-3xl overflow-hidden relative flex items-center justify-center`}
+        >
           <Image
             className="opacity-0"
             src={carouselLoader}
@@ -56,7 +60,7 @@ export default function ({ movie, loading }) {
 
           <div className="absolute transition-all max-w-[90%] px-3 p-2 bottom-1 left-1 backdrop-blur-md bg-[#0000003a] overflow-hidden rounded-2xl">
             <div className="text-nowrap pb-1 px-2 overflow-scroll scrollbar-hidden">
-              {movie.title}
+              {movie.title || movie.name}
             </div>
             <div className="max-h-0 px-1 max-w-0 items-center gap-2 overflow-scroll scrollbar-hidden duration-700 transition-all flex group-hover:mb-2 group-hover:max-h-10 group-hover:max-w-64 md:group-hover:max-w-96">
               {movie.genre_ids
@@ -76,7 +80,8 @@ export default function ({ movie, loading }) {
                 movie.original_language === "en" ? "hidden" : "flex"
               } text-nowrap overflow-scroll scrollbar-hidden text-xs text-gray-200 h-0 max-w-0 group-hover:h-4 group-hover:max-w-96 group-hover:mb-2 duration-500 transition-all px-2`}
             >
-              Original Title: {movie.original_title}
+              Original Title:{" "}
+              {type === "movie" ? movie.original_title : movie.original_name}
             </div>
 
             <div className="flex transition-all items-center justify-between overflow-hidden">
@@ -84,7 +89,10 @@ export default function ({ movie, loading }) {
                 <FaStar color="#ffaa11" />
                 <div className="">{movie.vote_average.toFixed(1)}</div>
                 <div className="text-gray-500">|</div>
-                <div>{movie.release_date.split("-")[0]}</div>
+                <div>
+                  {movie.release_date?.split("-")[0] ||
+                    movie.first_air_date?.split("-")[0]}
+                </div>
               </div>
 
               <div className="flex gap-1 max-w-0 opacity-0 group-hover:opacity-100 group-hover:max-w-32 transition-all delay-300 duration-700">

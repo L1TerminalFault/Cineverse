@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { IoIosSearch as SearchIcon } from "react-icons/io";
+import { FiSearch as SearchIcon } from "react-icons/fi";
 import { IoPersonOutline as PersonIcon } from "react-icons/io5";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import { BsChevronDown as ArrowDown } from "react-icons/bs";
@@ -14,8 +14,9 @@ import {
 
 import icon from "@/../public/movie-icon.png";
 
-export default function () {
+export default function ({ page, setPage }) {
   const [topBarExpand, setTopBarExpand] = useState(true);
+  const [showSearch, setShowSearch] = useState(false);
 
   return (
     <div className="fixed z-40 w-full top-0 p-3">
@@ -50,17 +51,41 @@ export default function () {
             </Link>
           </div>
 
-          <div className="items-center flex rounded-full bg-[#040510]">
-            <input
-              type="text"
-              name=""
-              id=""
-              placeholder="Search Movies"
-              className="outline-none rounded-l-full text-xs bg-transparent pl-5 h-full"
-            />
-
-            <div className="p-[6px] m-1 ml-0 rounded-full bg-[#151525cc] hover:bg-[#1a1a2aff] transition-all">
+          <div className="items-center gap-2 flex-row-reverse flex rounded-full bg-[#040510]">
+            <div
+              onClick={() => setShowSearch((prev) => !prev)}
+              className="p-[7px] m-[3px] ml-0 rounded-full bg-[#151525cc] hover:bg-[#1a1a2aff] transition-all"
+            >
               <SearchIcon />
+            </div>
+
+            <div
+              className={`${showSearch ? "opacity-100 max-w-52" : "max-w-0 opacity-0"} flex w-full h-full overflow-hidden transition-all duration-500`}
+            >
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search Movies"
+                className={` outline-none w-full h-full z-30 transition-all duration-100 rounded-l-full text-xs bg-transparent pl-5`}
+              />
+            </div>
+            <div
+              className={`${showSearch ? "opacity-0 max-w-0" : "opacity-65 max-w-52"} flex duration-500 text-xs/3 p-1 items-center gap-1 transition-all rounded-full`}
+            >
+              {" "}
+              <div
+                onClick={() => setPage("Movies")}
+                className={`${page === "Movies" ? "bg-gray-900" : ""} rounded-full p-2 px-5 hover:bg-gray-900 transition-all`}
+              >
+                Movies
+              </div>
+              <div
+                onClick={() => setPage("Series")}
+                className={`${page === "Series" ? "bg-gray-900" : ""} rounded-full px-5 p-2 hover:bg-gray-900 transition-all`}
+              >
+                Series
+              </div>
             </div>
           </div>
 

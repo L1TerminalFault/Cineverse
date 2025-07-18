@@ -24,7 +24,11 @@ export const Carousel = ({ type, title, url = null }) => {
         ? "/api/getUpcomingMovies"
         : type === "topRatedMovies"
           ? "/api/getTopRatedMovies"
-          : "";
+          : type === "onAirTVShows"
+            ? "/api/getOnAirTV"
+            : type === "topRatedTVShows"
+              ? "/api/getTopRatedTV"
+              : "";
     try {
       const response = await (await fetch(endpoint)).json();
       if (response.ok) setUpcomingMovies(response.response.results);
@@ -40,7 +44,7 @@ export const Carousel = ({ type, title, url = null }) => {
 
   useEffect(() => {
     fetchUpcomingMovies();
-  }, []);
+  }, [type, url]);
 
   return (
     <div className={`p-1 flex-col w-full ${error ? "hidden" : "flex"}`}>
@@ -137,7 +141,11 @@ export const Carousel = ({ type, title, url = null }) => {
                     return (
                       <div className="h-8">
                         <SwiperSlide key={movie.id}>
-                          <MovieCarouselItem movie={movie} loading={loading} />
+                          <MovieCarouselItem
+                            type={type.includes("TV") ? "tv" : "movie"}
+                            movie={movie}
+                            loading={loading}
+                          />
                         </SwiperSlide>
                       </div>
                     );
@@ -155,7 +163,7 @@ export const Tray = ({ type, title, url = null }) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState(true);
+  const [filter, setFilter] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
   const fetchNowPlayingMovies = async () => {
@@ -166,7 +174,11 @@ export const Tray = ({ type, title, url = null }) => {
         ? "/api/getNowPlayingMovies"
         : type === "popularMovies"
           ? "/api/getPopularMovies"
-          : "";
+          : type === "popularTVShows"
+            ? "/api/getPopularTV"
+            : type === "onAirTodayTVShows"
+              ? "/api/getOnAirTodayTV"
+              : "";
     try {
       const response = await (await fetch(endpoint)).json();
       if (response.ok) setNowPlayingMovies(response.response.results);
@@ -180,7 +192,7 @@ export const Tray = ({ type, title, url = null }) => {
 
   useEffect(() => {
     fetchNowPlayingMovies();
-  }, []);
+  }, [type, url]);
 
   return (
     <div className="flex flex-col w-full">
@@ -245,17 +257,16 @@ export const Tray = ({ type, title, url = null }) => {
               .filter(
                 (movie) =>
                   movie.backdrop_path &&
-                  (filter
-                    ? movie.original_language === "en"
-                      ? true
-                      : false
-                    : true),
+                  (filter ? movie.original_language === "en" : true),
               )
               .map((movie) => {
                 return (
                   <div key={movie.id} className="w-max flex">
                     <SwiperSlide>
-                      <MovieListItem movie={movie} />
+                      <MovieListItem
+                        type={type.includes("TV") ? "tv" : "movie"}
+                        movie={movie}
+                      />
                     </SwiperSlide>
                   </div>
                 );
