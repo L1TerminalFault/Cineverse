@@ -105,7 +105,6 @@ export default function ({ type }) {
   const genres = type === "movie" ? movieGenre : tvGenres;
 
   const [selectedGenre, setSelectedGenre] = useState(null);
-
   const [movieResults, setMovieResults] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -119,7 +118,7 @@ export default function ({ type }) {
             ? type === "movie"
               ? "/api/getTrendingMovies?day"
               : "/api/getTrendingTV?day"
-            : type === "tv"
+            : type === "movie"
               ? `/api/discoverMovies?with_genres=${selectedGenre}`
               : `/api/discoverTV?with_genres=${selectedGenre}`,
         )
@@ -134,13 +133,21 @@ export default function ({ type }) {
   };
 
   useEffect(() => {
+    setSelectedGenre(null);
+    const genreTray = document.getElementById("genreTray");
+    genreTray.scrollTo({ left: 0, behavior: "smooth" });
+  }, [type]);
+
+  useEffect(() => {
     fetchMovies();
+    const resultTray = document.getElementById("resultTray");
+    resultTray?.scrollTo({ left: 0, behavior: "smooth" });
   }, [selectedGenre, type]);
 
   return (
     <div className="flex flex-col mt-3">
       <div className="px-4">
-        <div className="w-full overflow-scroll scrollbar-hidden">
+        <div id="genreTray" className="w-full overflow-scroll scrollbar-hidden">
           <div className="w-max flex gap-3">
             <div
               className={`p-2 px-4 flex items-center justify-center gap-2 rounded-2xl border transition-all cursor-default ${selectedGenre ? "border-[#141624] bg-[#14162480] hover:border-[#202330] hover:bg-[#20233080]" : "border-[#252835] bg-[#25283580]"}`}
@@ -206,7 +213,10 @@ export default function ({ type }) {
             ) : error ? (
               <div>{Object(error).keys}</div>
             ) : !movieResults.length ? null : (
-              <div className="flex overflow-scroll scrollbar-hidden gap-5">
+              <div
+                id="resultTray"
+                className="flex overflow-scroll scrollbar-hidden gap-5"
+              >
                 {movieResults
                   .filter((movie) => movie.backdrop_path)
                   .sort((a, b) =>

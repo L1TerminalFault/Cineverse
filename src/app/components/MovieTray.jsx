@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BsChevronRight, BsFilter } from "react-icons/bs";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -78,9 +79,9 @@ export const Carousel = ({ type, title, url = null }) => {
               <BsFilter size={20} />
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
-            <div className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
+            <Link href={`/mainList?type=${type}`} className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
               <BsChevronRight size={18} />
-            </div>
+            </Link>
           </div>
         </div>
       </div>
@@ -226,9 +227,9 @@ export const Tray = ({ type, title, url = null }) => {
               <BsFilter size={20} />
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
-            <div className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
+            <Link href={`/mainList?type=${type}`} className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
               <BsChevronRight size={18} />
-            </div>
+            </Link>
           </div>
         </div>
       </div>
