@@ -15,6 +15,33 @@ import {
   FaMagic,
   FaSearch,
   FaFire,
+  FaUniversalAccess,
+  FaHatWizard,
+  FaBookOpen,
+  FaLaughSquint,
+  FaGavel,
+  FaBalanceScale,
+  FaChild,
+  FaPuzzlePiece,
+  FaNewspaper,
+  FaRobot,
+  FaVideo,
+  FaUserTie,
+  FaGlobeAmericas,
+  FaHorseHead,
+  FaFistRaised,
+  FaFilm,
+  FaTheaterMasks,
+  FaUserNinja,
+  FaCameraRetro,
+  FaHardHat,
+  FaQuestionCircle,
+  FaBroadcastTower,
+  FaSpa,
+  FaMicrophone,
+  FaGlobe,
+  FaHorse,
+  FaDumbbell,
 } from "react-icons/fa";
 import { MdAnimation, MdTheaters } from "react-icons/md";
 import { RiVideoFill } from "react-icons/ri";
@@ -25,37 +52,58 @@ import {
   GiTopHat,
 } from "react-icons/gi";
 
-import { genres } from "@/lib/utils";
+import { genres as movieGenre, tvGenres } from "@/lib/utils";
 import MovieListItem from "./MovieListItem";
 
-const genreIcons = {
-  28: ({ color }) => <FaBolt color={color} size={26} />, // Action
-  12: ({ color }) => <FaCompass color={color} size={26} />, // Adventure
-  16: ({ color }) => <MdAnimation color={color} size={26} />, // Animation
-  35: ({ color }) => <FaLaugh color={color} size={26} />, // Comedy
-  80: ({ color }) => <GiPoliceOfficerHead color={color} size={26} />, // Crime
-  99: ({ color }) => <RiVideoFill color={color} size={26} />, // Documentary
-  18: ({ color }) => <MdTheaters color={color} size={26} />, // Drama
-  10751: ({ color }) => <FaUsers color={color} size={26} />, // Family
-  14: ({ color }) => <FaMagic color={color} size={26} />, // Fantasy
-  36: ({ color }) => <FaLandmark color={color} size={26} />, // History
-  27: ({ color }) => <GiSkullCrossedBones color={color} size={26} />, // Horror
-  10402: ({ color }) => <FaMusic color={color} size={26} />, // Music
-  9648: ({ color }) => <FaSearch color={color} size={26} />, // Mystery
-  10749: ({ color }) => <FaHeart color={color} size={26} />, // Romance
-  878: ({ color }) => <FaRocket color={color} size={26} />, // Science Fiction (Sci-Fi)
-  10770: ({ color }) => <FaTv color={color} size={26} />, // TV Movie
-  53: ({ color }) => <FaEye color={color} size={26} />, // Thriller
-  10752: ({ color }) => <GiCrossedSwords color={color} size={26} />, // War
-  37: ({ color }) => <GiTopHat color={color} size={26} />, // Western
-};
+export default function ({ type }) {
+  const genreIcons =
+    type === "movie"
+      ? {
+          28: ({ color }) => <FaBolt color={color} size={26} />, // Action
+          12: ({ color }) => <FaCompass color={color} size={26} />, // Adventure
+          16: ({ color }) => <MdAnimation color={color} size={26} />, // Animation
+          35: ({ color }) => <FaLaugh color={color} size={26} />, // Comedy
+          80: ({ color }) => <GiPoliceOfficerHead color={color} size={26} />, // Crime
+          99: ({ color }) => <RiVideoFill color={color} size={26} />, // Documentary
+          18: ({ color }) => <MdTheaters color={color} size={26} />, // Drama
+          10751: ({ color }) => <FaUsers color={color} size={26} />, // Family
+          14: ({ color }) => <FaMagic color={color} size={26} />, // Fantasy
+          36: ({ color }) => <FaLandmark color={color} size={26} />, // History
+          27: ({ color }) => <GiSkullCrossedBones color={color} size={26} />, // Horror
+          10402: ({ color }) => <FaMusic color={color} size={26} />, // Music
+          9648: ({ color }) => <FaSearch color={color} size={26} />, // Mystery
+          10749: ({ color }) => <FaHeart color={color} size={26} />, // Romance
+          878: ({ color }) => <FaRocket color={color} size={26} />, // Science Fiction (Sci-Fi)
+          10770: ({ color }) => <FaTv color={color} size={26} />, // TV Movie
+          53: ({ color }) => <FaEye color={color} size={26} />, // Thriller
+          10752: ({ color }) => <GiCrossedSwords color={color} size={26} />, // War
+          37: ({ color }) => <GiTopHat color={color} size={26} />, // Western
+        }
+      : {
+          10759: ({ color }) => <FaDumbbell color={color} size={26} />, // Action & Adventure
+          16: ({ color }) => <MdAnimation color={color} size={26} />, // Animation
+          35: ({ color }) => <FaTheaterMasks color={color} size={26} />, // Comedy
+          80: ({ color }) => <FaUserNinja color={color} size={26} />, // Crime
+          99: ({ color }) => <FaCameraRetro color={color} size={26} />, // Documentary
+          18: ({ color }) => <MdTheaters color={color} size={26} />, // Drama
+          10751: ({ color }) => <FaUsers color={color} size={26} />, // Family
+          10762: ({ color }) => <FaPuzzlePiece color={color} size={26} />, // Kids
+          9648: ({ color }) => <FaQuestionCircle color={color} size={26} />, // Mystery
+          10763: ({ color }) => <FaNewspaper color={color} size={26} />, // News
+          10764: ({ color }) => <FaBroadcastTower color={color} size={26} />, // Reality
+          10765: ({ color }) => <FaRocket color={color} size={26} />, // Sci‑Fi & Fantasy
+          10766: ({ color }) => <FaSpa color={color} size={26} />, // Soap
+          10767: ({ color }) => <FaMicrophone color={color} size={26} />, // Talk
+          10768: ({ color }) => <FaGlobe color={color} size={26} />, // War & Politics
+          37: ({ color }) => <FaHorse color={color} size={26} />, // Western
+        };
+  const GenreIcon = ({ genreId, color }) => {
+    const Icon = genreIcons[genreId] || (() => null);
+    return <Icon color={color} />;
+  };
 
-const GenreIcon = ({ genreId, color }) => {
-  const Icon = genreIcons[genreId] || (() => null);
-  return <Icon color={color} />;
-};
+  const genres = type === "movie" ? movieGenre : tvGenres;
 
-export default function () {
   const [selectedGenre, setSelectedGenre] = useState(null);
 
   const [movieResults, setMovieResults] = useState(null);
@@ -68,8 +116,12 @@ export default function () {
       const response = await (
         await fetch(
           !selectedGenre
-            ? "/api/getTrendingMovies?day"
-            : `/api/discoverMovies?with_genres=${selectedGenre}`,
+            ? type === "movie"
+              ? "/api/getTrendingMovies?day"
+              : "/api/getTrendingTV?day"
+            : type === "tv"
+              ? `/api/discoverMovies?with_genres=${selectedGenre}`
+              : `/api/discoverTV?with_genres=${selectedGenre}`,
         )
       ).json();
       if (response.ok) setMovieResults(response.response.results);
@@ -83,7 +135,7 @@ export default function () {
 
   useEffect(() => {
     fetchMovies();
-  }, [selectedGenre]);
+  }, [selectedGenre, type]);
 
   return (
     <div className="flex flex-col mt-3">
@@ -158,15 +210,18 @@ export default function () {
                 {movieResults
                   .filter((movie) => movie.backdrop_path)
                   .sort((a, b) =>
-                    a.release_date.split("-")[0] < b.release_date.split("-")[0]
-                      ? 1
-                      : -1,
+                    type === "movie"
+                      ? a.release_date?.split("-")[0] <
+                        b.release_date?.split("-")[0]
+                        ? 1
+                        : -1
+                      : 0,
                   )
                   .map((movie) => {
                     return (
                       <div key={movie.id} className="w-max flex">
                         <SwiperSlide>
-                          <MovieListItem movie={movie} />
+                          <MovieListItem movie={movie} type={type} />
                         </SwiperSlide>
                       </div>
                     );

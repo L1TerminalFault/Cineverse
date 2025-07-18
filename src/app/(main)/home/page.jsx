@@ -30,7 +30,11 @@ export default function () {
             ) : null}
           </div>
           <div>
-            <DiscoverTray />
+            {currentPage === "Movies" ? (
+              <DiscoverTray type={"movie"} />
+            ) : (
+              <DiscoverTray type={"tv"} />
+            )}
           </div>
           <div>
             {currentPage === "Movies" ? (

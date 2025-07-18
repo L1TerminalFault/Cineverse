@@ -13,7 +13,7 @@ export default function ({ movie, loading, swiperLoaded, type }) {
     <div className=" relative">
       {loading ? (
         <div
-          className={`${loading ? "max-h-6 opacity-100" : "max-h-0 opacity-0"} transition-all duration-500 rounded-3xl overflow-hidden relative flex items-center justify-center`}
+          className={`${loading ? " opacity-100" : " opacity-0"} transition-all duration-500 rounded-3xl overflow-hidden relative flex items-center justify-center`}
         >
           <Image
             className="opacity-0"
