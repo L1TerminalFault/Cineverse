@@ -7,14 +7,18 @@ import TopBar from "@/app/components/TopBar";
 import MovieListItem from "@/app/components/MovieListItem";
 import MovieItemLoader from "@/app/components/MovieItemLoader";
 
+const movieIds = [];
+
 export default function () {
   const [fetchedData, setFetchedData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(null)
-  const loaderRef = useRef(null)
-  
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(null);
+  const [readyToFetch, setReadyToFetch] = useState(false);
+  const loaderRef = useRef(null);
+  const [endOfData, setEndOfData] = useState(false);
+
   const searchParams = useSearchParams();
   const type = searchParams.get("type");
   const title = searchParams.get("title");
@@ -39,19 +43,71 @@ export default function () {
                     : "";
 
   const fetchData = async () => {
+    if (totalPages && page > totalPages) {
+    setEndOfData(true);
+    return;
+    }
+
     setLoading(true);
-    const endpoint = url + url.includes("?") ? `&page=${page}` : `?page=${page}`
-    alert(endpoint)
+    const endpoint =
+      url + (url.includes("?") ? `&page=${page}` : `?page=${page}`);
     try {
       const response = await (await fetch(endpoint)).json();
-      if (response.ok) setFetchedData(response.response.results);
-      else throw Error(response.error);
+      if (response.ok) {
+        if (!totalPages) {
+          response.response.results.forEach((movie) => {
+            movieIds.push(movie.id);
+          });
+          setFetchedData(response.response.results);
+        } else {
+          const temp = [];
+          response.response.results.forEach((movie) => {
+            if (!movieIds.includes(movie.id)) {
+              movieIds.push(movie.id);
+              temp.push(movie);
+            }
+          });
+          setFetchedData((prev) => [...prev, ...temp]);
+        }
+        setTotalPages((prev) =>
+          totalPages ? prev : response.response.total_pages,
+        );
+      } else throw Error(response.error);
     } catch (error) {
       setError(error);
     } finally {
       setLoading(false);
+      setReadyToFetch(true);
     }
   };
+
+
+
+function itemsInFirstRow(screenWidth, itemWidth = 145, containerPadding = 12) {
+    
+  const availableWidth = screenWidth - containerPadding * 2;
+
+  for (let n = 1; n < 100; n++) {
+    const space = (availableWidth - n * itemWidth) / (n + 1);
+    if (space < 0) {
+      return n - 1;
+    }
+  }
+
+  return 0;
+}
+
+  useEffect(() => {
+     function updateItemCount() {
+      const width = window.innerWidth;
+      const count = itemsInFirstRow(width);
+      console.log(count);
+    }
+
+    updateItemCount(); // Run on mount
+
+    window.addEventListener('resize', updateItemCount);
+  })
 
   useEffect(() => {
     fetchData();
@@ -60,15 +116,17 @@ export default function () {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && page < totalPages) {
-          setPage((prev) => prev + 1)
+        if (entries[0].isIntersecting && !endOfData && readyToFetch) {
+          setReadyToFetch(false);
+          setPage((prev) => prev + 1);
+          console.log(totalPages, page);
         }
       },
-      { threshold: 0 }
-    )
+      { threshold: 0 },
+    );
 
-    if (loaderRef.current) observer.observe(loaderRef.current)
-  }, [loaderRef, page, totalPages])
+    if (loaderRef.current) observer.observe(loaderRef.current);
+  }, [loaderRef, page, totalPages]);
 
   return (
     <div className="w-full flex items-center justify-center">
@@ -85,8 +143,8 @@ export default function () {
 
           <div className="w-full flex items-center justify-center align-middle">
             {error ? null : (
-              <div className="flex flex-wrap scrollbar-hidden justify-center gap-5">
-                {loading
+              <div className="flex flex-wrap scrollbar-hidden justify-evenly gap-5">
+                {loading && !fetchedData.length
                   ? Array.from({ length: 30 }, (_, i) => i + 1).map((item) => (
                       <MovieItemLoader key={item} />
                     ))
@@ -105,8 +163,17 @@ export default function () {
             )}
           </div>
 
-          <div ref={loaderRef} className="bg-white p-2 w-full">
-            
+          <div
+            ref={loaderRef}
+            className="p-6 w-full flex items-center justify-center gap-3"
+          >
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-0" />
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-100" />
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-200" />
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-300" />
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-400" />
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-500" />
+            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-600" />
           </div>
         </div>
       </div>

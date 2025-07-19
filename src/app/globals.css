@@ -47,6 +47,7 @@ body {
     transform: translateX(-200px);
   }
   to {
-    transform: translateX(800px)
+    transform: translateX(800px);
   }
 }
+

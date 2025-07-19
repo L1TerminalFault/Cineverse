@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
 import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
+import noMovie from "@/../public/no-movie.png";
 
 export default function ({ movie, type, extendOnHover = true }) {
   const genres = type === "movie" ? movieGenres : tvGenres;
@@ -10,13 +11,15 @@ export default function ({ movie, type, extendOnHover = true }) {
   return (
     <Link
       href={`/movie/${movie.id}`}
-      className={`flex flex-col group rounded-3xl h-max w-[145px] duration-500 transition-all ${extendOnHover ? "hover:w-[386px]" : ""}`}
+      className={`flex flex-col group rounded-3xl h-max w-[145px] duration-500 transition-all  ${extendOnHover ? "hover:w-[386px]" : ""}`}
     >
       <div className="flex relative items-center justify-center z-50 h-[217.5px]">
         <Image
-          src={imagePath(movie.poster_path, "w780")}
+          src={
+            movie.poster_path ? imagePath(movie.poster_path, "w780") : noMovie
+          }
           alt=""
-          className={`absolute rounded-3xl duration-500 transition-all ${extendOnHover ? "group-hover:w-0 group-hover:opacity-0 w-[145px]" : ""}`}
+          className={`${movie.poster_path ? "" : "opacity-80"} absolute rounded-3xl duration-500 transition-all bg-[#2f364b3b] ${extendOnHover ? "group-hover:w-0 group-hover:opacity-0 w-[145px]" : "hover:scale-105"}`}
           placeholder="blur"
           blurDataURL={imagePath(movie.poster_path, "w185")}
           quality={100}
@@ -29,7 +32,7 @@ export default function ({ movie, type, extendOnHover = true }) {
             <Image
               src={imagePath(movie.backdrop_path)}
               alt=""
-              className="absolute left-0 rounded-3xl duration-500 transition-all opacity-0 group-hover:opacity-100 group-hover:w-[386px] w-0"
+              className="absolute left-0 rounded-3xl duration-500 transition-all bg-[#2f364b3b] opacity-0 group-hover:opacity-100 group-hover:w-[386px] w-0"
               placeholder="blur"
               blurDataURL={imagePath(movie.backdrop_path, "w300")}
               quality={100}
@@ -89,7 +92,9 @@ export default function ({ movie, type, extendOnHover = true }) {
         ) : null}
       </div>
 
-      <div className={`flex flex-col gap-[6px] p-2 px-3 duration-500 ${extendOnHover ? "group-hover:-translate-y-20 group-hover:opacity-0" : ""} transition-all`}>
+      <div
+        className={`flex flex-col gap-[6px] p-2 px-3 duration-500 ${extendOnHover ? "group-hover:-translate-y-20 group-hover:opacity-0" : ""} transition-all`}
+      >
         <div className="text-xs h-4 text-nowrap overflow-hidden relative">
           {type === "movie" ? movie.title : movie.name}
           <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div>
