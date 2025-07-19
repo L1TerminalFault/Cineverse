@@ -67,7 +67,7 @@ export default function ({ movie, loading, swiperLoaded, type }) {
                 .map((genre_id) => genres[genre_id])
                 .map((genre) => (
                   <div
-                    key={genre}
+                    key={Math.random()}
                     className="p-1 px-3 text-nowrap bg-[#00000041] backdrop-blur-sm sm:text-xs text-sm rounded-full "
                   >
                     {genre}

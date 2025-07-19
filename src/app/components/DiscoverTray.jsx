@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { SwiperSlide } from "swiper/react";
 import { BsChevronRight } from "react-icons/bs";
 import {
@@ -54,6 +56,8 @@ import {
 
 import { genres as movieGenre, tvGenres } from "@/lib/utils";
 import MovieListItem from "./MovieListItem";
+import fireIcon from "@/../public/fire-icon.png";
+import MovieItemLoader from "./MovieItemLoader";
 
 export default function ({ type }) {
   const genreIcons =
@@ -109,20 +113,18 @@ export default function ({ type }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const url = !selectedGenre
+    ? type === "movie"
+      ? "/api/getTrendingMovies?day"
+      : "/api/getTrendingTV?day"
+    : type === "movie"
+      ? `/api/discoverMovies?with_genres=${selectedGenre}`
+      : `/api/discoverTV?with_genres=${selectedGenre}`;
+
   const fetchMovies = async () => {
     setLoading(true);
     try {
-      const response = await (
-        await fetch(
-          !selectedGenre
-            ? type === "movie"
-              ? "/api/getTrendingMovies?day"
-              : "/api/getTrendingTV?day"
-            : type === "movie"
-              ? `/api/discoverMovies?with_genres=${selectedGenre}`
-              : `/api/discoverTV?with_genres=${selectedGenre}`,
-        )
-      ).json();
+      const response = await (await fetch(url)).json();
       if (response.ok) setMovieResults(response.response.results);
       else throw Error(response.error);
     } catch (error) {
@@ -153,9 +155,10 @@ export default function ({ type }) {
               className={`p-2 px-4 flex items-center justify-center gap-2 rounded-2xl border transition-all cursor-default ${selectedGenre ? "border-[#141624] bg-[#14162480] hover:border-[#202330] hover:bg-[#20233080]" : "border-[#252835] bg-[#25283580]"}`}
               onClick={() => setSelectedGenre(null)}
             >
-              <FaFire
-                color={`${!selectedGenre ? "" : "#ffffffaa"}`}
-                size={26}
+              <Image
+                src={fireIcon}
+                className={`${!selectedGenre ? "opacity-100" : "opacity-60"} w-6`}
+                alt=""
               />
               <div>Trending</div>
             </div>
@@ -172,7 +175,7 @@ export default function ({ type }) {
               >
                 <GenreIcon
                   genreId={id}
-                  color={`${selectedGenre === id ? "" : "#ffffffaa"}`}
+                  color={`${selectedGenre === id ? "" : "#ffffff99"}`}
                 />
                 {genre}
               </div>
@@ -187,27 +190,18 @@ export default function ({ type }) {
             <div className="">
               {selectedGenre ? genres[selectedGenre] : "Trending"}
             </div>
-            <div>
+            <Link href={`/explore?url=${encodeURIComponent(url)}`}>
               <div className="hover:bg-gray-900 p-2 transition-all rounded-full ">
                 <BsChevronRight size={15} />
               </div>
-            </div>
+            </Link>
           </div>
 
           <div className="w-full sm flex px-1">
             {loading ? (
               <div className="overflow-scroll flex scrollbar-hidden gap-5 w-max">
                 {Array.from({ length: 30 }, (_, i) => i + 1).map((item) => (
-                  <div key={item} className="w-max flex flex-col">
-                    <div className="relative bg-[#2f364b3b] overflow-hidden w-[145px] h-[217.5px] rounded-3xl">
-                      <div className="swipe p-1 h-full bg-gradient-to-r from-[#0000] via-gray-900 to-[#0000]"></div>
-                    </div>
-
-                    <div className="flex flex-col gap-[6px] p-2 px-3 ">
-                      <div className="h-4 rounded-full bg-[#2f364b2f] w-3/4"></div>
-                      <div className="h-3 rounded-full bg-[#2f364b2a] w-1/3"></div>
-                    </div>
-                  </div>
+                  <MovieItemLoader key={item} />
                 ))}
               </div>
             ) : error ? (

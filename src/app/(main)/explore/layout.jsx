@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Main List",
+  title: "Explore",
 };
 
 export default function ({ children }) {

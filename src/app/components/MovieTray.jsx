@@ -8,6 +8,7 @@ import "swiper/swiper-bundle.css";
 
 import MovieCarouselItem from "./MovieCarouselItem";
 import MovieListItem from "./MovieListItem";
+import MovieItemLoader from "./MovieItemLoader";
 
 export const Carousel = ({ type, title, url = null }) => {
   const [upcomingMovies, setUpcomingMovies] = useState(null);
@@ -53,7 +54,7 @@ export const Carousel = ({ type, title, url = null }) => {
         <div className="text-xl">{title}</div>
         <div className="flex items-center gap-2">
           <div
-            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} flex items-center bg-[#060819] text-sm rounded-full`}
+            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-sm rounded-full`}
           >
             <div
               onClick={() => setFilter(false)}
@@ -79,7 +80,10 @@ export const Carousel = ({ type, title, url = null }) => {
               <BsFilter size={20} />
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
-            <Link href={`/mainList?type=${type}`} className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
+            <Link
+              href={`/explore?type=${type}&title=${title}`}
+              className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full "
+            >
               <BsChevronRight size={18} />
             </Link>
           </div>
@@ -201,7 +205,7 @@ export const Tray = ({ type, title, url = null }) => {
         <div className="text-xl">{title}</div>
         <div className="flex items-center gap-2">
           <div
-            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} flex items-center bg-[#060819] text-sm rounded-full`}
+            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-sm rounded-full`}
           >
             <div
               onClick={() => setFilter(false)}
@@ -227,7 +231,10 @@ export const Tray = ({ type, title, url = null }) => {
               <BsFilter size={20} />
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
-            <Link href={`/mainList?type=${type}`} className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
+            <Link
+              href={`/explore?type=${type}&title=${title}`}
+              className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full "
+            >
               <BsChevronRight size={18} />
             </Link>
           </div>
@@ -238,16 +245,7 @@ export const Tray = ({ type, title, url = null }) => {
         {loading ? (
           <div className="overflow-scroll flex scrollbar-hidden gap-5 w-max">
             {Array.from({ length: 30 }, (_, i) => i + 1).map((item) => (
-              <div key={item} className="w-max flex flex-col">
-                <div className="relative bg-[#2f364b3b] overflow-hidden w-[145px] h-[217.5px] rounded-3xl">
-                  <div className="swipe p-1 h-full bg-gradient-to-r from-[#0000] via-gray-900 to-[#0000]"></div>
-                </div>
-
-                <div className="flex flex-col gap-[6px] p-2 px-3 ">
-                  <div className="h-4 rounded-full bg-[#2f364b2f] w-3/4"></div>
-                  <div className="h-3 rounded-full bg-[#2f364b2a] w-1/3"></div>
-                </div>
-              </div>
+              <MovieItemLoader key={item} />
             ))}
           </div>
         ) : error ? (
@@ -263,12 +261,10 @@ export const Tray = ({ type, title, url = null }) => {
               .map((movie) => {
                 return (
                   <div key={movie.id} className="w-max flex">
-                    <SwiperSlide>
-                      <MovieListItem
-                        type={type.includes("TV") ? "tv" : "movie"}
-                        movie={movie}
-                      />
-                    </SwiperSlide>
+                    <MovieListItem
+                      type={type.includes("TV") ? "tv" : "movie"}
+                      movie={movie}
+                    />
                   </div>
                 );
               })}

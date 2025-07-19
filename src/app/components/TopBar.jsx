@@ -16,7 +16,7 @@ import icon from "@/../public/movie-icon.png";
 
 export default function ({ page, setPage }) {
   const [topBarExpand, setTopBarExpand] = useState(true);
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(setPage ? false : true);
 
   return (
     <div className="fixed z-40 w-full top-0 p-3">
@@ -24,7 +24,7 @@ export default function ({ page, setPage }) {
         <label
           htmlFor="toggle"
           onClick={() => setTopBarExpand((prev) => !prev)}
-          className={`${topBarExpand ? "rounded-full" : "-translate-x-6 rounded-r-full pl-3"} absolute top-2 left-2 z-50 p-2 peer transition-all bg-[#22232c] hover:bg-[#32333c]`}
+          className={`${topBarExpand ? "rounded-full" : "bg-[#22232c55] backdrop-blur-xl -translate-x-6 rounded-r-full pl-3"} absolute top-2 left-2 z-50 p-2 transition-all mbg-[#22232c] hover:bg-[#32333c77]`}
         >
           <div className="relative flex items-center justify-center">
             <div className={`${topBarExpand ? "inline" : "hidden"}`}>
@@ -38,13 +38,14 @@ export default function ({ page, setPage }) {
 
         <input type="checkbox" id="toggle" className="peer hidden" />
 
-        <div className="backdrop-blur-lg flex peer-checked:-translate-y-32 peer-checked:opacity-0 duration-500 transition-all rounded-full pl-[47px] bg-[#20212a80] px-2 py-[6px] justify-between">
+        <div className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} duration-500 transition-all rounded-full mpl-[47px] bg-[#15162080] px-2 py-[6px] justify-between`}>
           <div className="flex items-center gap-[7px]">
             <Link
-              href={"/"}
-              className="flex gap-2 p-1 px-4 transition-all bg-[#22232c] hover:bg-[#32333c] rounded-full items-center"
+              href={"/home"}
+              className="flex gap-2 p-1 pl-9 px-4 transition-all bg-[#22232c]m hover:bg-[#32333c77] rounded-full items-center"
             >
-              <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-600">
+              <Image src={icon} alt="" width={20} height={20} />
+              <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br from-blue-200 to-gray-600">
                 Cineverse
               </div>
               <div className="rounded-full bg-orange-400 p-1" />
@@ -53,7 +54,7 @@ export default function ({ page, setPage }) {
 
           <div className="items-center gap-2 flex-row-reverse flex rounded-full bg-[#040510]">
             <div
-              onClick={() => setShowSearch((prev) => !prev)}
+              onClick={() => setShowSearch((prev) => setPage ? !prev : true)}
               className="p-[7px] m-[3px] ml-0 rounded-full bg-[#151525cc] hover:bg-[#1a1a2aff] transition-all"
             >
               <SearchIcon />
@@ -76,13 +77,13 @@ export default function ({ page, setPage }) {
               {" "}
               <div
                 onClick={() => setPage("Movies")}
-                className={`${page === "Movies" ? "bg-gray-900" : ""} rounded-full p-2 px-5 hover:bg-gray-900 transition-all`}
+                className={`${page === "Movies" ? "bg-gray-800" : ""} rounded-full p-2 px-5 hover:bg-gray-800 transition-all`}
               >
                 Movies
               </div>
               <div
                 onClick={() => setPage("Series")}
-                className={`${page === "Series" ? "bg-gray-900" : ""} rounded-full px-5 p-2 hover:bg-gray-900 transition-all`}
+                className={`${page === "Series" ? "bg-gray-800" : ""} rounded-full px-5 p-2 hover:bg-gray-800 transition-all`}
               >
                 Series
               </div>
