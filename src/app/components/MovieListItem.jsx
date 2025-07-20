@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
+import { useState } from "react";
 
 import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
 import noMovie from "@/../public/no-movie.png";
 
 export default function ({ movie, type, extendOnHover = true }) {
   const genres = type === "movie" ? movieGenres : tvGenres;
+  const [retryImage, setRetryImage] = useState(0);
 
   return (
     <Link
@@ -18,6 +20,10 @@ export default function ({ movie, type, extendOnHover = true }) {
           src={
             movie.poster_path ? imagePath(movie.poster_path, "w780") : noMovie
           }
+          key={retryImage}
+          onError={() => {
+            setRetryImage((prev) => (prev < 3 ? prev + 1 : prev));
+          }}
           alt=""
           className={`${movie.poster_path ? "" : "opacity-80"} absolute rounded-3xl duration-500 transition-all bg-[#2f364b3b] ${extendOnHover ? "group-hover:w-0 group-hover:opacity-0 h-[217.5] w-[145px]" : "hover:scale-105"}`}
           placeholder="blur"

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { BsFilter, BsChevronRight } from "react-icons/bs";
 
 import TopBar from "@/app/components/TopBar";
 import MovieListItem from "@/app/components/MovieListItem";
@@ -17,6 +18,7 @@ export default function () {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [adult, setAdult] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const [searchTerm, setSearchTerm] = useState(searchParams.get("term") || "");
   const [language, setLanguage] = useState("");
   const [type, setType] = useState(searchParams.get("type"));
@@ -24,6 +26,7 @@ export default function () {
   const [readyToFetch, setReadyToFetch] = useState(false);
   const loaderRef = useRef(null);
   const [endOfData, setEndOfData] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const fetchData = async () => {
     if (totalPages && page > totalPages) {
@@ -64,19 +67,23 @@ export default function () {
       setReadyToFetch(true);
     }
   };
-  
+
   const submitSearch = (formData) => {
-    setFetchedData([]);
-    setPage(1);
-    console.log(page)
-    setTimeout(() => setSearchTerm(formData.get("search") || ""), 1000);
-    setTotalPages(null);
-    setEndOfData(false);
-  }
+    const term = formData.get("search");
+    window.location.href = `/search?term=${encodeURIComponent(term)}&type=${type}`;
+  };
+
+  useEffect(() => {
+    if (firstLoad) {
+      setFirstLoad(false);
+      return;
+    }
+    window.location.href = `/search?term=${encodeURIComponent(searchTerm)}&type=${type}&include_adult=${adult}${language ? `&language=${language}` : ""}`;
+  }, [adult, language]);
 
   useEffect(() => {
     fetchData();
-  }, [page, searchTerm, type, adult, language]);
+  }, [page, type]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -101,11 +108,45 @@ export default function () {
         <div className="p-3 pt-16 w-full flex justify-center flex-col">
           <div className="p-5 px-6 justify-between items-center w-full flex">
             <div className="text-xl">
-                  <span className="opacity-65">
-                    {"Search " + (type === "movies" ? "Movies" : "TV Shows")}{" "}
-                    <span className="opacity-45">-</span>{" "}
-                  </span>
-                  <span>{searchTerm}</span>
+              <span className="opacity-65">
+                {"Search " + (type === "movies" ? "Movies" : "TV Shows")}{" "}
+                <span className="opacity-45">-</span>{" "}
+              </span>
+              <span>{searchTerm}</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div
+                className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-sm rounded-full`}
+              >
+                <div
+                  onClick={() => setAdult(false)}
+                  className={`${adult ? "" : "bg-[#0d1022]"} hover:bg-gray-900 group transition-all relative p-2 px-4 rounded-l-full`}
+                >
+                  All
+                </div>
+                <div className="text-gray-700 h-full text-lg">|</div>
+
+                <div
+                  onClick={() => setAdult(true)}
+                  className={`${adult ? "bg-[#0d1022]" : ""} hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full`}
+                >
+                  Include Adult
+                </div>
+              </div>
+
+              <div className="flex items-center bg-[#060819] rounded-full">
+                <div
+                  onClick={() => setShowFilter((prev) => !prev)}
+                  className="hover:bg-gray-900 group transition-all relative p-2 px-4 rounded-l-full"
+                >
+                  <BsFilter size={20} />
+                </div>
+                <div className="text-gray-700 h-full text-lg">|</div>
+                <div className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full ">
+                  <BsChevronRight size={18} />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -136,15 +177,16 @@ export default function () {
             className="p-3 w-full flex items-center justify-center gap-3"
           >
             {endOfData ? null : (
-            <>
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-0" />
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-100" />
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-200" />
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-300" />
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-400" />
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-500" />
-            <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-600" />
-            </>)}
+              <>
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-0" />
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-100" />
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-200" />
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-300" />
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-400" />
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-500" />
+                <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-600" />
+              </>
+            )}
           </div>
         </div>
       </div>
