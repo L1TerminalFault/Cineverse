@@ -1,11 +1,11 @@
 import { endpoint } from "@/lib/utils";
 
 export const GET = async (req) => {
-  const url = req.url.split("?")[1];
+  const params = req.url.split("?")[1];
 
   try {
     const response = await (
-      await fetch(endpoint("/trending/tv/" + url))
+      await fetch(endpoint(`/trending/tv/day?${params}`))
     ).json();
 
     console.log(response);

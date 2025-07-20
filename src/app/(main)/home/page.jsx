@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import TopBar from "@/app/components/TopBar";
 import { Tray, Carousel } from "@/app/components/MovieTray";
@@ -8,10 +9,22 @@ import DiscoverTray from "@/app/components/DiscoverTray";
 
 export default function () {
   const [currentPage, setCurrentPage] = useState("Movies");
+  const router = useRouter();
+
+  const submitSearch = (formData) => {
+    const term = formData.get("search");
+    router.push(
+      `/search?term=${encodeURIComponent(term)}&type=${currentPage.toLowerCase()}`,
+    );
+  };
 
   return (
     <div className="w-full flex items-center justify-center">
-      <TopBar page={currentPage} setPage={setCurrentPage} />
+      <TopBar
+        page={currentPage}
+        setPage={setCurrentPage}
+        submitSearch={submitSearch}
+      />
 
       <div className="relative 2xl:w-4/5 w-full flex items-center justify-center z-0">
         <div className="p-3 pt-16 w-full flex flex-col gap-5">

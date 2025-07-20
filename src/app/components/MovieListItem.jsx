@@ -10,16 +10,16 @@ export default function ({ movie, type, extendOnHover = true }) {
 
   return (
     <Link
-      href={`/movie/${movie.id}`}
+      href={`${type === "movie" ? `/movie/${movie.id}` : `/tv/${movie.id}`}`}
       className={`flex flex-col group rounded-3xl h-max w-[145px] duration-500 transition-all  ${extendOnHover ? "hover:w-[386px]" : ""}`}
     >
-      <div className="flex relative items-center justify-center z-50 h-[217.5px]">
+      <div className="flex relative rounded-3xl overflow-hidden items-center justify-center z-50 h-[217.5px]">
         <Image
           src={
             movie.poster_path ? imagePath(movie.poster_path, "w780") : noMovie
           }
           alt=""
-          className={`${movie.poster_path ? "" : "opacity-80"} absolute rounded-3xl duration-500 transition-all bg-[#2f364b3b] ${extendOnHover ? "group-hover:w-0 group-hover:opacity-0 w-[145px]" : "hover:scale-105"}`}
+          className={`${movie.poster_path ? "" : "opacity-80"} absolute rounded-3xl duration-500 transition-all bg-[#2f364b3b] ${extendOnHover ? "group-hover:w-0 group-hover:opacity-0 h-[217.5] w-[145px]" : "hover:scale-105"}`}
           placeholder="blur"
           blurDataURL={imagePath(movie.poster_path, "w185")}
           quality={100}
@@ -50,7 +50,7 @@ export default function ({ movie, type, extendOnHover = true }) {
                   .map((genre_id) => genres[genre_id])
                   .map((genre) => (
                     <div
-                      key={genre}
+                      key={Math.random()}
                       className="p-1 px-3 text-nowrap bg-[#00000030] backdrop-blur-sm sm:text-xs text-sm rounded-full "
                     >
                       {genre}

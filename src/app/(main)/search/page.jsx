@@ -10,38 +10,20 @@ import MovieItemLoader from "@/app/components/MovieItemLoader";
 const movieIds = [];
 
 export default function () {
+  const searchParams = useSearchParams();
+
   const [fetchedData, setFetchedData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [adult, setAdult] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(searchParams.get("term") || "");
+  const [language, setLanguage] = useState("");
+  const [type, setType] = useState(searchParams.get("type"));
   const [totalPages, setTotalPages] = useState(null);
   const [readyToFetch, setReadyToFetch] = useState(false);
   const loaderRef = useRef(null);
   const [endOfData, setEndOfData] = useState(false);
-
-  const searchParams = useSearchParams();
-  const type = searchParams.get("type");
-  const title = searchParams.get("title");
-
-  const url = searchParams.get("url")
-    ? decodeURIComponent(searchParams.get("url"))
-    : type === "upcomingMovies"
-      ? "/api/getUpcomingMovies"
-      : type === "topRatedMovies"
-        ? "/api/getTopRatedMovies"
-        : type === "onAirTVShows"
-          ? "/api/getOnAirTV"
-          : type === "topRatedTVShows"
-            ? "/api/getTopRatedTV"
-            : type === "nowPlayingMovies"
-              ? "/api/getNowPlayingMovies"
-              : type === "popularMovies"
-                ? "/api/getPopularMovies"
-                : type === "popularTVShows"
-                  ? "/api/getPopularTV"
-                  : type === "onAirTodayTVShows"
-                    ? "/api/getOnAirTodayTV"
-                    : "";
 
   const fetchData = async () => {
     if (totalPages && page > totalPages) {
@@ -50,8 +32,7 @@ export default function () {
     }
 
     setLoading(true);
-    const endpoint =
-      url + (url.includes("?") ? `&page=${page}` : `?page=${page}`);
+    const endpoint = `/api/search${type === "movies" ? "Movies" : "TV"}?query=${encodeURIComponent(searchTerm)}&page=${page}${adult ? `&include_adult=${adult}` : ""}${language.length ? `&language=${language}` : ""}`;
     try {
       const response = await (
         await fetch(endpoint, { cache: "no-store" })
@@ -83,10 +64,19 @@ export default function () {
       setReadyToFetch(true);
     }
   };
+  
+  const submitSearch = (formData) => {
+    setFetchedData([]);
+    setPage(1);
+    console.log(page)
+    setTimeout(() => setSearchTerm(formData.get("search") || ""), 1000);
+    setTotalPages(null);
+    setEndOfData(false);
+  }
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [page, searchTerm, type, adult, language]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -94,6 +84,7 @@ export default function () {
         if (entries[0].isIntersecting && !endOfData && readyToFetch) {
           setReadyToFetch(false);
           setPage((prev) => prev + 1);
+          console.log(totalPages, page);
         }
       },
       { threshold: 0 },
@@ -104,25 +95,17 @@ export default function () {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <TopBar
-        setPage={null}
-      />
+      <TopBar setPage={null} submitSearch={submitSearch} value={searchTerm} />
 
       <div className="relative 2xl:w-4/5 w-full flex items-center justify-center z-0">
         <div className="p-3 pt-16 w-full flex justify-center flex-col">
           <div className="p-5 px-6 justify-between items-center w-full flex">
             <div className="text-xl">
-              {title.includes("-") ? (
-                <>
                   <span className="opacity-65">
-                    {title.split("-")[0]}
+                    {"Search " + (type === "movies" ? "Movies" : "TV Shows")}{" "}
                     <span className="opacity-45">-</span>{" "}
                   </span>
-                  <span>{title.split("-")[1]}</span>
-                </>
-              ) : (
-                title
-              )}
+                  <span>{searchTerm}</span>
             </div>
           </div>
 
@@ -140,7 +123,7 @@ export default function () {
                           extendOnHover={false}
                           key={movie.id}
                           movie={movie}
-                          type={url.includes("TV") ? "tv" : "movie"}
+                          type={type === "movies" ? "movie" : "tv"}
                           loading={loading}
                         />
                       ))}
@@ -150,8 +133,10 @@ export default function () {
 
           <div
             ref={loaderRef}
-            className="p-6 w-full flex items-center justify-center gap-3"
+            className="p-3 w-full flex items-center justify-center gap-3"
           >
+            {endOfData ? null : (
+            <>
             <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-0" />
             <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-100" />
             <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-200" />
@@ -159,6 +144,7 @@ export default function () {
             <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-400" />
             <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-500" />
             <div className="bg-gray-600 p-[6px] rounded-md animate-wiggle duration-700 delay-600" />
+            </>)}
           </div>
         </div>
       </div>

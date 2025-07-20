@@ -43,7 +43,7 @@ export default function ({ movie, loading, swiperLoaded, type }) {
         </div>
       ) : (
         <Link
-          href={`/movie/${movie.id}`}
+          href={`${type === "movie" ? `/movie/${movie.id}}` : `/tv/${movie.id}`}`}
           className="rounded-3xl group overflow-hidden relative flex"
         >
           <Image

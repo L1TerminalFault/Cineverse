@@ -115,8 +115,8 @@ export default function ({ type }) {
 
   const url = !selectedGenre
     ? type === "movie"
-      ? "/api/getTrendingMovies?day"
-      : "/api/getTrendingTV?day"
+      ? "/api/getTrendingMovies"
+      : "/api/getTrendingTV"
     : type === "movie"
       ? `/api/discoverMovies?with_genres=${selectedGenre}`
       : `/api/discoverTV?with_genres=${selectedGenre}`;
@@ -190,7 +190,9 @@ export default function ({ type }) {
             <div className="">
               {selectedGenre ? genres[selectedGenre] : "Trending"}
             </div>
-            <Link href={`/explore?url=${encodeURIComponent(url)}`}>
+            <Link
+              href={`/explore?url=${encodeURIComponent(url)}&title=Discover%20${type === "movie" ? "Movie" : "TV"}%20-%20${encodeURIComponent(selectedGenre ? genres[selectedGenre] : "Trending")}`}
+            >
               <div className="hover:bg-gray-900 p-2 transition-all rounded-full ">
                 <BsChevronRight size={15} />
               </div>

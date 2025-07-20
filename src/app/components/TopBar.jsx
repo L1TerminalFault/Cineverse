@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { FiSearch as SearchIcon } from "react-icons/fi";
 import { IoPersonOutline as PersonIcon } from "react-icons/io5";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
@@ -14,9 +14,11 @@ import {
 
 import icon from "@/../public/movie-icon.png";
 
-export default function ({ page, setPage }) {
+export default function ({ page, setPage, submitSearch, value }) {
   const [topBarExpand, setTopBarExpand] = useState(true);
   const [showSearch, setShowSearch] = useState(setPage ? false : true);
+  const [searchTerm, setSearchTerm] = useState(value || "");
+  const inputRef = useRef(null);
 
   return (
     <div className="fixed z-40 w-full top-0 p-3">
@@ -38,7 +40,9 @@ export default function ({ page, setPage }) {
 
         <input type="checkbox" id="toggle" className="peer hidden" />
 
-        <div className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} duration-500 transition-all rounded-full mpl-[47px] bg-[#15162080] px-2 py-[6px] justify-between`}>
+        <div
+          className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} duration-500 transition-all rounded-full mpl-[47px] bg-[#25263080] px-2 py-[6px] justify-between`}
+        >
           <div className="flex items-center gap-[7px]">
             <Link
               href={"/home"}
@@ -52,9 +56,12 @@ export default function ({ page, setPage }) {
             </Link>
           </div>
 
-          <div className="items-center gap-2 flex-row-reverse flex rounded-full bg-[#040510]">
+          <div className="items-center gap-2 flex-row-reverse flex rounded-full bg-[#0a0c1f]">
             <div
-              onClick={() => setShowSearch((prev) => setPage ? !prev : true)}
+              onClick={() => {
+                setShowSearch((prev) => (setPage ? !prev : true));
+                inputRef.current.focus();
+              }}
               className="p-[7px] m-[3px] ml-0 rounded-full bg-[#151525cc] hover:bg-[#1a1a2aff] transition-all"
             >
               <SearchIcon />
@@ -63,31 +70,37 @@ export default function ({ page, setPage }) {
             <div
               className={`${showSearch ? "opacity-100 max-w-52" : "max-w-0 opacity-0"} flex w-full h-full overflow-hidden transition-all duration-500`}
             >
-              <input
-                type="text"
-                name=""
-                id=""
-                placeholder="Search Movies"
-                className={` outline-none w-full h-full z-30 transition-all duration-100 rounded-l-full text-xs bg-transparent pl-5`}
-              />
+              <form action={submitSearch}>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  name="search"
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchTerm}
+                  placeholder="Search Movies"
+                  className={` outline-none w-full h-full z-30 transition-all duration-100 rounded-l-full text-xs bg-transparent pl-5`}
+                />
+              </form>
             </div>
-            <div
-              className={`${showSearch ? "opacity-0 max-w-0" : "opacity-65 max-w-52"} flex duration-500 text-xs/3 p-1 items-center gap-1 transition-all rounded-full`}
-            >
-              {" "}
+            {setPage ? (
               <div
-                onClick={() => setPage("Movies")}
-                className={`${page === "Movies" ? "bg-gray-800" : ""} rounded-full p-2 px-5 hover:bg-gray-800 transition-all`}
+                className={`${showSearch ? "opacity-0 max-w-0" : "opacity-65 max-w-52"} flex duration-500 text-xs/3 p-1 items-center gap-1 transition-all rounded-full`}
               >
-                Movies
+                {" "}
+                <div
+                  onClick={() => setPage("Movies")}
+                  className={`${page === "Movies" ? "bg-gray-800" : ""} rounded-full p-2 px-5 hover:bg-gray-800 transition-all`}
+                >
+                  Movies
+                </div>
+                <div
+                  onClick={() => setPage("Series")}
+                  className={`${page === "Series" ? "bg-gray-800" : ""} rounded-full px-5 p-2 hover:bg-gray-800 transition-all`}
+                >
+                  Series
+                </div>
               </div>
-              <div
-                onClick={() => setPage("Series")}
-                className={`${page === "Series" ? "bg-gray-800" : ""} rounded-full px-5 p-2 hover:bg-gray-800 transition-all`}
-              >
-                Series
-              </div>
-            </div>
+            ) : null}
           </div>
 
           <div className="gap-[7px] items-center flex rounded-full">
