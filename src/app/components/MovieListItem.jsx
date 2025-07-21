@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
 import noMovie from "@/../public/no-movie.png";
+import adultIcon from "@/../public/18.png";
 
 export default function ({ movie, type, extendOnHover = true }) {
   const genres = type === "movie" ? movieGenres : tvGenres;
@@ -105,15 +106,23 @@ export default function ({ movie, type, extendOnHover = true }) {
           {type === "movie" ? movie.title : movie.name}
           <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div>
         </div>
-        <div className="flex gap-1 items-center text-xs/3 text-gray-500">
-          <FaStar color="#ffaa11" />
-          <div className="">{movie.vote_average.toFixed(1)}</div>
-          <div className="text-gray-700">|</div>
-          <div>
-            {type === "movie"
-              ? movie.release_date?.split("-")[0]
-              : movie.first_air_date?.split("-")[0]}
+        <div className="flex gap-1 items-center justify-between text-xs/3 text-gray-500">
+          <div className="flex gap-1 items-center">
+            <FaStar color="#ffaa11" />
+            <div className="">{movie.vote_average?.toFixed(1) || "N/A"}</div>
+            <div className="text-gray-700">|</div>
+            <div>
+              {type === "movie"
+                ? movie.release_date?.split("-")[0] || "N/A"
+                : movie.first_air_date?.split("-")[0] || "N/A"}
+            </div>
           </div>
+
+          {movie.adult ? (
+            <div>
+              <Image src={adultIcon} alt="" className="size-[14px]" />
+            </div>
+          ) : null}
         </div>
       </div>
     </Link>
