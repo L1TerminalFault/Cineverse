@@ -1,6 +1,6 @@
 import { endpoint } from "@/lib/utils"
 
-export const GET = async () => {
+export const GET = async (req) => {
   const { searchParams } = new URL(req.url)
   const movieId = searchParams.get('id')
 

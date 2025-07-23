@@ -1,6 +1,9 @@
 module.exports = {
   theme: {
     extend: {
+      boxShadow: {
+        all: "0 0 20px 5px rgb(0, 0, 0)",
+      },
       animationDelay: {
         400: "400ms",
         600: "600ms",

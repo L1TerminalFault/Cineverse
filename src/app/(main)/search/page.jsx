@@ -117,41 +117,41 @@ export default function () {
     if (loaderRef.current) observer.observe(loaderRef.current);
   }, [loaderRef, page, totalPages]);
 
-useEffect(() => {
-  let timeoutId;
+  useEffect(() => {
+    let timeoutId;
 
-  if (showLanguageOptions) {
-    // Defer adding the listener to avoid catching the opening click
-    timeoutId = setTimeout(() => {
-      const handleClickOutside = (event) => {
-        if (
-          languageRef.current &&
-          !languageRef.current.contains(event.target)
-        ) {
-          setShowLanguageOptions(false);
-        }
-      };
+    if (showLanguageOptions) {
+      // Defer adding the listener to avoid catching the opening click
+      timeoutId = setTimeout(() => {
+        const handleClickOutside = (event) => {
+          if (
+            languageRef.current &&
+            !languageRef.current.contains(event.target)
+          ) {
+            setShowLanguageOptions(false);
+          }
+        };
 
-      window.addEventListener('click', handleClickOutside);
+        window.addEventListener("click", handleClickOutside);
 
-      // Cleanup
-      const cleanup = () => {
-        window.removeEventListener('click', handleClickOutside);
-      };
+        // Cleanup
+        const cleanup = () => {
+          window.removeEventListener("click", handleClickOutside);
+        };
 
-      // Attach cleanup on unmount or hide
-      effectCleanupRef.current = cleanup;
-    }, 0);
-  }
-
-  return () => {
-    clearTimeout(timeoutId);
-    if (effectCleanupRef.current) {
-      effectCleanupRef.current();
-      effectCleanupRef.current = null;
+        // Attach cleanup on unmount or hide
+        effectCleanupRef.current = cleanup;
+      }, 0);
     }
-  };
-}, [showLanguageOptions]);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (effectCleanupRef.current) {
+        effectCleanupRef.current();
+        effectCleanupRef.current = null;
+      }
+    };
+  }, [showLanguageOptions]);
 
   const effectCleanupRef = useRef(null);
 
@@ -201,20 +201,19 @@ useEffect(() => {
                 <div
                   onClick={() => {
                     setShowLanguageOptions(true);
-                   // setTimeout(700, () => {
-// window.addEventListener("click", (event) => {
+                    // setTimeout(700, () => {
+                    // window.addEventListener("click", (event) => {
                     //    console.log("something happened");
-                     // if (
-                      //  languageRef.current &&
-                      //  !languageRef.current.contains(event.target)
+                    // if (
+                    //  languageRef.current &&
+                    //  !languageRef.current.contains(event.target)
                     //  ) {
-                     //   setShowLanguageOptions(false);
+                    //   setShowLanguageOptions(false);
                     //  }
-                  //  });
+                    //  });
 
-                   // })
-
-                                      }}
+                    // })
+                  }}
                   className="hover:bg-gray-900 relative h-full group w-full transition-all p-2 px-4 rounded-r-full "
                 >
                   <TbFilter size={18} />

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { FiSearch as SearchIcon } from "react-icons/fi";
 import { IoPersonSharp as PersonIcon } from "react-icons/io5";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
@@ -16,10 +17,20 @@ import icon from "@/../public/movie-icon.png";
 import aiIcon from "@/../public/ai.png";
 
 export default function ({ page, setPage, submitSearch, value }) {
+  const router = useRouter();
   const [topBarExpand, setTopBarExpand] = useState(true);
   const [showSearch, setShowSearch] = useState(setPage ? false : true);
   const [searchTerm, setSearchTerm] = useState(value || "");
   const inputRef = useRef(null);
+
+  const submit = (formData) => {
+    const term = formData.get("search");
+    router.push(
+      `/search?term=${encodeURIComponent(term)}&type=movies`, //${type.includes("TV") ? "tv" : "movies"}`,
+    );
+  };
+
+  const submitSearchFunction = submitSearch || submit;
 
   return (
     <div className="fixed z-40 w-full top-0 p-3">
@@ -42,14 +53,15 @@ export default function ({ page, setPage, submitSearch, value }) {
         <input type="checkbox" id="toggle" className="peer hidden" />
 
         <div
-          className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} duration-500 transition-all rounded-[20px] mpl-[47px] bg-[#35374f80] px-2 py-[6px] justify-between`}
+          className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} shadow-all shadow-[#000000dd] duration-500 transition-all rounded-[20px] mpl-[47px] bg-[#35374f80] px-2 py-[6px] justify-between`}
         >
           <div className="flex items-center gap-[7px]">
             <Link
               href={"/home"}
               className="flex gap-2 p-1 pl-9 px-4 transition-all bg-[#22232c]m hover:bg-[#32333c77] rounded-full items-center"
             >
-              {/**<Image src={icon} alt="" width={20} height={20} />*/}              <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br bg-gray-100 font-bold">
+              {/**<Image src={icon} alt="" width={20} height={20} />*/}{" "}
+              <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br bg-gray-100 font-bold">
                 CINEVERSE
               </div>
               <div className="rounded-full -translate-x-1 bg-orange-400 p-1" />
@@ -70,7 +82,7 @@ export default function ({ page, setPage, submitSearch, value }) {
             <div
               className={`${showSearch ? "opacity-100 max-w-52" : "max-w-0 opacity-0"} flex w-full h-full overflow-hidden transition-all duration-500`}
             >
-              <form action={submitSearch}>
+              <form action={submitSearchFunction}>
                 <input
                   ref={inputRef}
                   type="text"
@@ -105,11 +117,7 @@ export default function ({ page, setPage, submitSearch, value }) {
 
           <div className="gap-[6px] items-center flex rounded-full">
             <div className="p-[6px] rounded-full bg-[#22232c] hover:bg-[#32333c] transition-all">
-              <Image 
-                src={aiIcon}
-                className="size-[22px]"
-                alt=""
-              />
+              <Image src={aiIcon} className="size-[22px]" alt="" />
             </div>
 
             <div className="flex items-center gap-2 bg-[#22232c] pl-3 p-[5px] rounded-full hover:bg-[#32333c] transition-all">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import TopBar from "@/app/components/TopBar";
 import MovieListItem from "@/app/components/MovieListItem";
@@ -10,6 +11,8 @@ import MovieItemLoader from "@/app/components/MovieItemLoader";
 const movieIds = [];
 
 export default function () {
+  const router = useRouter();
+  const [term, setTerm] = useState("");
   const [fetchedData, setFetchedData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -104,7 +107,7 @@ export default function () {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <TopBar setPage={null} />
+      <TopBar setPage={null} submitSearch={submitSearch} />
 
       <div className="relative 2xl:w-4/5 w-full flex items-center justify-center z-0">
         <div className="p-3 pt-16 w-full flex justify-center flex-col">
