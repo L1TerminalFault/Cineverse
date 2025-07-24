@@ -53,7 +53,7 @@ export default function ({ page, setPage, submitSearch, value }) {
         <input type="checkbox" id="toggle" className="peer hidden" />
 
         <div
-          className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} shadow-all shadow-[#000000dd] duration-500 transition-all rounded-[20px] mpl-[47px] bg-[#35374f80] px-2 py-[6px] justify-between`}
+          className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} shadow-all shadow-[#000000dd] duration-500 transition-all rounded-[20px] mpl-[47px] bg-[#35374f55] px-2 py-[6px] justify-between`}
         >
           <div className="flex items-center gap-[7px]">
             <Link
