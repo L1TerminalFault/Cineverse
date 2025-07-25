@@ -10,6 +10,13 @@ export const endpoint = (url) => {
     : `https://api.themoviedb.org/3${url}?api_key=${API_KEY}`;
 };
 
+export const formatRuntime = (runtime) => {
+  if (!runtime) return "N/A";
+  const hours = Math.floor(runtime / 60);
+  const minutes = runtime % 60;
+  return `${hours}h ${minutes}m`;
+}
+
 export const genres = {
   28: "Action",
   12: "Adventure",

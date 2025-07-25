@@ -164,14 +164,15 @@ export const Carousel = ({ type, title, url = null }) => {
   );
 };
 
-export const Tray = ({ type, title, url = null }) => {
+export const Tray = ({ type, title, url = null, forceLoading = false }) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
-  const fetchNowPlayingMovies = async () => {
+  const fetchNowPlayingMovies = async (forceLoading) => {
+    if (forceLoading) return;
     setLoading(true);
     const endpoint = url
       ? url
@@ -196,7 +197,7 @@ export const Tray = ({ type, title, url = null }) => {
   };
 
   useEffect(() => {
-    fetchNowPlayingMovies();
+    fetchNowPlayingMovies(forceLoading);
   }, [type, url]);
 
   return (
