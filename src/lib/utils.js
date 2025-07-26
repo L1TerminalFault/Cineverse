@@ -15,7 +15,22 @@ export const formatRuntime = (runtime) => {
   const hours = Math.floor(runtime / 60);
   const minutes = runtime % 60;
   return `${hours}h ${minutes}m`;
-}
+};
+
+export const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 export const genres = {
   28: "Action",

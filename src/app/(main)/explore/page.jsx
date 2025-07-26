@@ -23,7 +23,6 @@ export default function () {
   const [endOfData, setEndOfData] = useState(false);
 
   const searchParams = useSearchParams();
-  const type = searchParams.get("type");
   const title = searchParams.get("title");
 
   const url = searchParams.get("url")
@@ -45,6 +44,8 @@ export default function () {
                   : type === "onAirTodayTVShows"
                     ? "/api/getOnAirTodayTV"
                     : "";
+
+  const type = searchParams.get("type") || url.includes("TV") ? "tv" : "movie";
 
   const fetchData = async () => {
     if (totalPages && page > totalPages) {
@@ -107,7 +108,7 @@ export default function () {
 
   return (
     <div className="w-full flex items-center justify-center">
-      <TopBar setPage={null} submitSearch={submitSearch} />
+      <TopBar setPage={null} />
 
       <div className="relative 2xl:w-4/5 w-full flex items-center justify-center z-0">
         <div className="p-3 pt-16 w-full flex justify-center flex-col">

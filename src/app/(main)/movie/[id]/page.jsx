@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   FaPlay,
@@ -11,14 +12,14 @@ import {
   FaQuestion,
 } from "react-icons/fa6";
 import { LuCalendarPlus } from "react-icons/lu";
-import { FaFilm, FaHourglassHalf } from "react-icons/fa6";
+import { FaFilm, FaHourglassHalf, FaStar } from "react-icons/fa6";
 import { MdMovieEdit } from "react-icons/md";
-import { HiDownload } from "react-icons/hi";
+import { LiaDownloadSolid } from "react-icons/lia";
 import { PiDotsThreeBold } from "react-icons/pi";
 
 import fireIcon from "@/../public/fire-icon.png";
 import TopBar from "@/app/components/TopBar";
-import { imagePath, formatRuntime } from "@/lib/utils";
+import { imagePath, formatRuntime, monthNames } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
 
 export default function () {
@@ -95,40 +96,47 @@ export default function () {
               </div>
 
               <div className="flex flex-col relative z-20 gap-4 w-2/3 px-6 p-4 rounded-3xl">
-                <div className="absolute inset-0 -z-10 blur-3xl rounded-3xl bg-gradient-to-tr from-black via-black/70 to-transparent "></div>
+                <div className="absolute inset-0 -z-10 blur-3xl rounded-3xl bg-gradient-to-tr -translate-x-16 translate-y-16 from-black via-black/80 to-transparent "></div>
                 <div className="flex gap-2 mb-1">
                   {movieDetail.genres.map((genre) => (
-                    <div
-                      className="p-1 px-5 text-lg bg-white/5 rounded-full text-nowrap backdrop-blur transition-all cursor-default"
+                    <Link
+                      href={`/explore?url=${encodeURIComponent(`/api/discoverMovies?with_genres=${genre.id}`)}&title=${`Discover%20Movie%20-%20${genre.name}`}`}
+                      className="p-1 px-5 text-lg bg-white/5 hover:bg-[#ffffff17] rounded-full text-nowrap backdrop-blur transition-all cursor-default"
                       key={genre.id}
                     >
                       {genre.name}
-                    </div>
+                    </Link>
                   ))}
                 </div>
                 <div className="text-4xl font-semibold max-w-screen-sm">
                   {movieDetail.title}
                 </div>
-                  <div className="flex gap-2 items-center">
-                    <div>
-                      
+                <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-3 text-sm text-gray-200">
+<div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
+                      <FaStar color="black" />
                     </div>
-                    <div>
-                      
-                    </div>
-                    <div>
-                      
-                    </div>
+                    <div>{movieDetail.vote_average.toFixed(1)}</div>
+
                   </div>
+
+                  <div className="flex items-center gap-3 text-sm text-gray-200">
+                  </div>
+
+                  <div className="flex items-center gap-3 text-sm text-gray-200">
+                    <div className="flex p-1 px-3 bg-[#7fcfa0] rounded-full items-center">
+                      <FaHourglassHalf color="black" />
+                    </div>
+                    <div>{formatRuntime(movieDetail.runtime)}</div>
+                  </div>
+                </div>
                 {!(movieDetail.original_language === "en") ? (
                   <div className="opacity-90 text-lg">
                     {"Original Title: " + movieDetail.original_title}
                   </div>
                 ) : null}
                 {movieDetail.tagline.length ? (
-                  <div className="text-xl opacity-90">
-                    {"#" + movieDetail.tagline}
-                  </div>
+                  <div className="opacity-60">{"#" + movieDetail.tagline}</div>
                 ) : null}
 
                 <div className="opacity-90 max-h-24 max-w-[75%] overflow-scroll scrollbar-hidden">
@@ -150,26 +158,41 @@ export default function () {
                   ) : (
                     <FaQuestion color="#e5e7eb" size={17} />
                   )}
-                  <div>{movieDetail.status}</div>
+                  <div>
+                    {movieDetail.status +
+                      " - " +
+                      `${
+                        movieDetail.status === "Released"
+                          ? monthNames[
+                              parseInt(movieDetail.release_date.split("-")[1])
+                            ] +
+                            " " +
+                            movieDetail.release_date.split("-")[0]
+                          : null
+                      }`}
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className=" bg-white backdrop-blur-md p-2 px-4 rounded-full text-lg text-black font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/90 transition-all">
+                  <div className=" bg-white backdrop-blur-md p-3 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all">
                     <div>
                       <FaPlay className="" />
                     </div>
                     <div>Watch Trailer</div>
                   </div>
 
-                  <div className="bg-black/25 backdrop-blur-md p-2 px-4 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                  <div className="bg-black/40 backdrop-blur-md p-3 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
                     <div>
-                      <HiDownload className="size-[23px]" />
+                      <LiaDownloadSolid
+                        className="size-[21px]"
+                        strokeWidth={0.1}
+                      />
                     </div>
                     <div>Download</div>
                   </div>
 
-                  <div className="bg-black/25 backdrop-blur-md p-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
-                    <PiDotsThreeBold className="size-[22px]" />
+                  <div className="bg-black/40 backdrop-blur-md p-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                    <PiDotsThreeBold className="size-[21px]" />
                   </div>
                 </div>
               </div>

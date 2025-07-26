@@ -53,16 +53,15 @@ export default function ({ movie, type, extendOnHover = true }) {
                 {type === "movie" ? movie.title : movie.name}
               </div>
               <div className="max-h-0 max-w-0 items-center gap-2 overflow-scroll scrollbar-hidden duration-700 transition-all flex group-hover:mt-1 group-hover:mb-2 group-hover:max-h-10 group-hover:max-w-64 md:group-hover:max-w-96">
-                {movie.genre_ids
-                  .map((genre_id) => genres[genre_id])
-                  .map((genre) => (
-                    <div
-                      key={Math.random()}
-                      className="p-1 px-3 text-nowrap bg-[#00000030] backdrop-blur-sm sm:text-xs text-sm rounded-full "
-                    >
-                      {genre}
-                    </div>
-                  ))}
+                {movie.genre_ids.map((genre_id) => (
+                  <Link
+                    href={`/explore?url=${encodeURIComponent(`/api/discover${type === "movie" ? "Movies" : "TV"}?with_genres=${genre_id}`)}&title=${`Discover%20${type === "movie" ? "Movie" : "TV"}%20-%20${genres[genre_id]}`}`}
+                    key={Math.random()}
+                    className="p-1 px-3 text-nowrap bg-[#00000030] hover:bg-transparent transition-all backdrop-blur-sm sm:text-xs text-sm rounded-full "
+                  >
+                    {genres[genre_id] || "N/A"}
+                  </Link>
+                ))}
               </div>
 
               <div
