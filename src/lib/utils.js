@@ -17,6 +17,25 @@ export const formatRuntime = (runtime) => {
   return `${hours}h ${minutes}m`;
 };
 
+export const formatMoney = (value) => {
+  if (!value || isNaN(value)) return '$0';
+
+  const absValue = Math.abs(value);
+  let formatted;
+
+  if (absValue >= 1_000_000_000) {
+    formatted = `$${(value / 1_000_000_000).toFixed(1)}B`;
+  } else if (absValue >= 1_000_000) {
+    formatted = `$${(value / 1_000_000).toFixed(1)}M`;
+  } else if (absValue >= 1_000) {
+    formatted = `$${(value / 1_000).toFixed(1)}K`;
+  } else {
+    formatted = `$${Math.round(value)}`;
+  }
+
+  return formatted.replace('.0', '');
+}
+
 export const monthNames = [
   "Jan",
   "Feb",

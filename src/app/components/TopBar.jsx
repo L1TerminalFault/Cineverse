@@ -96,7 +96,7 @@ export default function ({ page, setPage, submitSearch, value }) {
             </div>
             {setPage ? (
               <div
-                className={`${showSearch ? "opacity-0 max-w-0" : "opacity-65 max-w-52"} flex duration-500 text-xs/3 p-1 items-center gap-1 transition-all rounded-full`}
+                className={`${showSearch ? "opacity-0 max-w-0" : "opacity-65 max-w-52"} flex duration-500 text-xs/3 p-1 items-center gap-3 transition-all rounded-full`}
               >
                 {" "}
                 <div

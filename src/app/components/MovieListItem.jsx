@@ -16,7 +16,7 @@ export default function ({ movie, type, extendOnHover = true }) {
       href={`${type === "movie" ? `/movie/${movie.id}` : `/tv/${movie.id}`}`}
       className={`flex flex-col group rounded-3xl h-max w-[145px] duration-500 transition-all  ${extendOnHover ? "hover:w-[386px]" : ""}`}
     >
-      <div className="flex relative rounded-3xl overflow-hidden items-center justify-center z-50 h-[217.5px]">
+      <div className="flex relative rounded-3xl overflow-hidden items-center justify-center z-30 h-[217.5px]">
         <Image
           src={
             movie.poster_path ? imagePath(movie.poster_path, "w780") : noMovie

@@ -16,16 +16,20 @@ import { FaFilm, FaHourglassHalf, FaStar } from "react-icons/fa6";
 import { MdMovieEdit } from "react-icons/md";
 import { LiaDownloadSolid } from "react-icons/lia";
 import { PiDotsThreeBold } from "react-icons/pi";
+import { FaSackDollar } from "react-icons/fa6";
+import { BiSolidDollarCircle } from "react-icons/bi";
 
 import fireIcon from "@/../public/fire-icon.png";
 import TopBar from "@/app/components/TopBar";
-import { imagePath, formatRuntime, monthNames } from "@/lib/utils";
+import { imagePath, formatRuntime, monthNames, formatMoney } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
+import TrailerBox from "@/app/components/TrailerBox";
 
 export default function () {
   const [movieDetail, setMovieDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [trailerBox, setTrailerBox] = useState(false)
 
   const params = useParams();
   const { id } = params;
@@ -85,7 +89,9 @@ export default function () {
               </div>
             </div>
           ) : error ? null : (
-            <div className="flex flex-col w-full px-6 pt-24 justify-between items-start z-10 flex-1 2xl:w-4/5">
+            <div className="flex flex-col z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
+                {trailerBox ? <TrailerBox movieId={id} trailerBox={trailerBox} setTrailerBox={setTrailerBox}  /> : null}
+
               <div>
                 {movieDetail.popularity > 1000 ? (
                   <div className="flex gap-3 items-center p-2 px-4 ml-6 rounded-full bg-black/20 backdrop-blur-md">
@@ -96,7 +102,8 @@ export default function () {
               </div>
 
               <div className="flex flex-col relative z-20 gap-4 w-2/3 px-6 p-4 rounded-3xl">
-                <div className="absolute inset-0 -z-10 blur-3xl rounded-3xl bg-gradient-to-tr -translate-x-16 translate-y-16 from-black via-black/80 to-transparent "></div>
+                <div className="absolute flex p-4 inset-0 -z-10 blur-2xl rounded-2xl bg-gradient-to-r from-black/85 via-black/85 to-transparent ">
+                </div>
                 <div className="flex gap-2 mb-1">
                   {movieDetail.genres.map((genre) => (
                     <Link
@@ -108,22 +115,39 @@ export default function () {
                     </Link>
                   ))}
                 </div>
-                <div className="text-4xl font-semibold max-w-screen-sm">
+                  <div className="flex flex-row items-center gap-4">
+                 <div className="text-4xl font-semibold max-w-screen-sm">
                   {movieDetail.title}
                 </div>
-                <div className="flex gap-2 items-center">
-                  <div className="flex items-center gap-3 text-sm text-gray-200">
-<div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
+   
+                    <div className="p-2 text-xs bg-white/5 rounded-full backdrop-blur">
+                      {movieDetail.original_language.toUpperCase()}
+                    </div>
+                  </div>
+                                <div className="flex gap-4 items-center">
+                  <div className="flex items-center gap-2 text-sm text-gray-200">
+                    <div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
                       <FaStar color="black" />
                     </div>
                     <div>{movieDetail.vote_average.toFixed(1)}</div>
-
                   </div>
 
-                  <div className="flex items-center gap-3 text-sm text-gray-200">
+                  <div className="flex items-center gap-2 text-sm text-gray-200">
+                    <div className="flex p-1 px-3 bg-[#cc22ff] rounded-full items-center">
+                      <FaSackDollar color="black" />
+                    </div>
+                    <div>{`Revenue ${movieDetail.revenue ? formatMoney(movieDetail.revenue) : "N/A"}`}</div>
                   </div>
 
-                  <div className="flex items-center gap-3 text-sm text-gray-200">
+<div className="flex items-center gap-2 text-sm text-gray-200">
+                    <div className="flex p-[2px] px-[10px] bg-[#ee2255] rounded-full items-center">
+                      <BiSolidDollarCircle color="black" size={18} />
+                    </div>
+                    <div>{`Budget ${movieDetail.budget ? formatMoney(movieDetail.budget) : "N/A"}`}</div>
+                  </div>
+
+
+                  <div className="flex items-center gap-2 text-sm text-gray-200">
                     <div className="flex p-1 px-3 bg-[#7fcfa0] rounded-full items-center">
                       <FaHourglassHalf color="black" />
                     </div>
@@ -139,7 +163,7 @@ export default function () {
                   <div className="opacity-60">{"#" + movieDetail.tagline}</div>
                 ) : null}
 
-                <div className="opacity-90 max-h-24 max-w-[75%] overflow-scroll scrollbar-hidden">
+                <div className="opacity-90 max-h-24 max-w-[500px] w-[75%] overflow-scroll scrollbar-hidden">
                   {movieDetail.overview}
                 </div>
                 <div className="px-1 flex text-sm text-gray-200 items-center gap-2">
@@ -164,7 +188,7 @@ export default function () {
                       `${
                         movieDetail.status === "Released"
                           ? monthNames[
-                              parseInt(movieDetail.release_date.split("-")[1])
+                              parseInt(movieDetail.release_date.split("-")[1]) - 1
                             ] +
                             " " +
                             movieDetail.release_date.split("-")[0]
@@ -174,7 +198,7 @@ export default function () {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div className=" bg-white backdrop-blur-md p-3 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all">
+                  <div onClick={() => setTrailerBox(true)} className="bg-white backdrop-blur-md p-3 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all">
                     <div>
                       <FaPlay className="" />
                     </div>
