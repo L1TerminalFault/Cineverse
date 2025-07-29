@@ -10,6 +10,10 @@ export const endpoint = (url) => {
     : `https://api.themoviedb.org/3${url}?api_key=${API_KEY}`;
 };
 
+export const thepiratebayUrl = (query) => {
+  return `https://apibay.org/q.php?q=${encodeURIComponent(query)}&cat=0&country=all&order_by=seeds&sort=desc`;
+}
+
 export const formatRuntime = (runtime) => {
   if (!runtime) return "N/A";
   const hours = Math.floor(runtime / 60);
