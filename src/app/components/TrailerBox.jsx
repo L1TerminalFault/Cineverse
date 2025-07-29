@@ -1,62 +1,41 @@
 import { useEffect, useState } from "react";
 import { BsChevronLeft } from "react-icons/bs";
 
-export default function ({ movieId, trailerBox, setTrailerBox }) {
+export default function ({ movieDetail, downloadBox, setDownloadBox }) {
   const [trailer, setTrailer] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [torrentClient, setTorrentClient] = useState("yts");
 
-  const fetchTrailerData = async () => {
+  const fetchDownloadData = async () => {
     setLoading(true);
+    setError(null);
     try {
-      const response = await (
-        await fetch(`/api/getMovieInfo?id=${movieId}&type=trailer`)
-      ).json();
-      if (response.ok) {
-        const results = response.response.results;
-        if (results && results.length > 0) {
-          const trailerList = results.filter(
-            (video) =>
-              video.type === "Trailer" &&
-              video.site === "YouTube" &&
-              !(video.name.toLowerCase().includes("vertical")) &&
-              video.official,
-          );
-          const hdTrailer = trailerList.filter((video) => video.size === 1080);
-          const trailer = hdTrailer[0] || trailerList[0] || results[0]
-          // console.log(hdTrailer); 
-
-          if (trailer) {
-            setTrailer(trailer);
-          } else {
-            setError("No trailer found");
-          }
-        } else {
-          setError("No videos available for this movie");
-        }
-      } else throw Error(response.error);
-    } catch (error) {
-      setError(error);
+      const response = await fetch(`/api/download/${movieDetail.id}?client=${torrentClient}`);
+      if (!response.ok) {
+      throw new Error("Failed to fetch download data");
+      }
+      const data = await response.json();
+      setTrailer(data);
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
+      }
 
-  useEffect(() => {
-    fetchTrailerData();
-  }, []);
 
   return (
-  <div onClick={() => setTrailerBox(false)} className={`transition-all fixed z-40 top-0 left-0 h-screen w-screen`}>
+  <div onClick={() => setDownloadBox(false)} className={`transition-all fixed z-40 top-0 left-0 h-screen w-screen`}>
     <div className="flex flex-col z-50 items-center justify-center w-full h-full backdrop-blur-md bg-black/50">
       <div className="flex flex-col h-full w-full items-center justify-center">
-          <div className="flex flex-col items-center justify-center max-w-[1700px] w-full p-6">
+          <div className="flex flex-col items-center justify-center max-h-[100px] w-full p-6">
           <div className="flex w-full justify-end p-5">
               <BsChevronLeft size={35} />
             </div>
 
         {loading ? (
-          <div className="aspect-video appear flex transition-all items-center overflow-hidden justify-center rounded-[30px] w-full h-full bg-black">
+          <div className=" appear flex transition-all items-center overflow-hidden justify-center rounded-[30px] w-full h-full bg-black">
             <div className="bg-gray-100 rounded-full p-1 bg-gradient-to-br from-white to-white via-gray-900 animate-spin">
               <div className="bg-black rounded-full p-5">
                 
@@ -64,13 +43,21 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
             </div>
           </div>
         ) : error ? null : (
-            <iframe
-              className="bg-black w-full h-full aspect-video rounded-[30px]"
-              src={`https://www.youtube.com/embed/${trailer.key}?autoplay=0&mute=0&controls=1&modestbranding=1&rel=0&showinfo=1`}
-              title={trailer.name}
-              allowFullScreen
-            ></iframe>
-        )}
+        <div>
+          <div className="flex flex-col items-center justify-center w-full">
+            <h2 className="text-white text-2xl mb-4">Download Options</h2>
+            <div className="flex flex-col space-y-4">
+              {trailer.map((item, index) => (
+                <div key={index} className="bg-gray-800 p-4 rounded-lg w-full">
+                  <h3 className="text-white text-lg">{item.quality}</h3>
+                  <p className="text-gray-400">{item.size}</p>
+                  <a href={item.link} className="text-blue-400 hover:underline">Download</a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+                    )}
           </div>
       </div>
     </div>

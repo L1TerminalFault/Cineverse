@@ -18,18 +18,24 @@ import { LiaDownloadSolid } from "react-icons/lia";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { FaSackDollar } from "react-icons/fa6";
 import { BiSolidDollarCircle } from "react-icons/bi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 import fireIcon from "@/../public/fire-icon.png";
 import TopBar from "@/app/components/TopBar";
 import { imagePath, formatRuntime, monthNames, formatMoney } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
 import TrailerBox from "@/app/components/TrailerBox";
+import DownloadBox from "@/app/components/DownloadBox";
 
 export default function () {
   const [movieDetail, setMovieDetail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [trailerBox, setTrailerBox] = useState(false)
+  const [trailerBox, setTrailerBox] = useState(false);
+  const [downloadBox, setDownloadBox] = useState(false);
+  const [downloadPending, setDownloadPending] = useState(false);
+  const router = useRouter();
 
   const params = useParams();
   const { id } = params;
@@ -44,6 +50,26 @@ export default function () {
       console.error("Error fetching languages:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const downloadMovie = async () => {
+    setDownloadPending(true);
+    try {
+      const response = await fetch(
+        `https://yts.mx/api/v2/list_movies.json?query_term=${movieDetail.imdb_id}`,
+      );
+      const data = await response.json();
+      if (data.status === "ok" && data.data.movie_count) {
+        const downloadUrl = data.data.movies[0].torrents[0].url;
+        router.push(downloadUrl);
+      } else {
+        setDownloadBox(true);
+      }
+    } catch (error) {
+      console.error("Error downloading movie:", error);
+    } finally {
+      setDownloadPending(false);
     }
   };
 
@@ -90,7 +116,20 @@ export default function () {
             </div>
           ) : error ? null : (
             <div className="flex flex-col z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
-                {trailerBox ? <TrailerBox movieId={id} trailerBox={trailerBox} setTrailerBox={setTrailerBox}  /> : null}
+              {trailerBox ? (
+                <TrailerBox
+                  movieId={id}
+                  trailerBox={trailerBox}
+                  setTrailerBox={setTrailerBox}
+                />
+              ) : null}
+                {downloadBox ? (
+                <DownloadBox
+                    downloadBox={downloadBox}
+                  setDownloadBox={setDownloadBox}
+                  movieDetail={movieDetail}
+                  />
+                ) : null}
 
               <div>
                 {movieDetail.popularity > 1000 ? (
@@ -102,8 +141,7 @@ export default function () {
               </div>
 
               <div className="flex flex-col relative z-20 gap-4 w-2/3 px-6 p-4 rounded-3xl">
-                <div className="absolute flex p-4 inset-0 -z-10 blur-2xl rounded-2xl bg-gradient-to-r from-black/85 via-black/85 to-transparent ">
-                </div>
+                <div className="absolute flex p-4 inset-0 -z-10 blur-2xl rounded-2xl bg-gradient-to-r from-black/85 via-black/85 to-transparent "></div>
                 <div className="flex gap-2 mb-1">
                   {movieDetail.genres.map((genre) => (
                     <Link
@@ -115,57 +153,68 @@ export default function () {
                     </Link>
                   ))}
                 </div>
-                  <div className="flex flex-row items-center gap-4">
-                 <div className="text-4xl font-semibold max-w-screen-sm">
-                  {movieDetail.title}
-                </div>
-   
-                    <div className="p-2 text-xs bg-white/5 rounded-full backdrop-blur">
+                <div className="flex flex-row items-center gap-1">
+                  <div className="text-4xl flex items-center font-semibold max-w-screen-sm">
+                    {movieDetail.title}
+
+                    <div className="p-[6px] text-xs text-white bg-black/40 rounded-full backdrop-blur-2xl">
                       {movieDetail.original_language.toUpperCase()}
                     </div>
                   </div>
-                                <div className="flex gap-4 items-center">
-                  <div className="flex items-center gap-2 text-sm text-gray-200">
-                    <div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
-                      <FaStar color="black" />
-                    </div>
-                    <div>{movieDetail.vote_average.toFixed(1)}</div>
-                  </div>
-
-                  <div className="flex items-center gap-2 text-sm text-gray-200">
-                    <div className="flex p-1 px-3 bg-[#cc22ff] rounded-full items-center">
-                      <FaSackDollar color="black" />
-                    </div>
-                    <div>{`Revenue ${movieDetail.revenue ? formatMoney(movieDetail.revenue) : "N/A"}`}</div>
-                  </div>
-
-<div className="flex items-center gap-2 text-sm text-gray-200">
-                    <div className="flex p-[2px] px-[10px] bg-[#ee2255] rounded-full items-center">
-                      <BiSolidDollarCircle color="black" size={18} />
-                    </div>
-                    <div>{`Budget ${movieDetail.budget ? formatMoney(movieDetail.budget) : "N/A"}`}</div>
-                  </div>
-
-
-                  <div className="flex items-center gap-2 text-sm text-gray-200">
-                    <div className="flex p-1 px-3 bg-[#7fcfa0] rounded-full items-center">
-                      <FaHourglassHalf color="black" />
-                    </div>
-                    <div>{formatRuntime(movieDetail.runtime)}</div>
-                  </div>
                 </div>
-                {!(movieDetail.original_language === "en") ? (
-                  <div className="opacity-90 text-lg">
-                    {"Original Title: " + movieDetail.original_title}
-                  </div>
-                ) : null}
+
                 {movieDetail.tagline.length ? (
                   <div className="opacity-60">{"#" + movieDetail.tagline}</div>
                 ) : null}
 
+                {!(movieDetail.original_language === "en") ? (
+                  <div className="opacity-70 text-lg">
+                    {"Original Title: " + movieDetail.original_title}
+                  </div>
+                ) : null}
+
+                <div className="flex gap-4 items-center">
+                  <div className="flex items-center gap-2 text-sm text-gray-200">
+                    <div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
+                      <FaStar color="black" />
+                    </div>
+                    <div>
+                      {movieDetail.vote_average.toFixed(1) || "Not Rated"}
+                    </div>
+                  </div>
+
+                  {movieDetail.revenue ? (
+                    <div className="flex items-center gap-2 text-sm text-gray-200">
+                      <div className="flex p-1 px-3 bg-[#cc22ff] rounded-full items-center">
+                        <FaSackDollar color="black" />
+                      </div>
+                      <div>{`Revenue ${formatMoney(movieDetail.revenue)}`}</div>
+                    </div>
+                  ) : null}
+
+                  {movieDetail.budget ? (
+                    <div className="flex items-center gap-2 text-sm text-gray-200">
+                      <div className="flex p-[2px] px-[10px] bg-[#ee2255] rounded-full items-center">
+                        <BiSolidDollarCircle color="black" size={18} />
+                      </div>
+                      <div>{`Budget ${formatMoney(movieDetail.budget)}`}</div>
+                    </div>
+                  ) : null}
+
+                  {movieDetail.runtime ? (
+                    <div className="flex items-center gap-2 text-sm text-gray-200">
+                      <div className="flex p-1 px-3 bg-[#7fcfa0] rounded-full items-center">
+                        <FaHourglassHalf color="black" />
+                      </div>
+                      <div>{formatRuntime(movieDetail.runtime)}</div>
+                    </div>
+                  ) : null}
+                </div>
+
                 <div className="opacity-90 max-h-24 max-w-[500px] w-[75%] overflow-scroll scrollbar-hidden">
                   {movieDetail.overview}
                 </div>
+
                 <div className="px-1 flex text-sm text-gray-200 items-center gap-2">
                   {movieDetail.status === "Released" ? (
                     <FaCheck color="lime" size={17} />
@@ -188,7 +237,8 @@ export default function () {
                       `${
                         movieDetail.status === "Released"
                           ? monthNames[
-                              parseInt(movieDetail.release_date.split("-")[1]) - 1
+                              parseInt(movieDetail.release_date.split("-")[1]) -
+                                1
                             ] +
                             " " +
                             movieDetail.release_date.split("-")[0]
@@ -198,24 +248,36 @@ export default function () {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <div onClick={() => setTrailerBox(true)} className="bg-white backdrop-blur-md p-3 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all">
+                  <div
+                    onClick={() => setTrailerBox(true)}
+                    className="bg-white backdrop-blur-md p-3 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all"
+                  >
                     <div>
                       <FaPlay className="" />
                     </div>
                     <div>Watch Trailer</div>
                   </div>
 
-                  <div className="bg-black/40 backdrop-blur-md p-3 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                  <div
+                    onClick={downloadMovie}
+                    className="bg-black/40 backdrop-blur-md p-3 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
+                  >
                     <div>
-                      <LiaDownloadSolid
-                        className="size-[21px]"
-                        strokeWidth={0.1}
-                      />
+                      {downloadPending ? (
+                        <div className="animate-spin">
+                          <AiOutlineLoading3Quarters size={21} />
+                        </div>
+                      ) : (
+                        <LiaDownloadSolid
+                          className="size-[21px]"
+                          strokeWidth={0.1}
+                        />
+                      )}
                     </div>
                     <div>Download</div>
                   </div>
 
-                  <div className="bg-black/40 backdrop-blur-md p-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                  <div onClick={() => setDownloadBox(true)} className="bg-black/40 backdrop-blur-md p-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
                     <PiDotsThreeBold className="size-[21px]" />
                   </div>
                 </div>
