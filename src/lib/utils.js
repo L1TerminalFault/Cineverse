@@ -12,7 +12,11 @@ export const endpoint = (url) => {
 
 export const thepiratebayUrl = (query) => {
   return `https://apibay.org/q.php?q=${encodeURIComponent(query)}&cat=0&country=all&order_by=seeds&sort=desc`;
-}
+};
+
+export const ytThumbnail = (videoId) => {
+  return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+};
 
 export const formatRuntime = (runtime) => {
   if (!runtime) return "N/A";
@@ -22,7 +26,7 @@ export const formatRuntime = (runtime) => {
 };
 
 export const formatMoney = (value) => {
-  if (!value || isNaN(value)) return '$0';
+  if (!value || isNaN(value)) return "$0";
 
   const absValue = Math.abs(value);
   let formatted;
@@ -37,8 +41,8 @@ export const formatMoney = (value) => {
     formatted = `$${Math.round(value)}`;
   }
 
-  return formatted.replace('.0', '');
-}
+  return formatted.replace(".0", "");
+};
 
 export const monthNames = [
   "Jan",
