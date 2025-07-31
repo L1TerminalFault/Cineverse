@@ -103,8 +103,13 @@ export default function () {
                   ))}
                 </div>
 
-                <div className="h-10 rounded-full bg-white/5 w-40 animate-pulse backdrop-blur-md"></div>
-                <div className="w-96 h-32 bg-white/5 animate-pulse rounded-3xl backdrop-blur-md"></div>
+                <div className=" rounded-full bg-white/5 w-40 animate-pulse backdrop-blur-md"></div>
+                <div className="w-96 flex flex-col gap-2 p-6 bg-[#ffffff05] animate-pulse rounded-3xl backdrop-blur-md">
+                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-4/6"></div>
+                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-1/2"></div>
+                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-1/3"></div>
+                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-4/6"></div>
+                </div>
                 <div></div>
 
                 <div className="flex items-center gap-2">
@@ -115,7 +120,7 @@ export default function () {
               </div>
             </div>
           ) : error ? null : (
-            <div className="flex flex-col z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
+            <div className="flex flex-col gap-5 z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
               {trailerBox ? (
                 <TrailerBox
                   movieId={id}
@@ -133,14 +138,14 @@ export default function () {
 
               <div>
                 {movieDetail.popularity > 500 ? (
-                  <div className="flex gap-3 items-center p-2 px-4 ml-6 rounded-full bg-black/20 backdrop-blur-md">
+                  <div className="flex gap-[14px] items-center p-2 px-4 ml-6 rounded-full bg-black/40 backdrop-blur-xl">
                     <Image src={fireIcon} className="w-4" alt="" />{" "}
                     <div className="text-nowrap">Now Popular</div>
                   </div>
                 ) : null}
               </div>
 
-              <div className="flex flex-col relative z-20 gap-4 w-2/3 px-6 p-4 rounded-3xl">
+              <div className="flex flex-col relative z-20 gap-[9px] w-2/3 px-6 p-4 rounded-3xl">
                 <div className="absolute flex p-4 inset-0 -z-10 blur-2xl rounded-2xl bg-gradient-to-r from-black/85 via-black/85 to-transparent "></div>
                 <div className="flex gap-2 mb-1 flex-wrap max-w-[600px]">
                   {movieDetail.genres.map((genre) => (
@@ -154,7 +159,7 @@ export default function () {
                   ))}
                 </div>
                 <div className="flex items-baseline gap-1">
-                  <div className="text-4xl gap-2 flex items-center font-semibold max-w-screen-sm">
+                  <div className="text-3xl gap-2 flex items-center font-semibold max-w-[500px]">
                     <div>{movieDetail.title}</div>
 
                     <div className="p-1 text-xs text-black bg-white/80 rounded-full backdrop-blur-2xl">
@@ -211,7 +216,7 @@ export default function () {
                   ) : null}
                 </div>
 
-                <div className="opacity-90 text-sm max-h-16 max-w-[500px] w-[75%] overflow-auto scrollbar-hidden">
+                <div className="opacity-85 text-sm max-h-16 max-w-[500px] w-[75%] overflow-auto scrollbar-hidden">
                   {movieDetail.overview}
                 </div>
 

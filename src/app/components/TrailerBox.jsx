@@ -81,8 +81,8 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
     >
       <div className="flex flex-col z-50 items-center justify-center w-full h-full backdrop-blur-md bg-black/50">
         <div className="flex h-full w-full gap-2 items-center justify-center">
-          <div className="flex flex-col items-center justify-center max-w-[1700px] w-full p-6">
-            <div className="flex w-full justify-between p-3 pt-0">
+          <div className="flex flex-col items-center justify-center max-w-[1700px] w-full p-6 lg:p-16 pt-0">
+            <div className="flex w-full justify-between p-4 pt-0">
               <div
                 onClick={(e) => {
                   e.stopPropagation();
@@ -103,12 +103,12 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
                 </div>
               </div>
             ) : error ? null : (
-              <div className="relative flex overflow-y-scroll scrollbar-hidden gap-3 w-full h-full">
+              <div className="relative flex overflow-y-scroll z-10 rounded-[30px] scrollbar-hidden gap-3 w-full h-full">
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
                   }}
-                  className={`absolute max-h-96 max-w-[550px] top-2 left-2 ${expand ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-96"} shadow-black shadow-all transition-all overflow-x-hidden rounded-3xl bg-gray-950/70 scrollbar-hidden backdrop-blur-xl overflow-y-scroll`}
+                  className={`absolute max-h-72 z-20 lg:max-h-96 max-w-[550px] top-2 left-2 ${expand ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-96"} shadow-black shadow-all transition-all overflow-x-hidden rounded-3xl bg-gray-950/70 scrollbar-hidden backdrop-blur-xl overflow-y-scroll`}
                 >
                   <div className=" flex flex-col gap-3 p-[10px] justify-center">
                     {trailerList.map((trailer) => (
