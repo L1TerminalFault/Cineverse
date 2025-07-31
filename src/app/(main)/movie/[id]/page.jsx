@@ -123,16 +123,16 @@ export default function () {
                   setTrailerBox={setTrailerBox}
                 />
               ) : null}
-                {downloadBox ? (
+              {downloadBox ? (
                 <DownloadBox
-                    downloadBox={downloadBox}
+                  downloadBox={downloadBox}
                   setDownloadBox={setDownloadBox}
                   movieDetail={movieDetail}
-                  />
-                ) : null}
+                />
+              ) : null}
 
               <div>
-                {movieDetail.popularity > 1000 ? (
+                {movieDetail.popularity > 500 ? (
                   <div className="flex gap-3 items-center p-2 px-4 ml-6 rounded-full bg-black/20 backdrop-blur-md">
                     <Image src={fireIcon} className="w-4" alt="" />{" "}
                     <div className="text-nowrap">Now Popular</div>
@@ -142,22 +142,22 @@ export default function () {
 
               <div className="flex flex-col relative z-20 gap-4 w-2/3 px-6 p-4 rounded-3xl">
                 <div className="absolute flex p-4 inset-0 -z-10 blur-2xl rounded-2xl bg-gradient-to-r from-black/85 via-black/85 to-transparent "></div>
-                <div className="flex gap-2 mb-1">
+                <div className="flex gap-2 mb-1 flex-wrap max-w-[600px]">
                   {movieDetail.genres.map((genre) => (
                     <Link
                       href={`/explore?url=${encodeURIComponent(`/api/discoverMovies?with_genres=${genre.id}`)}&title=${`Discover%20Movie%20-%20${genre.name}`}`}
-                      className="p-1 px-5 text-lg bg-white/5 hover:bg-[#ffffff17] rounded-full text-nowrap backdrop-blur transition-all cursor-default"
+                      className="p-1 px-4 bg-white/5 hover:bg-[#ffffff17] rounded-full text-nowrap backdrop-blur-xl transition-all cursor-default"
                       key={genre.id}
                     >
                       {genre.name}
                     </Link>
                   ))}
                 </div>
-                <div className="flex flex-row items-center gap-1">
-                  <div className="text-4xl flex items-center font-semibold max-w-screen-sm">
-                    {movieDetail.title}
+                <div className="flex items-baseline gap-1">
+                  <div className="text-4xl gap-2 flex items-center font-semibold max-w-screen-sm">
+                    <div>{movieDetail.title}</div>
 
-                    <div className="p-[6px] text-xs text-white bg-black/40 rounded-full backdrop-blur-2xl">
+                    <div className="p-1 text-xs text-black bg-white/80 rounded-full backdrop-blur-2xl">
                       {movieDetail.original_language.toUpperCase()}
                     </div>
                   </div>
@@ -185,10 +185,10 @@ export default function () {
 
                   {movieDetail.revenue ? (
                     <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <div className="flex p-1 px-3 bg-[#cc22ff] rounded-full items-center">
+                      <div className="flex p-1 px-3 bg-[#70ff90] rounded-full items-center">
                         <FaSackDollar color="black" />
                       </div>
-                      <div>{`Revenue ${formatMoney(movieDetail.revenue)}`}</div>
+                      <div>{`${formatMoney(movieDetail.revenue)}`}</div>
                     </div>
                   ) : null}
 
@@ -197,13 +197,13 @@ export default function () {
                       <div className="flex p-[2px] px-[10px] bg-[#ee2255] rounded-full items-center">
                         <BiSolidDollarCircle color="black" size={18} />
                       </div>
-                      <div>{`Budget ${formatMoney(movieDetail.budget)}`}</div>
+                      <div>{`${formatMoney(movieDetail.budget)}`}</div>
                     </div>
                   ) : null}
 
                   {movieDetail.runtime ? (
                     <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <div className="flex p-1 px-3 bg-[#7fcfa0] rounded-full items-center">
+                      <div className="flex p-1 px-3 bg-[#cc22ff] rounded-full items-center">
                         <FaHourglassHalf color="black" />
                       </div>
                       <div>{formatRuntime(movieDetail.runtime)}</div>
@@ -211,7 +211,7 @@ export default function () {
                   ) : null}
                 </div>
 
-                <div className="opacity-90 max-h-24 max-w-[500px] w-[75%] overflow-scroll scrollbar-hidden">
+                <div className="opacity-90 text-sm max-h-16 max-w-[500px] w-[75%] overflow-auto scrollbar-hidden">
                   {movieDetail.overview}
                 </div>
 
@@ -250,7 +250,7 @@ export default function () {
                 <div className="flex items-center gap-2">
                   <div
                     onClick={() => setTrailerBox(true)}
-                    className="bg-white backdrop-blur-md p-3 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all"
+                    className="bg-white backdrop-blur-md p-2 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all"
                   >
                     <div>
                       <FaPlay className="" />
@@ -260,7 +260,7 @@ export default function () {
 
                   <div
                     onClick={downloadMovie}
-                    className="bg-black/40 backdrop-blur-md p-3 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
+                    className="bg-black/40 backdrop-blur-md p-2 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
                   >
                     <div>
                       {downloadPending ? (
@@ -277,7 +277,10 @@ export default function () {
                     <div>Download</div>
                   </div>
 
-                  <div onClick={() => setDownloadBox(true)} className="bg-black/40 backdrop-blur-md p-3 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                  <div
+                    onClick={() => setDownloadBox(true)}
+                    className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
+                  >
                     <PiDotsThreeBold className="size-[21px]" />
                   </div>
                 </div>

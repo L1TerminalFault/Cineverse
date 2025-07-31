@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
 import noMovie from "@/../public/no-movie.png";
@@ -10,10 +11,15 @@ import adultIcon from "@/../public/18.png";
 export default function ({ movie, type, extendOnHover = true }) {
   const genres = type === "movie" ? movieGenres : tvGenres;
   const [retryImage, setRetryImage] = useState(0);
+  const router = useRouter();
 
   return (
-    <Link
-      href={`${type === "movie" ? `/movie/${movie.id}` : `/tv/${movie.id}`}`}
+    <div
+      onClick={() =>
+        router.push(
+          `${type === "movie" ? `/movie/${movie.id}` : `/tv/${movie.id}`}`,
+        )
+      }
       className={`flex flex-col group rounded-3xl h-max w-[145px] duration-500 transition-all  ${extendOnHover ? "hover:w-[386px]" : ""}`}
     >
       <div className="flex relative rounded-3xl overflow-hidden items-center justify-center z-30 h-[217.5px]">
@@ -55,6 +61,9 @@ export default function ({ movie, type, extendOnHover = true }) {
               <div className="max-h-0 max-w-0 items-center gap-2 overflow-scroll scrollbar-hidden duration-700 transition-all flex group-hover:mt-1 group-hover:mb-2 group-hover:max-h-10 group-hover:max-w-64 md:group-hover:max-w-96">
                 {movie.genre_ids.map((genre_id) => (
                   <Link
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                     href={`/explore?url=${encodeURIComponent(`/api/discover${type === "movie" ? "Movies" : "TV"}?with_genres=${genre_id}`)}&title=${`Discover%20${type === "movie" ? "Movie" : "TV"}%20-%20${genres[genre_id]}`}`}
                     key={Math.random()}
                     className="p-1 px-3 text-nowrap bg-[#00000030] hover:bg-transparent transition-all backdrop-blur-sm sm:text-xs text-sm rounded-full "
@@ -124,6 +133,6 @@ export default function ({ movie, type, extendOnHover = true }) {
           ) : null}
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

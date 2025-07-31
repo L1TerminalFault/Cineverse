@@ -23,8 +23,26 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
       if (response.ok) {
         const results = response.response.results;
         if (results && results.length > 0) {
-          setTrailerList(results);
-          setSelectedTrailer(results[0]);
+          const trailers = results
+            .filter(
+              (video) =>
+                video.type === "Trailer" ||
+                video.type === "Teaser" ||
+                (video.type === "Clip" &&
+                  video.site === "YouTube" &&
+                  !video.name.toLowerCase().includes("vertical") &&
+                  video.official),
+            )
+            .sort((a, b) => {
+              if (a.type === "Trailer" && b.type !== "Trailer") return -1;
+              if (b.type === "Trailer" && a.type !== "Trailer") return 1;
+              if (a.type === "Teaser" && b.type !== "Teaser") return -1;
+              if (b.type === "Teaser" && a.type !== "Teaser") return 1;
+              return 0;
+            });
+
+          setTrailerList(trailers);
+          setSelectedTrailer(trailers[0]);
           // const trailers = results.filter(
           //  (video) =>
           //    video.type === "Trailer" &&
@@ -63,19 +81,19 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
     >
       <div className="flex flex-col z-50 items-center justify-center w-full h-full backdrop-blur-md bg-black/50">
         <div className="flex h-full w-full gap-2 items-center justify-center">
-          <div className="flex flex-col items-center justify-center max-w-[1700px] w-full p-6 pt-24">
-            <div className="flex w-full justify-between p-5">
+          <div className="flex flex-col items-center justify-center max-w-[1700px] w-full p-6">
+            <div className="flex w-full justify-between p-3 pt-0">
               <div
                 onClick={(e) => {
                   e.stopPropagation();
                   setExpand((prev) => !prev);
                 }}
-                className="p-2 rounded-full hover:bg-gray-800/30 transition-all cursor-pointer"
+                className="p-2 rounded-full hover:bg-gray-400/30 transition-all cursor-pointer"
               >
-                {expand ? <HiMiniBars3 size={35} /> : <HiMiniBars2 size={35} />}
+                {expand ? <HiMiniBars3 size={30} /> : <HiMiniBars2 size={30} />}
               </div>
 
-              <BsChevronLeft size={35} />
+              <BsChevronLeft size={30} />
             </div>
 
             {loading ? (
@@ -87,33 +105,41 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
             ) : error ? null : (
               <div className="relative flex overflow-y-scroll scrollbar-hidden gap-3 w-full h-full">
                 <div
-                  className={`absolute top-2 left-2 flex xl:w-auto ${expand ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-96"} transition-all overflow-x-hidden rounded-3xl bg-gray-950/90 scrollbar-hidden backdrop-blur-md overflow-y-scroll flex-col gap-[6px] p-2 justify-center`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className={`absolute max-h-96 max-w-[550px] top-2 left-2 ${expand ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-96"} shadow-black shadow-all transition-all overflow-x-hidden rounded-3xl bg-gray-950/70 scrollbar-hidden backdrop-blur-xl overflow-y-scroll`}
                 >
-                  {trailerList.map((trailer) => (
-                    <div
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setExpand(false);
-                        setSelectedTrailer(trailer);
-                      }}
-                      className={`flex gap-2 items-center p-2 px-4 rounded-full ${selectedTrailer.key === trailer.key ? "bg-gray-800/90" : ""} hover:bg-gray-800/90 transition-all cursor-pointer`}
-                    >
-                      <Image
-                        key={retryCount}
-                        onError={() =>
-                          setRetryCount((prev) => (prev < 3 ? prev + 1 : prev))
-                        }
-                        src={ytThumbnail(trailer.key)}
-                        alt=""
-                        width={64}
-                        height={36}
-                        className="rounded-md"
-                      />
-                      <div className="flex-1 text-white text-sm">
-                        {trailer.name}
+                  <div className=" flex flex-col gap-3 p-[10px] justify-center">
+                    {trailerList.map((trailer) => (
+                      <div
+                        key={trailer.key}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpand(false);
+                          setSelectedTrailer(trailer);
+                        }}
+                        className={`flex gap-2 items-center p-2 px-4 rounded-[20px] ${selectedTrailer.key === trailer.key ? "bg-gray-600/50" : ""} hover:bg-gray-600/50 transition-all cursor-pointer`}
+                      >
+                        <Image
+                          key={retryCount}
+                          onError={() =>
+                            setRetryCount((prev) =>
+                              prev < 3 ? prev + 1 : prev,
+                            )
+                          }
+                          src={ytThumbnail(trailer.key)}
+                          alt=""
+                          width={64}
+                          height={36}
+                          className="rounded-md"
+                        />
+                        <div className="flex-1 text-white text-sm">
+                          {trailer.name}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
                 <div className="flex-1 flex w-full h-full rounded-[30px]">
                   <iframe
