@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsChevronLeft } from "react-icons/bs";
 
-import Test from "./Test";
-
 export default function ({ movieDetail, downloadBox, setDownloadBox }) {
   const [downloadList, setDownloadList] = useState(null);
   const [error, setError] = useState(null);
@@ -25,17 +23,17 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
             <div className="w-full h-[calc(100vh*0.6)] appear flex flex-col p-5 transition-all items-center overflow-hidden rounded-[30px] bg-gray-950/90">
               <div className="flex items-baseline justify-center w-full gap-4">
                 <div className="text-white text-sm p-1 px-4 rounded-xl bg-gray-800">
-                  TPB                    
-                </div>                 
+                  TPB
+                </div>
                 <div className="text-white text-sm p-1 px-4 rounded-xl bg-gray-800">
-                  TPB               
-                </div>                  
+                  TPB
+                </div>
                 <div className="text-white text-sm p-1 px-4 rounded-xl bg-gray-800">
-                  TPB               
-                </div>               
+                  TPB
+                </div>
                 <div className="text-white text-sm p-1 px-4 rounded-xl bg-gray-800">
-                  TPB                  
-                </div>                  
+                  TPB
+                </div>
                 <div className="text-white text-sm p-1 px-4 rounded-xl bg-gray-800">
                   TPB
                 </div>
