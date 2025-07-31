@@ -81,7 +81,7 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
     >
       <div className="flex flex-col z-50 items-center justify-center w-full h-full backdrop-blur-md bg-black/50">
         <div className="flex h-full w-full gap-2 items-center justify-center">
-          <div className="flex flex-col items-center justify-center max-w-[1700px] w-full p-6">
+          <div className="flex flex-col items-center justify-center max-w-[1700px] p-6">
             <div className="flex w-full justify-between p-3 pt-0">
               <div
                 onClick={(e) => {
@@ -141,7 +141,7 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
                     ))}
                   </div>
                 </div>
-                <div className="flex-1 flex w-full h-full rounded-[30px]">
+                <div className="flex-1 flex w-full max-w-[1700px] h-full rounded-[30px]">
                   <iframe
                     className="bg-black flex-1 h-full w-full aspect-video rounded-[30px]"
                     src={`https://www.youtube.com/embed/${selectedTrailer.key}?autoplay=0&mute=0&controls=1&modestbranding=1&rel=0&showinfo=1`}
