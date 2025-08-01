@@ -8,7 +8,7 @@ import { imagePath, genres as movieGenres, tvGenres } from "@/lib/utils";
 import noMovie from "@/../public/no-movie.png";
 import adultIcon from "@/../public/18.png";
 
-export default function ({ movie, type, extendOnHover = true }) {
+export default function ({ movie, type, extendOnHover = true, textShadow }) {
   const genres = type === "movie" ? movieGenres : tvGenres;
   const [retryImage, setRetryImage] = useState(0);
   const router = useRouter();
@@ -112,7 +112,7 @@ export default function ({ movie, type, extendOnHover = true }) {
       >
         <div className="text-xs h-4 text-nowrap overflow-hidden relative">
           {type === "movie" ? movie.title : movie.name}
-          <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div>
+          {textShadow ? <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div> : null}
         </div>
         <div className="flex gap-1 items-center justify-between text-xs/3 text-gray-500">
           <div className="flex gap-1 items-center">

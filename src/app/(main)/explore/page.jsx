@@ -23,6 +23,7 @@ export default function () {
   const [endOfData, setEndOfData] = useState(false);
 
   const searchParams = useSearchParams();
+  const type = searchParams.get("type");
   const title = searchParams.get("title");
 
   const url = searchParams.get("url")
@@ -44,8 +45,6 @@ export default function () {
                   : type === "onAirTodayTVShows"
                     ? "/api/getOnAirTodayTV"
                     : "";
-
-  const type = searchParams.get("type") || url.includes("TV") ? "tv" : "movie";
 
   const fetchData = async () => {
     if (totalPages && page > totalPages) {

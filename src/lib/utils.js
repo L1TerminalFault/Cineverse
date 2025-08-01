@@ -11,8 +11,12 @@ export const endpoint = (url) => {
 };
 
 export const thepiratebayUrl = (query) => {
-  return `https://apibay.org/q.php?q=${encodeURIComponent(query)}&cat=0&country=all&order_by=seeds&sort=desc`;
+  return `https://apibay.org/q.php?q=${encodeURIComponent(query)}`;
 };
+
+export const ytsUrl = (query) => {
+  return `https://yts.mx/api/v2/list_movies.json?query_term=${encodeURIComponent(query)}`;
+  }
 
 export const ytThumbnail = (videoId) => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;

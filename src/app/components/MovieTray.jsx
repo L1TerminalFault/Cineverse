@@ -164,7 +164,13 @@ export const Carousel = ({ type, title, url = null }) => {
   );
 };
 
-export const Tray = ({ type, title, url = null, forceLoading = false }) => {
+export const Tray = ({
+  type,
+  title,
+  url = null,
+  forceLoading = false,
+  textShadow = true,
+}) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -233,7 +239,8 @@ export const Tray = ({ type, title, url = null, forceLoading = false }) => {
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
             <Link
-              href={`/explore?type=${type}&title=${title}`}
+              onClick={(e) => forceLoading && e.preventDefault()}
+              href={`/explore?type=${type}&title=${title}${url ? `&url=${url}` : ""}`}
               className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full "
             >
               <BsChevronRight size={18} />
@@ -265,6 +272,7 @@ export const Tray = ({ type, title, url = null, forceLoading = false }) => {
                     <MovieListItem
                       type={type.includes("TV") ? "tv" : "movie"}
                       movie={movie}
+                      textShadow={textShadow}
                     />
                   </div>
                 );

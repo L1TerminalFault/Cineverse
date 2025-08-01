@@ -26,7 +26,7 @@ import TopBar from "@/app/components/TopBar";
 import { imagePath, formatRuntime, monthNames, formatMoney } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
 import TrailerBox from "@/app/components/TrailerBox";
-import DownloadBox from "@/app/components/DownloadBox";
+import MovieDownloadBox from "@/app/components/MovieDownloadBox";
 
 export default function () {
   const [movieDetail, setMovieDetail] = useState(null);
@@ -50,26 +50,6 @@ export default function () {
       console.error("Error fetching languages:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const downloadMovie = async () => {
-    setDownloadPending(true);
-    try {
-      const response = await fetch(
-        `https://yts.mx/api/v2/list_movies.json?query_term=${movieDetail.imdb_id}`,
-      );
-      const data = await response.json();
-      if (data.status === "ok" && data.data.movie_count) {
-        const downloadUrl = data.data.movies[0].torrents[0].url;
-        router.push(downloadUrl);
-      } else {
-        setDownloadBox(true);
-      }
-    } catch (error) {
-      console.error("Error downloading movie:", error);
-    } finally {
-      setDownloadPending(false);
     }
   };
 
@@ -129,7 +109,7 @@ export default function () {
                 />
               ) : null}
               {downloadBox ? (
-                <DownloadBox
+                <MovieDownloadBox
                   downloadBox={downloadBox}
                   setDownloadBox={setDownloadBox}
                   movieDetail={movieDetail}
@@ -264,7 +244,7 @@ export default function () {
                   </div>
 
                   <div
-                    onClick={downloadMovie}
+                    onClick={() => setDownloadBox(true)}
                     className="bg-black/40 backdrop-blur-md p-2 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
                   >
                     <div>
@@ -282,10 +262,7 @@ export default function () {
                     <div>Download</div>
                   </div>
 
-                  <div
-                    onClick={() => setDownloadBox(true)}
-                    className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
-                  >
+                  <div className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
                     <PiDotsThreeBold className="size-[21px]" />
                   </div>
                 </div>
@@ -293,16 +270,17 @@ export default function () {
             </div>
           )}
 
-          <div className="w-full bg-gradient-to-t from-[#020409] via-[#020409] to-transparent flex justify-center items-center">
+          <div className="w-full bg-[linear-gradient(to_top,_#020409_0%,_#020409bb_70%,_#00000000_100%)] bg-gradient-to-ti dfrom-[#020409] avia-[#020409] to-transparena flex justify-center items-center">
             <div className="2xl:w-4/5 relative w-full px-5 p-8 pt-0">
               <Tray
                 forceLoading={loading}
                 type={"movie"}
+                textShadow={false}
                 title={loading ? "" : `More From ${movieDetail.genres[0].name}`}
                 url={
                   loading
                     ? null
-                    : `/api/discoverMovies?with_genres=${movieDetail.genres[0].id}`
+                    : encodeURIComponent(`/api/discoverMovies?with_genres=${movieDetail.genres[0].id}`)
                 }
               />
             </div>
