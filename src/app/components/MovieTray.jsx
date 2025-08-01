@@ -257,7 +257,7 @@ export const Tray = ({
             ))}
           </div>
         ) : error ? (
-          <div>{Object(error).keys}</div>
+          <div className="p-9 bg-white">{Object(error).keys}</div>
         ) : !nowPlayingMovies.length ? null : (
           <div className="flex overflow-scroll scrollbar-hidden gap-5 z-10">
             {nowPlayingMovies

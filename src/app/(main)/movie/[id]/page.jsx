@@ -70,7 +70,7 @@ export default function () {
           }}
         >
           {loading ? (
-            <div className="flex flex-col w-full px-6 pt-24 justify-between items-start z-10 flex-1 2xl:w-4/5">
+            <div className="flex flex-col w-full px-6 gap-9 pt-24 justify-between items-start z-10 flex-1 2xl:w-4/5">
               <div></div>
 
               <div className="flex flex-col z-20 gap-4 w-2/3 px-6 p-4 rounded-3xl">
@@ -84,11 +84,11 @@ export default function () {
                 </div>
 
                 <div className=" rounded-full bg-white/5 w-40 animate-pulse backdrop-blur-md"></div>
-                <div className="w-96 flex flex-col gap-2 p-6 bg-[#ffffff05] animate-pulse rounded-3xl backdrop-blur-md">
-                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-4/6"></div>
-                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-1/2"></div>
-                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-1/3"></div>
-                  <div className="rounded-full bg-white/5 animate-pulse p-[6px] w-4/6"></div>
+                <div className="w-96 flex flex-col px-1 gap-3 bg-[#ffffff05]4 animate-pulse4 rounded-3xl backdrop-blur-md">
+                  <div className="rounded-full bg-white/5 animate-pulse p-2 w-4/6"></div>
+                  <div className="rounded-full bg-white/5 animate-pulse p-2 w-1/2"></div>
+                  <div className="rounded-full bg-white/5 animate-pulse p-2 w-1/3"></div>
+                  <div className="rounded-full bg-white/5 animate-pulse p-2 w-4/6"></div>
                 </div>
                 <div></div>
 
@@ -100,7 +100,7 @@ export default function () {
               </div>
             </div>
           ) : error ? null : (
-            <div className="flex flex-col gap-5 z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
+            <div className="flex flex-col gap-9 z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
               {trailerBox ? (
                 <TrailerBox
                   movieId={id}
@@ -138,7 +138,7 @@ export default function () {
                     </Link>
                   ))}
                 </div>
-                <div className="flex items-baseline gap-1">
+                <div className="flex items-baseline pl-2 gap-1">
                   <div className="text-3xl gap-2 flex items-center font-semibold max-w-[500px]">
                     <div>{movieDetail.title}</div>
 
@@ -149,16 +149,18 @@ export default function () {
                 </div>
 
                 {movieDetail.tagline.length ? (
-                  <div className="opacity-60">{"#" + movieDetail.tagline}</div>
+                  <div className="opacity-60 pl-2">
+                    {"#" + movieDetail.tagline}
+                  </div>
                 ) : null}
 
                 {!(movieDetail.original_language === "en") ? (
-                  <div className="opacity-70 text-lg">
+                  <div className="opacity-70 text-lg pl-2">
                     {"Original Title: " + movieDetail.original_title}
                   </div>
                 ) : null}
 
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4 items-center pl-2">
                   <div className="flex items-center gap-2 text-sm text-gray-200">
                     <div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
                       <FaStar color="black" />
@@ -196,11 +198,11 @@ export default function () {
                   ) : null}
                 </div>
 
-                <div className="opacity-85 text-sm max-h-16 max-w-[500px] w-[75%] overflow-auto scrollbar-hidden">
+                <div className="opacity-85 ml-2 my-2 text-sm max-h-16 max-w-[500px] w-[75%] overflow-auto scrollbar-hidden">
                   {movieDetail.overview}
                 </div>
 
-                <div className="px-1 flex text-sm text-gray-200 items-center gap-2">
+                <div className="pl-2 flex text-sm text-gray-200 items-center gap-2">
                   {movieDetail.status === "Released" ? (
                     <FaCheck color="lime" size={17} />
                   ) : movieDetail.status === "Canceled" ? (
@@ -232,7 +234,7 @@ export default function () {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center pt-1 gap-2">
                   <div
                     onClick={() => setTrailerBox(true)}
                     className="bg-white backdrop-blur-md p-2 px-5 rounded-full text-black flex items-center gap-2 cursor-pointer hover:bg-white/70 transition-all"
@@ -270,8 +272,8 @@ export default function () {
             </div>
           )}
 
-          <div className="w-full bg-[linear-gradient(to_top,_#020409_0%,_#020409bb_70%,_#00000000_100%)] bg-gradient-to-ti dfrom-[#020409] avia-[#020409] to-transparena flex justify-center items-center">
-            <div className="2xl:w-4/5 relative w-full px-5 p-8 pt-0">
+          <div className="w-full bg-[linear-gradient(to_top,_#020409_0%,_#020409bb_70%,_#00000000_100%)] flex justify-center items-center">
+            <div className="2xl:w-4/5 relative w-full px-5 p-8 md:pt-8 pt-4">
               <Tray
                 forceLoading={loading}
                 type={"movie"}
@@ -280,7 +282,7 @@ export default function () {
                 url={
                   loading
                     ? null
-                    : encodeURIComponent(`/api/discoverMovies?with_genres=${movieDetail.genres[0].id}`)
+                    : `/api/discoverMovies?with_genres=${movieDetail.genres[0].id}`
                 }
               />
             </div>

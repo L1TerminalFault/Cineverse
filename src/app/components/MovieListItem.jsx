@@ -112,7 +112,9 @@ export default function ({ movie, type, extendOnHover = true, textShadow }) {
       >
         <div className="text-xs h-4 text-nowrap overflow-hidden relative">
           {type === "movie" ? movie.title : movie.name}
-          {textShadow ? <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div> : null}
+          {textShadow ? (
+            <div className="absolute bg-gradient-to-l from-[#020409] to-[#0000] p-5 right-0 top-0"></div>
+          ) : null}
         </div>
         <div className="flex gap-1 items-center justify-between text-xs/3 text-gray-500">
           <div className="flex gap-1 items-center">
