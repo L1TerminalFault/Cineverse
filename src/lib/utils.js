@@ -14,9 +14,21 @@ export const thepiratebayUrl = (query) => {
   return `https://apibay.org/q.php?q=${encodeURIComponent(query)}`;
 };
 
+export const formatBytes = (bytes, decimals = 2) => {
+  if (bytes === 0) return "0 B";
+
+  const k = 1024;
+  const units = ["B", "KB", "MB", "GB", "TB", "PB", "EB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const size = bytes / Math.pow(k, i);
+
+  return `${parseFloat(size.toFixed(decimals))} ${units[i]}`;
+};
+
 export const ytsUrl = (query) => {
   return `https://yts.mx/api/v2/list_movies.json?query_term=${encodeURIComponent(query)}`;
-  }
+};
 
 export const ytThumbnail = (videoId) => {
   return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;

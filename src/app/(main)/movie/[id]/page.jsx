@@ -273,7 +273,7 @@ export default function () {
           )}
 
           <div className="w-full bg-[linear-gradient(to_top,_#020409_0%,_#020409bb_70%,_#00000000_100%)] flex justify-center items-center">
-            <div className="2xl:w-4/5 relative w-full px-5 p-8 md:pt-8 pt-4">
+            <div className="2xl:w-4/5 relative w-full px-5 p-8 pt-4">
               <Tray
                 forceLoading={loading}
                 type={"movie"}
