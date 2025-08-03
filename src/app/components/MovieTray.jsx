@@ -209,7 +209,9 @@ export const Tray = ({
   return (
     <div className="flex flex-col w-full">
       <div className="p-5 px-6 justify-between items-center flex">
-        <div className="text-xl">{title}</div>
+        <div className="md:text-xl w-full text-nowrap overflow-scroll scrollbar-hidden ">
+          {title}
+        </div>
         <div className="flex items-center gap-2">
           <div
             className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-sm rounded-full`}

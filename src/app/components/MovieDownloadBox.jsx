@@ -91,7 +91,7 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
     >
       <div className="flex flex-col z-50 items-center justify-center w-full h-full backdrop-blur-md bg-black/50">
         <div className="flex h-full w-full gap-2 items-center justify-center">
-          <div className="flex flex-col gap-3 items-center justify-center max-w-[1000px] w-full p-6 lg:p-16 pt-0">
+          <div className="flex flex-col gap-3 items-center justify-center max-w-[1000px] w-full p-3 sm:p-6 lg:p-16 pt-0">
             <div className="flex w-full justify-between p-4 pt-0">
               <div></div>
 
@@ -100,9 +100,8 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
 
             <div
               onClick={(e) => e.stopPropagation()}
-              className="w-full h-[calc(100vh*0.6)] appear flex flex-col p-5 gap-3 transition-all items-center overflow-hidden rounded-[30px] bg-gray-950/90"
+              className="w-full h-[calc(100vh*0.6)] appear flex flex-col p-5 sm:px-5 px-3 gap-3 transition-all items-center overflow-hidden rounded-[30px] bg-gray-950/90"
             >
-              {" "}
               <div className="flex items-baseline justify-center w-full gap-4">
                 <div
                   onClick={() => setSelectedApi("tpb")}
@@ -131,28 +130,28 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
                   YTS
                 </div>
               </div>
-              <div className="w-full">
+              <div className="w-full h-full pb-5">
                 {loading ? (
                   <div>loading</div>
                 ) : error ? (
                   <div>{error}</div>
                 ) : (
-                  <div className="flex flex-col w-full gap-2 p-3 rounded-[30px] overflow-y-scroll scrollbar-hidden">
+                  <div className="flex flex-col overflow-scroll scrollbar-hidden w-full h-full gap-2 px-3 pb-5 mb-9 rounded-[30px]">
                     {downloadList.length > 0 ? (
                       downloadList.map((item, index) => (
                         <Link
                           href={item.downloadLink}
                           key={index}
-                          className="flex items-center w-full gap-3 p-3 px-5 bg-gray-800/30 hover:bg-gray-800/60 rounded-full"
+                          className="flex items-center w-full gap-3 p-3 transition-all px-6 bg-gray-800/30 hover:bg-gray-800/60 rounded-full"
                         >
-                          <LiaDownloadSolid size={30} />
-
-                          <div className="flex flex-col gap-[7px]">
-                            <div className="overflow-scroll scrollbar-hidden text-sm">
-                              {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
+                          <div className="flex flex-col gap-[7px] w-full">
+                            <div className="flex gap-2 items-center">
+                              <div className=" text-xs sm:text-sm w-full text-nowrap flex-1 overflow-scroll scrollbar-hidden">
+                                {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
+                              </div>
                             </div>
 
-                            <div className="flex gap-3 items-center text-xs text-gray-400">
+                            <div className="flex gap-3 items-center w-full text-xs text-gray-400">
                               <div className="flex items-center gap-1">
                                 <LuCalendar />
                                 <div>{item.date}</div>
@@ -161,7 +160,7 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
                                 <LuArrowUp />
                                 <div>Seeders {item.seeds}</div>
                               </div>
-                              <div className="flex text-red-500 items-center gap-1">
+                              <div className="sm:flex hidden text-red-500 items-center gap-1">
                                 <LuArrowDown />
                                 <div>Peers {item.peers}</div>
                               </div>

@@ -18,8 +18,6 @@ import { LiaDownloadSolid } from "react-icons/lia";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { FaSackDollar } from "react-icons/fa6";
 import { BiSolidDollarCircle } from "react-icons/bi";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useRouter } from "next/navigation";
 
 import fireIcon from "@/../public/fire-icon.png";
 import TopBar from "@/app/components/TopBar";
@@ -27,6 +25,7 @@ import { imagePath, formatRuntime, monthNames, formatMoney } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
 import TrailerBox from "@/app/components/TrailerBox";
 import MovieDownloadBox from "@/app/components/MovieDownloadBox";
+import StreamBox from "@/app/components/StreamBox";
 
 export default function () {
   const [movieDetail, setMovieDetail] = useState(null);
@@ -34,8 +33,7 @@ export default function () {
   const [error, setError] = useState(null);
   const [trailerBox, setTrailerBox] = useState(false);
   const [downloadBox, setDownloadBox] = useState(false);
-  const [downloadPending, setDownloadPending] = useState(false);
-  const router = useRouter();
+  const [streamingBox, setStreamingBox] = useState(false);
 
   const params = useParams();
   const { id } = params;
@@ -47,6 +45,7 @@ export default function () {
         setMovieDetail(response.response);
       }
     } catch (error) {
+      setError(error);
       console.error("Error fetching languages:", error);
     } finally {
       setLoading(false);
@@ -58,16 +57,18 @@ export default function () {
   }, [id]);
 
   return (
-    <div className="w-full flex items-center justify-center h-full">
-      <TopBar setPage={null} />
-      {
-        <div
-          className="absolute bg-no-repeat bg-cover bg-center flex md:max-h-screen max-h-[1200px] z-0 h-screen flex-col items-center left-0 w-full top-0"
-          style={{
+    <div
+ className={`w-full flex items-center justify-center h-full overflow-scroll scrollbar-hidden bg-no-repeat bg-cover bg-center`} 
+      style={{
             backgroundImage: loading
               ? null
               : `url(${imagePath(movieDetail.backdrop_path, "original")})`,
           }}
+       >
+      <TopBar setPage={null} />
+      
+        <div
+          className={`${downloadBox || trailerBox ? "overflow-hidden" : ""} flex md:max-h-screen max-h-[1200px] z-0 h-screen flex-col items-center left-0 w-full top-0`}
         >
           {loading ? (
             <div className="flex flex-col w-full px-6 gap-9 pt-24 justify-between items-start z-10 flex-1 2xl:w-4/5">
@@ -100,7 +101,7 @@ export default function () {
               </div>
             </div>
           ) : error ? null : (
-            <div className="flex flex-col gap-9 z-40 w-full px-6 pt-24 justify-between items-start flex-1 2xl:w-4/5">
+            <div className="flex flex-col gap-16 z-40 w-full sm:px-6 px-5 pt-24 justify-between items-start flex-1 2xl:w-4/5">
               {trailerBox ? (
                 <TrailerBox
                   movieId={id}
@@ -115,34 +116,42 @@ export default function () {
                   movieDetail={movieDetail}
                 />
               ) : null}
+              {streamingBox ? (
+                <StreamBox
+                  streamingBox={streamingBox}
+                  setStreamingBox={setStreamingBox}
+                  movieDetail={movieDetail}
+                />
+              ) : null}
+
 
               <div>
                 {movieDetail.popularity > 500 ? (
-                  <div className="flex gap-[14px] items-center p-2 px-4 ml-6 rounded-full bg-black/40 backdrop-blur-xl">
-                    <Image src={fireIcon} className="w-4" alt="" />{" "}
-                    <div className="text-nowrap">Now Popular</div>
+                  <div className="flex gap-[14px] items-center p-2 px-4 sm:ml-6 ml-[6px] rounded-full bg-black/40 backdrop-blur-xl">
+                    <Image src={fireIcon} className="sm:w-4 w-3" alt="" />{" "}
+                    <div className="text-nowrap text-xs sm:text-base">Now Popular</div>
                   </div>
                 ) : null}
               </div>
 
-              <div className="flex flex-col relative z-20 gap-[9px] w-2/3 px-6 p-4 rounded-3xl">
+              <div className="flex flex-col relative z-20 sm:max-w-[600px] text-sm sm:text-base max-w-full gap-2 sm:gap-[9px] sm:px-6 sm:p-4 rounded-3xl">
                 <div className="absolute flex p-4 inset-0 -z-10 blur-2xl rounded-2xl bg-gradient-to-r from-black/85 via-black/85 to-transparent "></div>
-                <div className="flex gap-2 mb-1 flex-wrap max-w-[600px]">
+                <div className="flex gap-2 mb-1 w-full flex-wrap">
                   {movieDetail.genres.map((genre) => (
                     <Link
                       href={`/explore?url=${encodeURIComponent(`/api/discoverMovies?with_genres=${genre.id}`)}&title=${`Discover%20Movie%20-%20${genre.name}`}`}
-                      className="p-1 px-4 bg-white/5 hover:bg-[#ffffff17] rounded-full text-nowrap backdrop-blur-xl transition-all cursor-default"
+                      className="p-1 px-4 bg-white/5 hover:bg-[#ffffff17] rounded-full text-base text-nowrap backdrop-blur-xl transition-all cursor-default"
                       key={genre.id}
                     >
                       {genre.name}
                     </Link>
                   ))}
                 </div>
-                <div className="flex items-baseline pl-2 gap-1">
-                  <div className="text-3xl gap-2 flex items-center font-semibold max-w-[500px]">
+                <div className="flex items-start my-2 pl-2 gap-1">
+                  <div className="sm:text-3xl text-xl gap-2 flex items-center font-semibold">
                     <div>{movieDetail.title}</div>
 
-                    <div className="p-1 text-xs text-black bg-white/80 rounded-full backdrop-blur-2xl">
+                    <div className="p-1 text-xs scale-75 text-black bg-white/80 rounded-full backdrop-blur-2xl">
                       {movieDetail.original_language.toUpperCase()}
                     </div>
                   </div>
@@ -155,68 +164,60 @@ export default function () {
                 ) : null}
 
                 {!(movieDetail.original_language === "en") ? (
-                  <div className="opacity-70 text-lg pl-2">
+                  <div className="opacity-70 hidden sm:inline sm:text-lg pl-2">
                     {"Original Title: " + movieDetail.original_title}
                   </div>
                 ) : null}
 
-                <div className="flex gap-4 items-center pl-2">
-                  <div className="flex items-center gap-2 text-sm text-gray-200">
-                    <div className="flex p-1 px-3 bg-orange-300 rounded-full items-center">
-                      <FaStar color="black" />
-                    </div>
+                <div className="flex sm:gap-4 gap-3 overflow-scroll scrollbar-hidden items-center pl-2">
+                  {movieDetail.vote_average ? <div className="flex items-center gap-1 sm:gap-2 text-sm text-gray-200">
+                      <FaStar color="#fdba74" />
                     <div>
-                      {movieDetail.vote_average.toFixed(1) || "Not Rated"}
+                      {movieDetail.vote_average.toFixed(1)}
                     </div>
-                  </div>
+                  </div> : null}
 
                   {movieDetail.revenue ? (
-                    <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <div className="flex p-1 px-3 bg-[#70ff90] rounded-full items-center">
-                        <FaSackDollar color="black" />
-                      </div>
+                    <div className="flex items-center gap-1 sm:gap-2 text-sm text-gray-200">
+                        <FaSackDollar color="#70ff90" />
                       <div>{`${formatMoney(movieDetail.revenue)}`}</div>
                     </div>
                   ) : null}
 
                   {movieDetail.budget ? (
-                    <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <div className="flex p-[2px] px-[10px] bg-[#ee2255] rounded-full items-center">
-                        <BiSolidDollarCircle color="black" size={18} />
-                      </div>
+                    <div className="flex items-center gap-1 sm:gap-2 text-sm text-gray-200">
+                        <BiSolidDollarCircle color="#ee2255" size={18} />
                       <div>{`${formatMoney(movieDetail.budget)}`}</div>
                     </div>
                   ) : null}
 
                   {movieDetail.runtime ? (
-                    <div className="flex items-center gap-2 text-sm text-gray-200">
-                      <div className="flex p-1 px-3 bg-[#cc22ff] rounded-full items-center">
-                        <FaHourglassHalf color="black" />
-                      </div>
+                    <div className="flex items-center gap-1 sm:gap-2 text-sm text-gray-200">
+                        <FaHourglassHalf color="#cc22ff" />
                       <div>{formatRuntime(movieDetail.runtime)}</div>
                     </div>
                   ) : null}
                 </div>
 
-                <div className="opacity-85 ml-2 my-2 text-sm max-h-16 max-w-[500px] w-[75%] overflow-auto scrollbar-hidden">
+                <div className="opacity-85 ml-2 my-1 sm:text-sm max-h-16 sm:w-[75%] w-[90%] overflow-auto scrollbar-hidden">
                   {movieDetail.overview}
                 </div>
 
-                <div className="pl-2 flex text-sm text-gray-200 items-center gap-2">
+                <div className="pl-2 flex sm:text-sm text-gray-200 items-center gap-2">
                   {movieDetail.status === "Released" ? (
-                    <FaCheck color="lime" size={17} />
+                    <FaCheck color="lime" className="sm:size-[17px] size-[13px]" />
                   ) : movieDetail.status === "Canceled" ? (
-                    <FaBan color="#ff2222" size={17} />
+                    <FaBan color="#ff2222" className="sm:size-[17px] size-[13px]" />
                   ) : movieDetail.status === "Planned" ? (
-                    <LuCalendarPlus color="#33bbff" size={17} />
+                    <LuCalendarPlus color="#33bbff" className="sm:size-[17px] size-[13px]" />
                   ) : movieDetail.status === "In Production" ? (
-                    <FaFilm color="#ff9922" size={17} />
+                    <FaFilm color="#ff9922" className="sm:size-[17px] size-[13px]" />
                   ) : movieDetail.status === "Post Production" ? (
-                    <MdMovieEdit color="#aa66ff" size={17} />
+                    <MdMovieEdit color="#aa66ff" className="sm:size-[17px] size-[13px]" />
                   ) : movieDetail.status === "Rumored" ? (
-                    <FaCommentDots color="#ff77ff" size={17} />
+                    <FaCommentDots color="#ff77ff" className="sm:size-[17px] size-[13px]" />
                   ) : (
-                    <FaQuestion color="#e5e7eb" size={17} />
+                    <FaQuestion color="#e5e7eb" className="sm:size-[17px] size-[13px]" />
                   )}
                   <div>
                     {movieDetail.status +
@@ -247,24 +248,18 @@ export default function () {
 
                   <div
                     onClick={() => setDownloadBox(true)}
-                    className="bg-black/40 backdrop-blur-md p-2 px-5 rounded-full text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
+                    className="bg-black/40 backdrop-blur-md p-2 sm:px-5 rounded-full text-base text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
                   >
                     <div>
-                      {downloadPending ? (
-                        <div className="animate-spin">
-                          <AiOutlineLoading3Quarters size={21} />
-                        </div>
-                      ) : (
                         <LiaDownloadSolid
                           className="size-[21px]"
                           strokeWidth={0.1}
                         />
-                      )}
                     </div>
-                    <div>Download</div>
+                    <div className="sm:inline hidden">Download</div>
                   </div>
 
-                  <div className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                  <div onClick={() => setStreamingBox(true)} className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
                     <PiDotsThreeBold className="size-[21px]" />
                   </div>
                 </div>
@@ -272,8 +267,8 @@ export default function () {
             </div>
           )}
 
-          <div className="w-full bg-[linear-gradient(to_top,_#020409_0%,_#020409bb_70%,_#00000000_100%)] flex justify-center items-center">
-            <div className="2xl:w-4/5 relative w-full px-5 p-8 pt-4">
+          <div className="w-full bg-[linear-gradient(to_top,_#020409_0%,_#02040990_85%,_#00000000_100%)] flex justify-center items-center">
+            <div className="2xl:w-4/5 relative w-full sm:px-5 px-[6px] p-8 pt-6">
               <Tray
                 forceLoading={loading}
                 type={"movie"}
@@ -288,7 +283,7 @@ export default function () {
             </div>
           </div>
         </div>
-      }
+      
     </div>
   );
 }
