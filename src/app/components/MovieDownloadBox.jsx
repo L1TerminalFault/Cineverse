@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BsChevronLeft } from "react-icons/bs";
@@ -136,45 +136,50 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
                 ) : error ? (
                   <div>{error}</div>
                 ) : (
-                  <div className="flex flex-col overflow-scroll scrollbar-hidden w-full h-full gap-2 px-3 pb-5 mb-9 rounded-[30px]">
-                    {downloadList.length > 0 ? (
-                      downloadList.map((item, index) => (
-                        <Link
-                          href={item.downloadLink}
-                          key={index}
-                          className="flex items-center w-full gap-3 p-3 transition-all px-6 bg-gray-800/30 hover:bg-gray-800/60 rounded-full"
-                        >
-                          <div className="flex flex-col gap-[7px] w-full">
-                            <div className="flex gap-2 items-center">
-                              <div className=" text-xs sm:text-sm w-full text-nowrap flex-1 overflow-scroll scrollbar-hidden">
-                                {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
+                  <div className="flex flex-col h-full w-full">
+                    <div className="text-white/80 p-3">
+                      Available Torrents From {selectedApi.toUpperCase()}
+                    </div>
+                    <div className="flex flex-col overflow-scroll scrollbar-hidden w-full h-full gap-2 px-3 pb-5 mb-9 rounded-[30px]">
+                      {downloadList.length > 0 ? (
+                        downloadList.map((item, index) => (
+                          <Link
+                            href={item.downloadLink}
+                            key={index}
+                            className="flex items-center w-full gap-3 p-3 transition-all px-6 bg-gray-800/30 hover:bg-gray-800/60 rounded-full"
+                          >
+                            <div className="flex flex-col gap-[7px] w-full">
+                              <div className="flex gap-2 items-center">
+                                <div className=" text-xs sm:text-sm w-full text-nowrap flex-1 overflow-scroll scrollbar-hidden">
+                                  {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
+                                </div>
                               </div>
-                            </div>
 
-                            <div className="flex gap-3 items-center w-full text-xs text-gray-400">
-                              <div className="flex items-center gap-1">
-                                <LuCalendar />
-                                <div>{item.date}</div>
-                              </div>
-                              <div className="flex text-green-500 items-center gap-1">
-                                <LuArrowUp />
-                                <div>Seeders {item.seeds}</div>
-                              </div>
-                              <div className="sm:flex hidden text-red-500 items-center gap-1">
-                                <LuArrowDown />
-                                <div>Peers {item.peers}</div>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <TbDownload />
-                                <div>{item.size}</div>
+                              <div className="flex gap-3 items-center w-full text-xs text-gray-400">
+                                <div className="flex items-center gap-1">
+                                  <LuCalendar />
+                                  <div>{item.date}</div>
+                                </div>
+                                <div className="flex text-green-500 items-center gap-1">
+                                  <LuArrowUp />
+                                  <div>Seeders {item.seeds}</div>
+                                </div>
+                                <div className="sm:flex hidden text-red-500 items-center gap-1">
+                                  <LuArrowDown />
+                                  <div>Peers {item.peers}</div>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <TbDownload />
+                                  <div>{item.size}</div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </Link>
-                      ))
-                    ) : (
-                      <p className="text-white">No downloads available</p>
-                    )}
+                          </Link>
+                        ))
+                      ) : (
+                        <p className="text-white">No downloads available</p>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

@@ -9,13 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@webtor/embed-sdk-js": "^0.2.19",
+    "buffer": "^6.0.3",
+    "jmuxer": "^2.0.7",
     "next": "15.3.3",
+    "process": "^0.11.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "swiper": "^11.2.10",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
+    "webtorrent": "^2.8.0",
     "webtorrent-player": "^1.2.7",
     "ytdl-core": "^4.11.5"
   },

@@ -43,22 +43,6 @@ export default function ({ movieId, trailerBox, setTrailerBox }) {
 
           setTrailerList(trailers);
           setSelectedTrailer(trailers[0]);
-          // const trailers = results.filter(
-          //  (video) =>
-          //    video.type === "Trailer" &&
-          //    video.site === "YouTube" &&
-          //    !video.name.toLowerCase().includes("vertical") &&
-          //    video.official,
-          //);
-          //const hdTrailer = trailers.filter((video) => video.size === 1080);
-          //const trailer = hdTrailer[0] || trailers[0] || results[0];
-          // console.log(hdTrailer);
-
-          //if (trailer) {
-          //  setTrailerList(trailer);
-          //} else {
-          //  setError("No trailer found");
-          //}
         } else {
           setError("No videos available for this movie");
         }
