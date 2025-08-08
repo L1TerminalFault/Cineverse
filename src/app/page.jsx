@@ -1,9 +1,7 @@
-export default function() {
-	
+import { redirect } from "next/navigation";
 
-	return (
-		<div>
-			
-		</div>
-	)
+export default function () {
+  return redirect("/home");
+
+  return <div></div>;
 }

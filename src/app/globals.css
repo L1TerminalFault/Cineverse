@@ -89,3 +89,22 @@ body {
     opacity: 1;
   }
 }
+
+#webtor-player iframe,
+#webtor-player video {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: contain !important;
+  background-color: black;
+}
+
+.webtor-download-button,
+.webtor-preloader,
+.webtor-title,
+.webtor-desc,
+.webtor-poster {
+  display: none !important;
+}

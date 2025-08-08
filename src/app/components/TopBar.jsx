@@ -29,7 +29,6 @@ export default function ({ page, setPage, submitSearch, value }) {
       `/search?term=${encodeURIComponent(term)}&type=movies`, //${type.includes("TV") ? "tv" : "movies"}`,
     );
   };
-
   const submitSearchFunction = submitSearch || submit;
 
   return (

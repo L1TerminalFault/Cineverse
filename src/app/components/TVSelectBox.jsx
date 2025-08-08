@@ -7,13 +7,14 @@ import { LuCalendar, LuArrowUp, LuArrowDown } from "react-icons/lu";
 import { TbDownload } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 
-import { ytsUrl, formatBytes, ytsToMagnet } from "@/lib/utils";
-import ytsIcon from "@/../../public/yts.png";
+import { eztvUrl, _1337xUrl, formatBytes, ytsToMagnet } from "@/lib/utils";
+import eztvIcon from "@/../../public/eztv.png";
+import _1337xIcon from "@/../../public/1337x.svg";
 import tpbIcon from "@/../../public/tpb.png";
 import StreamBox from "./StreamBox";
 import { HiMiniBars2, HiMiniBars3 } from "react-icons/hi2";
 
-export default function ({ movieDetail, downloadBox, setDownloadBox }) {
+export default function ({ movieDetail, selectBox, setSelectBox }) {
   const [downloadList, setDownloadList] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -25,28 +26,29 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
     setError(null);
     setLoading(true);
     const endpoint =
-      selectedApi === "yts"
-        ? ytsUrl(movieDetail.imdb_id)
+      selectedApi === "eztv"
+        ? eztvUrl(movieDetail.imdb_id)
         : selectedApi === "tpb"
-          ? `/api/getTorrentTPB?imdb_id=${movieDetail.imdb_id}`
+          ? `/api/getTorrentTPB?q=${encodeURIComponent(movieDetail.name)}`
           : null;
     try {
       const response = await (await fetch(endpoint)).json();
-      if (selectedApi === "yts") {
+      if (selectedApi === "eztv") {
         if (response.status === "ok" && response.data.movie_count) {
           setDownloadList(
-            response.data.movies[0].torrents.map((torrent) => ({
-              title: movieDetail.title,
-              quality: torrent.quality,
-              type: torrent.type,
-              size: torrent.size,
-              downloadLink: ytsToMagnet(torrent.url),
-              seeds: torrent.seeds,
-              peers: torrent.peers,
-              date: new Date(torrent.date_uploaded_unix * 1000)
-                .toLocaleDateString()
-                .replaceAll("/", "-"),
-            })),
+            [],
+            // response.data.movies[0].torrents.map((torrent) => ({
+            //   title: movieDetail.title,
+            //   quality: torrent.quality,
+            //   type: torrent.type,
+            //   size: torrent.size,
+            //   downloadLink: ytsToMagnet(torrent.url),
+            //   seeds: torrent.seeds,
+            //   peers: torrent.peers,
+            //   date: new Date(torrent.date_uploaded_unix * 1000)
+            //     .toLocaleDateString()
+            //     .replaceAll("/", "-"),
+            // })),
           );
         } else {
           setError("Couldn't find any downloads for this movie.");
@@ -92,7 +94,7 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
   return (
     <div
       onClick={() => {
-        if (!selectedStream) setDownloadBox(false);
+        if (!selectedStream) setSelectBox(false);
       }}
       className={`transition-all fixed z-40 top-0 left-0 h-screen w-screen`}
     >
@@ -121,7 +123,7 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
               </div>
 
               <div
-                onClick={() => setDownloadBox(false)}
+                onClick={() => setSelectBox(false)}
                 className="p-2 rounded-full hover:bg-gray-400/30 transition-all cursor-pointer"
               >
                 <BsChevronLeft size={30} className="" />
@@ -148,17 +150,17 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
                     TPB
                   </div>
                   <div
-                    onClick={() => setSelectedApi("yts")}
-                    className={`text-white flex gap-2 text-sm items-center transition-all p-2 px-5 rounded-full hover:bg-gray-800/60 ${selectedApi === "yts" ? "bg-gray-800/70" : "bg-gray-800/30"}`}
+                    onClick={() => setSelectedApi("eztv")}
+                    className={`text-white flex gap-2 text-sm items-center transition-all p-2 px-5 rounded-full hover:bg-gray-800/60 ${selectedApi === "eztv" ? "bg-gray-800/70" : "bg-gray-800/30"}`}
                   >
                     <Image
-                      src={ytsIcon}
-                      alt="YTS Icon"
+                      src={eztvIcon}
+                      alt=""
                       width={20}
                       height={20}
                       className="rounded-full size-5"
                     />
-                    YTS
+                    EZTV
                   </div>
                 </div>
                 <div className="flex relative gap-3 w-full h-full pb-5">

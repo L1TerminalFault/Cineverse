@@ -10,10 +10,6 @@ export const endpoint = (url) => {
     : `https://api.themoviedb.org/3${url}?api_key=${API_KEY}`;
 };
 
-export const thepiratebayUrl = (query) => {
-  return `https://apibay.org/q.php?q=${encodeURIComponent(query)}`;
-};
-
 export const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return "0 B";
 
@@ -24,6 +20,18 @@ export const formatBytes = (bytes, decimals = 2) => {
   const size = bytes / Math.pow(k, i);
 
   return `${parseFloat(size.toFixed(decimals))} ${units[i]}`;
+};
+
+export const thepiratebayUrl = (query) => {
+  return `https://apibay.org/q.php?q=${encodeURIComponent(query)}`;
+};
+
+export const eztvUrl = (query) => {
+  return `https://eztvx.to/api/get-torrents?imdb_id=${query}`;
+};
+
+export const _1337xUrl = (query) => {
+  return `https://www.1377x.to/srch?search=${query}`;
 };
 
 export const ytsUrl = (query) => {
@@ -60,6 +68,31 @@ export const formatMoney = (value) => {
   return formatted.replace(".0", "");
 };
 
+export const ytsToMagnet = (ytsUrl) => {
+  // Extract the hash from the URL (last part after '/download/')
+  const hash = ytsUrl.split("/download/")[1]?.toLowerCase();
+
+  if (!hash || !/^[0-9a-f]{40}$/.test(hash)) {
+    throw new Error("Invalid YTS URL format");
+  }
+
+  // Public trackers list (improves peer discovery)
+  const trackers = [
+    "udp://tracker.opentrackr.org:1337/announce",
+    "udp://tracker.leechers-paradise.org:6969/announce",
+    "udp://tracker.coppersurfer.tk:6969/announce",
+    "udp://tracker.openbittorrent.com:80/announce",
+    "udp://exodus.desync.com:6969/announce",
+  ];
+
+  // URL-encode trackers and combine
+  const trackerParams = trackers
+    .map((t) => `tr=${encodeURIComponent(t)}`)
+    .join("&");
+
+  return `magnet:?xt=urn:btih:${hash}&dn=YTS+Torrent&${trackerParams}`;
+};
+
 export const monthNames = [
   "Jan",
   "Feb",
@@ -75,6 +108,7 @@ export const monthNames = [
   "Dec",
 ];
 
+// TMDB genres
 export const genres = {
   28: "Action",
   12: "Adventure",

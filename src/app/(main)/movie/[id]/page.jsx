@@ -25,7 +25,6 @@ import { imagePath, formatRuntime, monthNames, formatMoney } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
 import TrailerBox from "@/app/components/TrailerBox";
 import MovieDownloadBox from "@/app/components/MovieDownloadBox";
-import StreamBox from "@/app/components/StreamBox";
 
 export default function () {
   const [movieDetail, setMovieDetail] = useState(null);
@@ -33,7 +32,6 @@ export default function () {
   const [error, setError] = useState(null);
   const [trailerBox, setTrailerBox] = useState(false);
   const [downloadBox, setDownloadBox] = useState(false);
-  const [streamingBox, setStreamingBox] = useState(false);
 
   const params = useParams();
   const { id } = params;
@@ -68,7 +66,7 @@ export default function () {
       <TopBar setPage={null} />
 
       <div
-        className={`${downloadBox || trailerBox ? "overflow-hidden" : ""} flex md:max-h-screen max-h-[1200px] z-0 h-screen flex-col items-center left-0 w-full top-0`}
+        className={`${downloadBox || trailerBox ? "overflow-hidden" : ""} flex md:max-h-screen z-0 h-screen flex-col items-center left-0 w-full top-0`}
       >
         {loading ? (
           <div className="flex flex-col w-full px-6 gap-9 pt-24 justify-between items-start z-10 flex-1 2xl:w-4/5">
@@ -113,13 +111,6 @@ export default function () {
               <MovieDownloadBox
                 downloadBox={downloadBox}
                 setDownloadBox={setDownloadBox}
-                movieDetail={movieDetail}
-              />
-            ) : null}
-            {streamingBox ? (
-              <StreamBox
-                streamingBox={streamingBox}
-                setStreamingBox={setStreamingBox}
                 movieDetail={movieDetail}
               />
             ) : null}
@@ -280,10 +271,7 @@ export default function () {
                   <div className="sm:inline hidden">Download</div>
                 </div>
 
-                <div
-                  onClick={() => setStreamingBox(true)}
-                  className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
-                >
+                <div className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
                   <PiDotsThreeBold className="size-[21px]" />
                 </div>
               </div>

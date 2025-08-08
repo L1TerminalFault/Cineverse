@@ -25,13 +25,13 @@ export default function () {
   const [showFilter, setShowFilter] = useState(false);
   const [searchTerm, setSearchTerm] = useState(searchParams.get("term") || "");
   const [language, setLanguage] = useState("");
-  const [type, setType] = useState(searchParams.get("type"));
   const [totalPages, setTotalPages] = useState(null);
   const [readyToFetch, setReadyToFetch] = useState(false);
   const loaderRef = useRef(null);
   const languageRef = useRef(null);
   const [endOfData, setEndOfData] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
+  const type = searchParams.get("type");
 
   const fetchData = async () => {
     if (totalPages && page > totalPages) {

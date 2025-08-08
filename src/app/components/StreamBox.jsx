@@ -25,7 +25,7 @@ export default function WebtorPlayer({ magnetUri, poster, subtitles }) {
         volume: true,
         fullscreen: true,
         chromecast: true,
-        embed: true,
+        embed: false,
       },
     });
   }, [magnetUri, poster, subtitles]);
@@ -34,7 +34,7 @@ export default function WebtorPlayer({ magnetUri, poster, subtitles }) {
     <div
       id="webtor-player"
       ref={container}
-      style={{ width: "100%", height: "auto" }}
+      className="w-auto aspect-video overflow-hidden h-full bg-gray-600 flex items-center justify-center"
     />
   );
 }

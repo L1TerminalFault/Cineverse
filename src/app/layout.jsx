@@ -28,9 +28,7 @@ export const metadata = {
 export default function ({ children }) {
   return (
     <html lang="en">
-
       <head>
-        {/* Embed Script: adds SDK to window.webtor */}
         <script
           src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js"
           async
