@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import TopBar from "@/app/components/TopBar";
 import { Tray, Carousel } from "@/app/components/MovieTray";
 import DiscoverTray from "@/app/components/DiscoverTray";
+import HomeEntryMovieComponent from "@/app/components/HomeEntryMovieComponent";
 
 export default function () {
   const [currentPage, setCurrentPage] = useState("Movies");
@@ -27,7 +28,11 @@ export default function () {
       />
 
       <div className="relative 2xl:w-4/5 w-full flex items-center justify-center z-0">
-        <div className="p-3 pt-16 w-full flex flex-col gap-5">
+        <div className="p-3 pt-24 w-full flex flex-col gap-5">
+          <div className="w-full">
+            <HomeEntryMovieComponent />
+          </div>
+
           <div className="">
             {currentPage === "Movies" ? (
               <Carousel type={"upcomingMovies"} title={"Upcoming Movies"} />

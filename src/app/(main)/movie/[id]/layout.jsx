@@ -1,4 +1,7 @@
-export default function ({ children }) {
-  return <div className="min-h-screen bg-[#020409] w-full">{children}</div>;
-}
+export const metadata = {
+  title: "Movie",
+};
 
+export default function ({ children }) {
+  return <div className="w-full h-full">{children}</div>;
+}

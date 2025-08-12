@@ -6,7 +6,7 @@ export const metadata = {
 
 export default function ({ children }) {
   return (
-    <div className="min-h-screen bg-[#020409] w-full">
+    <div className="w-full h-full">
       <Suspense fallback={<div></div>}>{children}</Suspense>
     </div>
   );

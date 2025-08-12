@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { FiSearch as SearchIcon } from "react-icons/fi";
-import { IoPersonSharp as PersonIcon } from "react-icons/io5";
+import { BsPerson as PersonIcon } from "react-icons/bs";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import { BsChevronDown as ArrowDown } from "react-icons/bs";
 import {
@@ -34,30 +34,31 @@ export default function ({ page, setPage, submitSearch, value }) {
   return (
     <div className="fixed z-40 w-full top-0 p-3">
       <div className="relative">
-        <label
-          htmlFor="toggle"
-          onClick={() => setTopBarExpand((prev) => !prev)}
-          className={`${topBarExpand ? "rounded-full" : "bg-[#22232c55] backdrop-blur-xl -translate-x-6 rounded-r-full pl-3"} absolute top-2 left-2 z-50 p-2 transition-all mbg-[#22232c] hover:bg-[#32333c77]`}
-        >
-          <div className="relative flex items-center justify-center">
-            <div className={`${topBarExpand ? "inline" : "hidden"}`}>
-              <Collapse />
-            </div>
-            <div className={`${topBarExpand ? "hidden" : "inline"}`}>
-              <Expand />
-            </div>
-          </div>
-        </label>
-
-        <input type="checkbox" id="toggle" className="peer hidden" />
+        {
+          // <label
+          // htmlFor="toggle"
+          // onClick={() => setTopBarExpand((prev) => !prev)}
+          // className={`${topBarExpand ? "rounded-full" : "bg-[#22232c55] backdrop-blur-xl -translate-x-6 rounded-r-full pl-3"} absolute top-2 left-2 z-50 p-2 transition-all mbg-[#22232c] hover:bg-[#32333c77]`}
+          // >
+          // <div className="relative flex items-center justify-center">
+          //   <div className={`${topBarExpand ? "inline" : "hidden"}`}>
+          //     <Collapse />
+          //   </div>
+          //   <div className={`${topBarExpand ? "hidden" : "inline"}`}>
+          //     <Expand />
+          //   </div>
+          // </div>
+          // </label>
+          // <input type="checkbox" id="toggle" className="peer hidden" />
+        }
 
         <div
-          className={`backdrop-blur-lg flex ${!topBarExpand ? "-translate-y-32 opacity-0" : ""} shadow-all shadow-[#000000dd] duration-500 transition-all rounded-[20px] mpl-[47px] bg-[#35374f55] px-2 py-[6px] justify-between`}
+          className={`backdrop-blur-lg flex shadow-all shadow-[#000000dd] duration-500 transition-all rounded-full mpl-[47px] bg-[#35374f55] px-3 2xl:mx-14 my-2 py-2 justify-between`}
         >
           <div className="flex items-center gap-[7px]">
             <Link
               href={"/home"}
-              className="flex gap-2 p-1 pl-9 px-4 transition-all bg-[#22232c]m hover:bg-[#32333c77] rounded-full items-center"
+              className="flex gap-2 p-1 px-4 transition-all bg-[#22232c]m hover:bg-[#32333c77] rounded-full items-center"
             >
               {/**<Image src={icon} alt="" width={20} height={20} />*/}{" "}
               <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br bg-gray-100 font-bold">
@@ -115,20 +116,20 @@ export default function ({ page, setPage, submitSearch, value }) {
           </div>
 
           <div className="gap-[6px] items-center flex rounded-full">
-            <div className="p-[6px] rounded-full bg-[#22232c] hover:bg-[#32333c] transition-all">
-              <Image src={aiIcon} className="size-[22px]" alt="" />
-            </div>
+            {
+              // <div className="p-[6px] rounded-full bg-[#22232c] hover:bg-[#32333c] transition-all">
+              // <Image src={aiIcon} className="size-[22px]" alt="" />
+              // </div>
+            }
 
-            <div className="flex items-center gap-2 bg-[#22232c] pl-3 p-[5px] rounded-full hover:bg-[#32333c] transition-all">
-              <PersonIcon />
+            <div className="flex items-center gap-2 px-6 p-2 bg-[#040610] rounded-full hover:bg-[#32333c] transition-all">
+              {/* <PersonIcon /> */}
 
-              <div className="text-xs hidden sm:inline text-gray-400">
-                Sign In
-              </div>
+              <div className="text-xs hidden sm:inline ">Sign In</div>
 
-              <div className="hover:bg-[#d1d5d628] transition-all rounded-full p-[6px]">
+              {/* <div className="hover:bg-[#d1d5d628] transition-all rounded-full p-[6px]">
                 <ArrowDown size={13} />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
