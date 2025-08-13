@@ -115,24 +115,31 @@ export const Carousel = ({ type, title, url = null }) => {
             }}
           >
             {!swiperLoaded ? (
-              <div></div>
+              <>
+                {[0, 1, 2, 3].map((item) => (
+                  <div
+                    className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
+                    key={item}
+                  >
+                    <div className="w-full aspect-video bg-zinc-900"></div>
+                  </div>
+                ))}
+              </>
             ) : loading ? (
               <>
-                {[0, 1, 2, 3].map((item) => {
-                  return (
-                    <div
-                      className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
-                      key={item}
-                    >
-                      <SwiperSlide key={item} className="h-10">
-                        <MovieCarouselItem
-                          swiperLoaded={swiperLoaded}
-                          loading={true}
-                        />
-                      </SwiperSlide>
-                    </div>
-                  );
-                })}
+                {[0, 1, 2, 3].map((item) => (
+                  <div
+                    className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
+                    key={item}
+                  >
+                    <SwiperSlide key={item} className="h-10">
+                      <MovieCarouselItem
+                        swiperLoaded={swiperLoaded}
+                        loading={true}
+                      />
+                    </SwiperSlide>
+                  </div>
+                ))}
               </>
             ) : (
               <div className="">

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link";
 
 import TopBar from "@/app/components/TopBar";
 
@@ -10,11 +11,13 @@ export default function () {
   const description =
     "With Cineverse, you can get info, watch trailer, download and stream torrents of your favorite movies and tv shows,.";
 
-  useEffect(() => {
-    const notFirstTime = localStorage.getItem("_cineverse_not_first_time_");
-    if (notFirstTime === "true") return redirect("/home");
-    localStorage.setItem("_cineverse_not_first_time_", "true");
-  }, []);
+  // NOTE: Remove this line
+  return redirect("/home");
+  // useEffect(() => {
+  //   const notFirstTime = localStorage.getItem("_cineverse_not_first_time_");
+  //   if (notFirstTime === "true") return redirect("/home");
+  //   localStorage.setItem("_cineverse_not_first_time_", "true");
+  // }, []);
 
   return (
     <div className="w-full h-screen bg-[#020409]">
@@ -29,7 +32,9 @@ export default function () {
               {title}
             </div>
 
-            <div className="text-gray-400 max-w-96">{description}</div>
+            <Link href={"/home"} className="text-gray-900 max-w-96">
+              {description}
+            </Link>
 
             <div className="p-8 bg-white/80 rounded-full max-w-96">
               <div></div>

@@ -26,17 +26,14 @@ export default function ({ movie, loading, swiperLoaded, type }) {
           />
 
           <div className="absolute flex bg-[#2f364b3b]  w-full h-full">
-            <div className="transition-all translate-x-[100%] swipe bg-gradient-to-r from-[#0000] via-[#111827e0] to-[#0000] p-12 absolute h-full"></div>
+            <div className="transition-all translate-x-[100%] swipe bg-gradient-to-r from-[#0000] via-[#111820e0] to-[#0000] p-12 absolute h-full"></div>
             <div className="relative p-4 w-full h-full">
-              <div className="absolute bottom-2 left-2 rounded-3xl w-[80%]">
-                <div className="flex gap-3 flex-col px-5 py-3 w-full h-full bg-[#0a0910cc] rounded-2xl">
-                  <div className="rounded-full p-2 w-full bg-[#3f435350]"></div>
+              <div className="absolute bottom-2 left-2 rounded-3xl w-[60%] bg-[#020409]">
+                <div className="flex gap-3 flex-col px-5 py-3 w-full h-full bg-[#020409] rounded-2xl">
+                  <div className="rounded-full p-2 w-full bg-[#2f364b2f]"></div>
                   <div className="flex justify-between gap-12">
-                    <div className="rounded-3xl p-3 w-full bg-[#3f435350]"></div>
-                    <div className="flex gap-3 w-1/2">
-                      <div className="p-3 rounded-full bg-[#3f435350] w-full"></div>
-                      <div className="p-3 animate-pulse rounded-full bg-[#3f435350]"></div>
-                    </div>
+                    <div className="rounded-3xl p-3 w-20 bg-[#2f364b2a]"></div>
+                    <div className=""></div>
                   </div>
                 </div>
               </div>
