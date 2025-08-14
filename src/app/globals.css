@@ -66,6 +66,10 @@ body {
   .swipe {
     animation: swipe 2.3s infinite;
   }
+
+  .swipe-huge {
+    animation: swipe-huge 2.3s infinite;
+  }
 }
 
 @keyframes swipe {
@@ -74,6 +78,15 @@ body {
   }
   to {
     transform: translateX(800px);
+  }
+}
+
+@keyframes swipe-huge {
+  from {
+    transform: translateX(-200px);
+  }
+  to {
+    transform: translateX(1800px);
   }
 }
 

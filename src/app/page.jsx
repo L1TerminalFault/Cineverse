@@ -13,9 +13,9 @@ import { imagePath } from "@/lib/utils";
 const imageList = [
   "/q5pXRYTycaeW6dEgsCrd4mYPmxM.jpg",
   "/22AouvwlhlXbe3nrFcjzL24bvWH.jpg",
-  "/2VUmvqsHb6cEtdfscEA6fqqVzLg.jpg",
-  "/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg",
   "/26oSPnq0ct59l07QOXZKyzsiRtN.jpg",
+  "/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg",
+  "/2VUmvqsHb6cEtdfscEA6fqqVzLg.jpg",
   "/9wV65OmsjLAqBfDnYTkMPutXH8j.jpg",
   // "/3mExdWLSxAiUCb4NMcYmxSkO7n4.jpg",
   // "/AEgggzRr1vZCLY86MAp93li43z.jpg",
@@ -25,15 +25,15 @@ const imageList = [
 export default function () {
   const title = "Enjoy your favorite movies and shows!";
   const description =
-    "With Cineverse, you can get info, watch trailer, download and stream torrents of your favorite movies and tv shows,.";
+    "With Cineverse, you can get info, watch trailer, download and stream torrents of your favorite movies and tv shows.";
 
-  // NOTE: Remove this line
+  // Remove this line
   // return redirect("/home");
-  // useEffect(() => {
-  //   const notFirstTime = localStorage.getItem("_cineverse_not_first_time_");
-  //   if (notFirstTime === "true") return redirect("/home");
-  //   localStorage.setItem("_cineverse_not_first_time_", "true");
-  // }, []);
+  useEffect(() => {
+    const notFirstTime = localStorage.getItem("_cineverse_not_first_time_");
+    if (notFirstTime === "true") return redirect("/home");
+    localStorage.setItem("_cineverse_not_first_time_", "true");
+  }, []);
 
   return (
     <div className="w-full h-screen ">
@@ -42,19 +42,21 @@ export default function () {
       <TopBar />
       <div className="h-full w-full relative flex z-30 bg-transparent items-center justify-center ">
         <div className="w-full h-full absolute top-0 left-0 -z-10">
-          <OnboaringBackground speed={0.2} />
+          <OnboaringBackground speed={0.3} />
         </div>
 
         <div className="2xl:w-2/3 h-full flex p-6 xl:pb-32 pt-14">
-          <div className="h-full w-1/2 flex flex-col justify-between">
+          <div className="h-full lg:w-1/2 flex flex-col xl:justify-between justify-center">
             <div></div>
 
             <div className="flex-col flex gap-5">
-              <div className="xl:text-7xl/[85px] text-3xl font-bold max-w-[650px] ">
+              <div className="md:text-7xl/[85px] text-3xl font-bold max-w-[650px] md:w-auto w-2/3">
                 {title}
               </div>
 
-              <div className="text-gray-300 max-w-96">{description}</div>
+              <div className="text-gray-300 sm:text-base text-xs max-w-96 md:w-auto w-2/3">
+                {description}
+              </div>
 
               <div className="max-w-96 flex gap-3 md:text-base text-sm">
                 <div className="bg-white/10 flex gap-1 items-center p-3 px-10 md:px-14 rounded-full hover:bg-white/15">
@@ -72,9 +74,9 @@ export default function () {
             </div>
           </div>
 
-          <div className="w-1/2 h-full flex justify-center items-end">
-            <div className="relative xl:w-2/3 w-1/2 flex items-center justify-center">
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#00000000_0%,_#020409bb_45%,_#000000cc_50%,_#000000_70%,_#000000_100%)] rounded-3xl"></div>
+          <div className="w-1/2 h-full lg:flex hidden justify-center xl:items-end items-center">
+            <div className="relative xl:w-2/3 p-2 w-1/2 flex items-center justify-center">
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#00000000_0%,_#020409bb_45%,_#000000cc_50%,_#000000ee_70%,_#000000_90%,_#000000_100%)] rounded-xl xl:rounded-3xl"></div>
               <div className="grid grid-cols-3 gap-2 xl:gap-4 grid-rows-2">
                 {imageList.map((image) => (
                   <Image

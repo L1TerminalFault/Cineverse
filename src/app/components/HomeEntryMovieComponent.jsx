@@ -32,26 +32,29 @@ export default function () {
   return (
     <div className="w-full">
       {loading ? (
-        <div className="aspect-video w-full max-h-[650px] bg-gray-900/30 rounded-[30px]">
-          <div className="p-10 lg:pl-20 lg:p-14 w-1/2 flex h-full items-end ">
+        <div className="lg:aspect-video relative w-full max-h-[650px] bg-gray-900/30 rounded-[30px]">
+          <div className="absolute inset-0 -z-30">
+            <div className="w-1/2 h-full swipe-huge bg-gradient-to-l from-transparent via-gray-950/90 to-transparent"></div>
+          </div>
+          <div className="p-5 pt-14 lg:pl-20 lg:p-14 w-1/2 flex h-full items-end">
             <div className=" flex flex-col gap-3 max-w-96">
               <div className="flex gap-2">
                 {[0, 1, 2].map((item) => (
                   <div
                     key={item}
-                    className="h-8 w-20 rounded-full bg-gray-900/70"
+                    className="lg:h-8 h-6 w-20 rounded-full bg-gray-900/70"
                   ></div>
                 ))}
               </div>
 
-              <div className="bg-gray-900 h-7 p-[2px] rounded-full w-5/6"></div>
+              <div className="bg-gray-900 lg:h-7 h-5 p-[2px] rounded-full w-5/6"></div>
 
               <div className="flex flex-col gap-2">
-                <div className="bg-gray-900/70 rounded-full h-5 m-[2px] w-5/6"></div>
-                <div className="bg-gray-900/70 rounded-full h-5 m-[2px] w-full"></div>
-                <div className="bg-gray-900/70 rounded-full h-5 m-[2px] w-1/2"></div>
-                <div className="bg-gray-900/70 rounded-full h-5 m-[2px] w-1/4"></div>
-                <div className="bg-gray-900/70 rounded-full h-5 m-[2px] w-2/3"></div>
+                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-5/6"></div>
+                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-full"></div>
+                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-1/2"></div>
+                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-1/4"></div>
+                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-2/3"></div>
               </div>
             </div>
           </div>
@@ -66,9 +69,9 @@ export default function () {
               ? null
               : `url(${imagePath(movieData.backdrop_path, "original")})`,
           }}
-          className="w-full flex aspect-video max-h-[650px] bg-center bg-cover overflow-hidden rounded-[30px]"
+          className="w-full flex lg:aspect-video max-h-[650px] bg-center bg-cover overflow-hidden rounded-[30px]"
         >
-          <div className="p-10 lg:pl-20 lg:p-14 w-1/2 flex h-full items-end bg-gradient-to-r from-[#020409] to-transparent">
+          <div className="p-4 pt-14 lg:pl-20 lg:p-14 w-1/2 flex h-full items-end bg-gradient-to-r from-[#020409] to-transparent">
             <div className=" flex flex-col gap-3 rounded-full max-w-96">
               <div className="flex gap-2">
                 {movieData.genre_ids
@@ -113,7 +116,7 @@ export default function () {
               </div>
 
               {movieData.overview.length ? (
-                <div className="text-white/70 max-h-20 md:max-h-32 lg:max-h-max overflow-scroll scrollbar-hidden">
+                <div className="text-white/70 max-h-20 lg:text-base text-xs md:max-h-32 lg:max-h-max overflow-scroll scrollbar-hidden">
                   {movieData.overview}
                 </div>
               ) : null}

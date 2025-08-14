@@ -51,10 +51,12 @@ export const Carousel = ({ type, title, url = null }) => {
   return (
     <div className={`p-1 flex-col w-full ${error ? "hidden" : "flex"}`}>
       <div className="p-5 px-6 justify-between items-center flex">
-        <div className="text-xl">{title}</div>
+        <div className="md:text-xl text-nowrap overflow-scroll scrollbar-hidden">
+          {title}
+        </div>
         <div className="flex items-center gap-2">
           <div
-            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-sm rounded-full`}
+            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-xs rounded-full`}
           >
             <div
               onClick={() => setFilter(false)}
@@ -77,14 +79,14 @@ export const Carousel = ({ type, title, url = null }) => {
               onClick={() => setShowFilter((prev) => !prev)}
               className="hover:bg-gray-900 group transition-all relative p-2 px-4 rounded-l-full"
             >
-              <BsFilter size={20} />
+              <BsFilter size={20} className="md:size-5 size-4" />
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
             <Link
               href={`/explore?type=${type}&title=${title}`}
               className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full "
             >
-              <BsChevronRight size={18} />
+              <BsChevronRight size={18} className="md:size-4 size-3" />
             </Link>
           </div>
         </div>
@@ -116,26 +118,23 @@ export const Carousel = ({ type, title, url = null }) => {
           >
             {!swiperLoaded ? (
               <div>
-                <div>
-                  
-                </div>
+                <div></div>
               </div>
             ) : loading ? (
               <>
                 {[0, 1, 2, 3].map((item) => (
-                    <div
-                      className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
-                      key={item}
-                    >
-                      <SwiperSlide key={item} className="h-10">
-                        <MovieCarouselItem
-                          swiperLoaded={swiperLoaded}
-                          loading={true}
-                        />
-                      </SwiperSlide>
-                    </div>
-                  )
-                )}
+                  <div
+                    className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
+                    key={item}
+                  >
+                    <SwiperSlide key={item} className="h-10">
+                      <MovieCarouselItem
+                        swiperLoaded={swiperLoaded}
+                        loading={true}
+                      />
+                    </SwiperSlide>
+                  </div>
+                ))}
               </>
             ) : (
               <div className="">
@@ -217,7 +216,7 @@ export const Tray = ({
         </div>
         <div className="flex items-center gap-2">
           <div
-            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-sm rounded-full`}
+            className={`transition-all ${showFilter ? "translate-x-0 opacity-100 max-w-64" : "translate-x-0 opacity-0 max-w-0"} overflow-hidden flex items-center bg-[#060819] text-xs rounded-full`}
           >
             <div
               onClick={() => setFilter(false)}
@@ -240,7 +239,7 @@ export const Tray = ({
               onClick={() => setShowFilter((prev) => !prev)}
               className="hover:bg-gray-900 group transition-all relative p-2 px-4 rounded-l-full"
             >
-              <BsFilter size={20} />
+              <BsFilter size={20} className="md:size-5 size-4"/>
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
             <Link
@@ -248,7 +247,7 @@ export const Tray = ({
               href={`/explore?type=${type}&title=${title}${url ? `&url=${url}` : ""}`}
               className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full "
             >
-              <BsChevronRight size={18} />
+              <BsChevronRight size={18} className="md:size-4 size-3"/>
             </Link>
           </div>
         </div>
