@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa6";
 import Link from "next/link";
+import Image from "next/image";
 
 import { imagePath, monthNames, genres } from "@/lib/utils";
 
@@ -33,8 +34,8 @@ export default function () {
     <div className="w-full">
       {loading ? (
         <div className="lg:aspect-video relative w-full max-h-[650px] bg-gray-900/30 rounded-[30px]">
-          <div className="absolute inset-0 -z-30">
-            <div className="w-1/2 h-full swipe-huge bg-gradient-to-l from-transparent via-gray-950/90 to-transparent"></div>
+          <div className="absolute inset-0 -z-30 overflow-hidden">
+            <div className="w-1/3 h-full swipe-huge bg-gradient-to-l from-transparent via-gray-900/30 to-transparent"></div>
           </div>
           <div className="p-5 pt-14 lg:pl-20 lg:p-14 w-1/2 flex h-full items-end">
             <div className=" flex flex-col gap-3 max-w-96">
@@ -50,11 +51,11 @@ export default function () {
               <div className="bg-gray-900 lg:h-7 h-5 p-[2px] rounded-full w-5/6"></div>
 
               <div className="flex flex-col gap-2">
-                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-5/6"></div>
-                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-full"></div>
-                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-1/2"></div>
-                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-1/4"></div>
-                <div className="bg-gray-900/70 rounded-full lg:h-5 h-3 lg:m-[2px] w-2/3"></div>
+                <div className="bg-gray-900/70 rounded-full h-3 lg:m-[2px] w-5/6"></div>
+                <div className="bg-gray-900/70 rounded-full h-3 lg:m-[2px] w-full"></div>
+                <div className="bg-gray-900/70 rounded-full h-3 lg:m-[2px] w-1/2"></div>
+                <div className="bg-gray-900/70 rounded-full h-3 lg:m-[2px] w-1/4"></div>
+                <div className="bg-gray-900/70 rounded-full h-3 lg:m-[2px] w-2/3"></div>
               </div>
             </div>
           </div>
@@ -64,13 +65,14 @@ export default function () {
       ) : (
         <div
           onClick={() => router.push(`/movie/${movieData.id}`)}
-          style={{
-            backgroundImage: loading
-              ? null
-              : `url(${imagePath(movieData.backdrop_path, "original")})`,
-          }}
-          className="w-full flex lg:aspect-video max-h-[650px] bg-center bg-cover overflow-hidden rounded-[30px]"
+          className="w-full group transition-all relative flex lg:aspect-video max-h-[650px] overflow-hidden rounded-[30px]"
         >
+          <div
+            style={{
+              backgroundImage: `url(${imagePath(movieData.backdrop_path, "original")})`,
+            }}
+            className="appear-opacity absolute -z-10 inset-0 group-hover:scale-[103%] w-full lg:aspect-video max-h-[650px] top-0 left-0 duration-500 transition-all bg-center bg-cover"
+          ></div>
           <div className="p-4 pt-14 lg:pl-20 lg:p-14 w-1/2 flex h-full items-end bg-gradient-to-r from-[#020409] to-transparent">
             <div className=" flex flex-col gap-3 rounded-full max-w-96">
               <div className="flex gap-2">

@@ -59,7 +59,7 @@ export default function () {
               </div>
 
               <div className="max-w-96 flex gap-3 md:text-base text-sm">
-                <div className="bg-white/10 flex gap-1 items-center p-3 px-10 md:px-14 rounded-full hover:bg-white/15">
+                <div className="bg-white/10 backdrop-blur-lg flex gap-1 items-center p-3 px-10 md:px-14 rounded-full hover:bg-white/15">
                   <div>Sign In</div>
                 </div>
 

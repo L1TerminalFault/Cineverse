@@ -14,7 +14,6 @@ export const Carousel = ({ type, title, url = null }) => {
   const [upcomingMovies, setUpcomingMovies] = useState(null);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [swiperLoaded, setSwiperLoaded] = useState(false);
   const [filter, setFilter] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
@@ -95,12 +94,35 @@ export const Carousel = ({ type, title, url = null }) => {
       <div className={`flex w-full h-min`}>
         {error ? (
           <div>{Object(error).keys}</div>
+        ) : loading ? (
+          <div className="gap-5 flex w-full h-full">
+            {[0, 1, 2, 3].map((item) => (
+              <div
+                key={item}
+                className={`${item === 1 ? "sm:flex hidden" : item === 2 ? "xl:flex hidden" : item === 3 ? "max-[1800px]:hidden flex" : "flex"} aspect-video w-full h-full transition-all duration-500 rounded-3xl overflow-hidden relative items-center justify-center`}
+              >
+                <div className="absolute flex bg-[#2f364b3b]  w-full h-full">
+                  <div className="transition-all translate-x-[100%] swipe bg-gradient-to-r from-[#0000] via-[#111820e0] to-[#0000] p-12 absolute h-full"></div>
+                  <div className="relative p-4 w-full h-full">
+                    <div className="absolute bottom-2 left-2 rounded-3xl w-[60%] bg-[#020409]">
+                      <div className="flex gap-3 flex-col px-5 py-3 w-full h-full bg-[#020409] rounded-2xl">
+                        <div className="rounded-full p-2 w-full bg-[#2f364b2f]"></div>
+                        <div className="flex justify-between gap-12">
+                          <div className="rounded-3xl p-3 w-20 bg-[#2f364b2a]"></div>
+                          <div className=""></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <Swiper
             spaceBetween={20}
             cssMode
             mousewheel
-            onSwiper={() => setSwiperLoaded(true)}
             breakpoints={{
               0: {
                 slidesPerView: 1,
@@ -116,49 +138,27 @@ export const Carousel = ({ type, title, url = null }) => {
               },
             }}
           >
-            {!swiperLoaded ? (
-              <div>
-                <div></div>
-              </div>
-            ) : loading ? (
-              <>
-                {[0, 1, 2, 3].map((item) => (
-                  <div
-                    className={`h-8 duration-1000 transition-all ${swiperLoaded ? "opacity-100" : "overflow-hidden hidden opacity-0"}`}
-                    key={item}
-                  >
-                    <SwiperSlide key={item} className="h-10">
-                      <MovieCarouselItem
-                        swiperLoaded={swiperLoaded}
-                        loading={true}
-                      />
-                    </SwiperSlide>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <div className="">
-                {upcomingMovies
-                  .filter(
-                    (movie) =>
-                      movie.backdrop_path &&
-                      (filter ? movie.original_language === "en" : true),
-                  )
-                  .map((movie) => {
-                    return (
-                      <div className="h-8">
-                        <SwiperSlide key={movie.id}>
-                          <MovieCarouselItem
-                            type={type.includes("TV") ? "tv" : "movie"}
-                            movie={movie}
-                            loading={loading}
-                          />
-                        </SwiperSlide>
-                      </div>
-                    );
-                  })}
-              </div>
-            )}
+            <div className="">
+              {upcomingMovies
+                .filter(
+                  (movie) =>
+                    movie.backdrop_path &&
+                    (filter ? movie.original_language === "en" : true),
+                )
+                .map((movie) => {
+                  return (
+                    <div className="h-8">
+                      <SwiperSlide key={movie.id}>
+                        <MovieCarouselItem
+                          type={type.includes("TV") ? "tv" : "movie"}
+                          movie={movie}
+                          loading={loading}
+                        />
+                      </SwiperSlide>
+                    </div>
+                  );
+                })}
+            </div>
           </Swiper>
         )}
       </div>
@@ -239,7 +239,7 @@ export const Tray = ({
               onClick={() => setShowFilter((prev) => !prev)}
               className="hover:bg-gray-900 group transition-all relative p-2 px-4 rounded-l-full"
             >
-              <BsFilter size={20} className="md:size-5 size-4"/>
+              <BsFilter size={20} className="md:size-5 size-4" />
             </div>
             <div className="text-gray-700 h-full text-lg">|</div>
             <Link
@@ -247,7 +247,7 @@ export const Tray = ({
               href={`/explore?type=${type}&title=${title}${url ? `&url=${url}` : ""}`}
               className="hover:bg-gray-900 h-full w-full transition-all p-2 px-3 rounded-r-full "
             >
-              <BsChevronRight size={18} className="md:size-4 size-3"/>
+              <BsChevronRight size={18} className="md:size-4 size-3" />
             </Link>
           </div>
         </div>

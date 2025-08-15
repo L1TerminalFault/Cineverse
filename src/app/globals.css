@@ -83,7 +83,7 @@ body {
 
 @keyframes swipe-huge {
   from {
-    transform: translateX(-200px);
+    transform: translateX(-800px);
   }
   to {
     transform: translateX(1800px);
@@ -99,6 +99,22 @@ body {
     opacity: 0;
   }
   to {
+    opacity: 1;
+  }
+}
+
+.appear-opacity {
+  animation: appear-opacity 1.2s ease-in-out;
+}
+
+@keyframes appear-opacity {
+  0% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
     opacity: 1;
   }
 }
