@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaAngleRight } from "react-icons/fa6";
+import { SignInButton } from "@clerk/nextjs";
+import { dark } from "@clerk/themes"
 
 import TopBar from "@/app/components/TopBar";
 import OnboaringBackground from "@/app/components/OnboardingBackground";
@@ -59,9 +61,16 @@ export default function () {
               </div>
 
               <div className="max-w-96 flex gap-3 md:text-base text-sm">
-                <div className="bg-white/10 backdrop-blur-lg flex gap-1 items-center p-3 px-10 md:px-14 rounded-full hover:bg-white/15">
-                  <div>Sign In</div>
-                </div>
+                <SignInButton mode="modal" appearance={{
+                    theme: dark,
+                    elements: {
+                      userButtonOuterIdentifier: { color: "#e5e7eb" },
+                    },
+                  }}>
+                  <div className="bg-white/10 backdrop-blur-lg flex gap-1 items-center p-3 px-10 md:px-14 rounded-full hover:bg-white/15">
+                    <div>Sign In</div>
+                  </div>
+                </SignInButton>
 
                 <Link
                   href={"/home"}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import TopBar from "@/app/components/TopBar";
 import { Tray, Carousel } from "@/app/components/MovieTray";
@@ -9,8 +9,14 @@ import DiscoverTray from "@/app/components/DiscoverTray";
 import HomeEntryMovieComponent from "@/app/components/HomeEntryMovieComponent";
 
 export default function () {
-  const [currentPage, setCurrentPage] = useState("Movies");
   const router = useRouter();
+  const params = useSearchParams();
+  const currentPage = params.get("page") || "Movies";
+
+  const setCurrentPage = () => {
+    if (params.get("page")) return router.replace("/home");
+    return router.replace("/home?page=Series");
+  };
 
   const submitSearch = (formData) => {
     const term = formData.get("search");
@@ -30,7 +36,7 @@ export default function () {
       <div className="relative 2xl:w-4/5 w-full flex items-center justify-center z-0">
         <div className="p-3 pt-24 w-full flex flex-col gap-5">
           <div className="w-full">
-            <HomeEntryMovieComponent />
+            <HomeEntryMovieComponent page={currentPage} />
           </div>
 
           <div className="">

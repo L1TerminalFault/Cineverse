@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,20 +28,22 @@ export const metadata = {
 
 export default function ({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <script
-          src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js"
-          async
-        ></script>
-      </head>
-      <body
-        className={`
+    <ClerkProvider afterSignOutUrl="/home">
+      <html lang="en">
+        <head>
+          <script
+            src="https://cdn.jsdelivr.net/npm/@webtor/embed-sdk-js/dist/index.min.js"
+            async
+          ></script>
+        </head>
+        <body
+          className={`
 ${/**${geistSans.variable} ${geistMono.variable} */ ""}
 ${montserrat.className} antialiased text-white`}
-      >
-        {children}
-      </body>
-    </html>
+        >
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

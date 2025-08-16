@@ -1,32 +1,34 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { FiSearch as SearchIcon } from "react-icons/fi";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { BsPerson as PersonIcon } from "react-icons/bs";
 import { IoNotificationsOutline as NotificationIcon } from "react-icons/io5";
 import { BsChevronDown as ArrowDown } from "react-icons/bs";
-import {
-  HiMiniBars3 as Expand,
-  HiMiniBars2 as Collapse,
-} from "react-icons/hi2";
+import { HiMiniBars3, HiMiniBars2 } from "react-icons/hi2";
 
 import icon from "@/../public/movie-icon.png";
 import aiIcon from "@/../public/ai.png";
 
 export default function ({ page, setPage, submitSearch, value }) {
-  const router = useRouter();
-  const [topBarExpand, setTopBarExpand] = useState(true);
   const [showSearch, setShowSearch] = useState(setPage ? false : true);
   const [searchTerm, setSearchTerm] = useState(value || "");
   const inputRef = useRef(null);
+  const [showSideBar, setShowSideBar] = useState(true);
 
   const submit = (formData) => {
     const term = formData.get("search");
-    router.push(
-      `/search?term=${encodeURIComponent(term)}&type=movies`, //${type.includes("TV") ? "tv" : "movies"}`,
+    redirect(
+      `/search?term=${encodeURIComponent(term)}&type=${page === "Movies" ? "movies" : "tv"}`, //${type.includes("TV") ? "tv" : "movies"}`,
     );
   };
   const submitSearchFunction = submitSearch || submit;
@@ -34,31 +36,23 @@ export default function ({ page, setPage, submitSearch, value }) {
   return (
     <div className="fixed z-40 w-full top-0 p-3">
       <div className="relative">
-        {
-          // <label
-          // htmlFor="toggle"
-          // onClick={() => setTopBarExpand((prev) => !prev)}
-          // className={`${topBarExpand ? "rounded-full" : "bg-[#22232c55] backdrop-blur-xl -translate-x-6 rounded-r-full pl-3"} absolute top-2 left-2 z-50 p-2 transition-all mbg-[#22232c] hover:bg-[#32333c77]`}
-          // >
-          // <div className="relative flex items-center justify-center">
-          //   <div className={`${topBarExpand ? "inline" : "hidden"}`}>
-          //     <Collapse />
-          //   </div>
-          //   <div className={`${topBarExpand ? "hidden" : "inline"}`}>
-          //     <Expand />
-          //   </div>
-          // </div>
-          // </label>
-          // <input type="checkbox" id="toggle" className="peer hidden" />
-        }
+        {/******<div
+          className={`${showSideBar ? "translate-x-0 2xl:ml-16" : "-translate-x-80"} backdrop-blur-lg absolute bg-[#35374f55] shadow-[#000000dd] shadow-all transition-all top-16 left-0 p-9 h-96 w-32 bg-gray-900 m-2 rounded-3xl`}
+        ></div> **/}
 
         <div
           className={`backdrop-blur-lg flex shadow-all shadow-[#000000dd] duration-500 transition-all rounded-full mpl-[47px] bg-[#35374f55] px-3 2xl:mx-14 my-2 py-2 justify-between`}
         >
-          <div className="flex items-center gap-[7px]">
+          <div className="flex items-center gap-1">
+            <div
+              onClick={() => setShowSideBar((prev) => !prev)}
+              className="rounded-full hover:bg-[#32333c44] p-1 transition-all"
+            >
+              {showSideBar ? <HiMiniBars2 /> : <HiMiniBars3 />}
+            </div>
             <Link
               href={"/home"}
-              className="flex gap-2 p-1 px-4 transition-all bg-[#22232c]m hover:bg-[#32333c77] rounded-full items-center"
+              className="flex gap-2 p-1 px-4 transition-all bg-[#22232c]m hover:bg-[#32333c44] rounded-full items-center"
             >
               {/**<Image src={icon} alt="" width={20} height={20} />*/}{" "}
               <div className="text-lg text-transparent bg-clip-text bg-gradient-to-br bg-gray-100 font-bold">
@@ -116,21 +110,49 @@ export default function ({ page, setPage, submitSearch, value }) {
           </div>
 
           <div className="gap-[6px] items-center flex rounded-full">
-            {
-              // <div className="p-[6px] rounded-full bg-[#22232c] hover:bg-[#32333c] transition-all">
-              // <Image src={aiIcon} className="size-[22px]" alt="" />
-              // </div>
-            }
+            <SignedOut>
+              <SignInButton
+                mode="modal"
+                appearance={{
+                  theme: dark,
+                  elements: {
+                    userButtonOuterIdentifier: { color: "#e5e7eb" },
+                  },
+                }}
+              >
+                <div className="flex items-center gap-2 px-6 p-2 bg-[#1f202600] rounded-full hover:bg-gray-800 transition-all">
+                  <div className="text-xs hidden sm:inline ">Log In</div>
+                </div>
+              </SignInButton>
 
-            <div className="flex items-center gap-2 px-6 p-2 bg-[#040610] rounded-full hover:bg-[#32333c] transition-all">
-              {/* <PersonIcon /> */}
+              <SignUpButton
+                mode="modal"
+                appearance={{
+                  theme: dark,
+                  elements: {
+                    userButtonOuterIdentifier: { color: "#e5e7eb" },
+                  },
+                }}
+              >
+                <div className="flex items-center gap-2 px-6 p-2 bg-[#040610]k rounded-full hover:bg-gray-800 bg-gray-950 transition-all">
+                  <div className="text-xs hidden sm:inline ">Sign Up</div>
+                </div>
+              </SignUpButton>
+            </SignedOut>
 
-              <div className="text-xs hidden sm:inline ">Sign In</div>
-
-              {/* <div className="hover:bg-[#d1d5d628] transition-all rounded-full p-[6px]">
-                <ArrowDown size={13} />
-              </div> */}
-            </div>
+            <SignedIn>
+              <div className="">
+                <UserButton
+                  showName
+                  appearance={{
+                    theme: dark,
+                    elements: {
+                      userButtonOuterIdentifier: { color: "#e5e7eb" },
+                    },
+                  }}
+                />
+              </div>
+            </SignedIn>
           </div>
         </div>
       </div>
