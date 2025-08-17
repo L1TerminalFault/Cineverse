@@ -26,52 +26,53 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
     setLoading(true);
     const endpoint =
       selectedApi === "yts"
-        ? ytsUrl(movieDetail.imdb_id)
+        ? ytsUrl(movieDetail.imdb_id ? movieDetail.imdb_id : movieDetail.title)
         : selectedApi === "tpb"
-          ? `/api/getTorrentTPB?imdb_id=${movieDetail.imdb_id}`
+          ? `/api/getTorrentTPB?q=${movieDetail.imdb_id ? movieDetail.imdb_id : movieDetail.title}&type=movies`
           : null;
     try {
       const response = await (await fetch(endpoint)).json();
       if (selectedApi === "yts") {
         if (response.status === "ok" && response.data.movie_count) {
           setDownloadList(
-            response.data.movies[0].torrents.map((torrent) => ({
-              title: movieDetail.title,
-              quality: torrent.quality,
-              type: torrent.type,
-              size: torrent.size,
-              downloadLink: ytsToMagnet(torrent.url),
-              seeds: torrent.seeds,
-              peers: torrent.peers,
-              date: new Date(torrent.date_uploaded_unix * 1000)
-                .toLocaleDateString()
-                .replaceAll("/", "-"),
-            })),
+            response.data.movies[0].torrents
+              .map((torrent) => ({
+                title: movieDetail.title,
+                quality: torrent.quality,
+                type: torrent.type,
+                size: torrent.size,
+                downloadLink: ytsToMagnet(torrent.url),
+                seeds: torrent.seeds,
+                peers: torrent.peers,
+                date: new Date(torrent.date_uploaded_unix * 1000)
+                  .toLocaleDateString()
+                  .replaceAll("/", "-"),
+              }))
+              .sort((a, b) => b.seeds - a.seeds),
           );
         } else {
           setError("Couldn't find any downloads for this movie.");
         }
       } else if (selectedApi === "tpb") {
         if (response.ok) {
-          if (
-            response.response[0].name === "No results returned" &&
-            response.response[0].id === "0"
-          ) {
+          if (!response.response.length) {
             setDownloadList([]);
             return;
           }
           setDownloadList(
-            response.response.map((item) => ({
-              title: item.name,
-              size: formatBytes(item.size),
-              //https://thepiratebay.org/torrent/${item.id}
-              downloadLink: `magnet:?xt=urn:btih:${item.info_hash}&dn=${encodeURIComponent(item.name)}`,
-              seeds: item.seeders,
-              peers: item.leechers,
-              date: new Date(item.added * 1000)
-                .toLocaleDateString()
-                .replaceAll("/", "-"),
-            })),
+            response.response
+              .map((item) => ({
+                title: item.name,
+                size: formatBytes(item.size),
+                //https://thepiratebay.org/torrent/${item.id}
+                downloadLink: `magnet:?xt=urn:btih:${item.info_hash}&dn=${encodeURIComponent(item.name)}`,
+                seeds: item.seeders,
+                peers: item.leechers,
+                date: new Date(item.added * 1000)
+                  .toLocaleDateString()
+                  .replaceAll("/", "-"),
+              }))
+              .sort((a, b) => b.seeds - a.seeds),
           );
         } else {
           setError("Couldn't find any downloads for this movie.");
@@ -177,39 +178,41 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
                             downloadList.map((item, index) => (
                               <div
                                 key={index}
-                                className="flex w-full gap-2 items-center"
+                                className="flex w-full gap-2 items-center rounded-3xl bggray800/5"
                               >
-                                <Link
-                                  href={item.downloadLink}
-                                  className="flex flex-1 w-[60%] items-center gap-3 p-2  transition-all px-4 bg-gray-800/30 hover:bg-gray-800/60 rounded-full"
-                                >
-                                  <div>
-                                    <LiaDownloadSolid size={30} />
-                                  </div>
-
+                                <div className="flex flex-1 w-full items-center gap-3 p-2  transition-all px-4 bg-gray-800/30j jhover:bg-gray-800/60 rounded-full">
                                   <div className="flex flex-col w-full gap-[7px] overflow-scroll scrollbar-hidden">
                                     <div className=" text-xs sm:text-sm w-full text-nowrap overflow-scroll scrollbar-hidden">
                                       {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
                                     </div>
 
-                                    <div className="flex gap-3 w-5/6 items-center overflow-scroll scrollbar-hidden text-xs text-gray-400">
+                                    <div className="flex gap-3 w-full items-center justify-between overflow-scroll scrollbar-hidden text-xs text-gray-400">
                                       <div className="flex items-center text-nowrap gap-1">
                                         <TbDownload />
                                         <div>{item.size}</div>
                                       </div>
-                                      <div className="sm:flex hidden text-green-500 text-nowrap items-center gap-1">
+                                      {/*<div className="sm:flex hidden text-green-500 text-nowrap items-center gap-1">
                                         <LuArrowUp />
                                         <div>Seeders {item.seeds}</div>
                                       </div>
-                                      <div className="sm:flex hidden text-red-500 text-nowrap items-center gap-1">
+                                      <div className="sm: hidden text-red-500 text-nowrap items-center gap-1">
                                         <LuArrowDown />
                                         <div>Peers {item.peers}</div>
-                                      </div>
-                                      <div className="flex items-center text-nowrap gap-1">
-                                        <LuCalendar />
+                                      </div>*/}
+                                      <div className="flex items-center text-gray-500 text-nowrap gap-1">
                                         <div>{item.date}</div>
                                       </div>
                                     </div>
+                                  </div>
+                                </div>
+
+                                <Link
+                                  href={item.downloadLink}
+                                  className="flex p-2 sm:px-6 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
+                                >
+                                  <LiaDownloadSolid size={30} />
+                                  <div className="sm:inline hidden">
+                                    Download
                                   </div>
                                 </Link>
 

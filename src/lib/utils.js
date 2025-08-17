@@ -26,6 +26,10 @@ export const thepiratebayUrl = (query) => {
   return `https://apibay.org/q.php?q=${encodeURIComponent(query)}`;
 };
 
+export const tpbMovieCategories = ['201', '202', '207']
+
+export const tpbTVCategories = ['205', '208']
+
 export const eztvUrl = (query) => {
   return `https://eztvx.to/api/get-torrents?imdb_id=${query}`;
 };

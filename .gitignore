@@ -22,6 +22,7 @@
 # misc
 .DS_Store
 *.pem
+.prettierignore
 
 # debug
 npm-debug.log*
