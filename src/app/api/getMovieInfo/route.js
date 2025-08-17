@@ -5,7 +5,7 @@ export const GET = async (req) => {
   const movieId = searchParams.get('id')
   const type = searchParams.get('type')
 
-  const url = type === "trailer" ? `/movie/${movieId}/videos` : `/movie/${movieId}`
+  const url = type === "trailer" ? `/movie/${movieId}/videos` : type === "info" ? `/movie/${movieId}/credits` : `/movie/${movieId}`
 
   try {
     const response = await (await fetch(endpoint(url))).json()

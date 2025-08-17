@@ -25,6 +25,7 @@ import { imagePath, formatRuntime, monthNames, formatMoney } from "@/lib/utils";
 import { Tray } from "@/app/components/MovieTray";
 import TrailerBox from "@/app/components/TrailerBox";
 import MovieDownloadBox from "@/app/components/MovieDownloadBox";
+import CreditsBox from "@/app/components/MovieCreditsBox";
 
 export default function () {
   const [movieDetail, setMovieDetail] = useState(null);
@@ -32,6 +33,7 @@ export default function () {
   const [error, setError] = useState(null);
   const [trailerBox, setTrailerBox] = useState(false);
   const [downloadBox, setDownloadBox] = useState(false);
+  const [creditsBox, setCreditsBox] = useState(false);
 
   const params = useParams();
   const { id } = params;
@@ -113,6 +115,9 @@ export default function () {
                 setDownloadBox={setDownloadBox}
                 movieDetail={movieDetail}
               />
+            ) : null}
+            {creditsBox ? (
+              <CreditsBox movieId={id} setCreditsBox={setCreditsBox} />
             ) : null}
 
             <div>
@@ -271,7 +276,10 @@ export default function () {
                   <div className="sm:inline hidden">Download</div>
                 </div>
 
-                <div className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all">
+                <div
+                  onClick={() => setCreditsBox(true)}
+                  className="bg-black/40 backdrop-blur-md p-2 rounded-full text-lg text-white font-semibold flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
+                >
                   <PiDotsThreeBold className="size-[21px]" />
                 </div>
               </div>

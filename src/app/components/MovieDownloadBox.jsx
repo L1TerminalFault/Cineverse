@@ -7,7 +7,7 @@ import { LuCalendar, LuArrowUp, LuArrowDown } from "react-icons/lu";
 import { TbDownload } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 
-import { ytsUrl, formatBytes, ytsToMagnet } from "@/lib/utils";
+import { ytsUrl, formatBytes, ytsToMagnet, monthNames } from "@/lib/utils";
 import ytsIcon from "@/../../public/yts.png";
 import tpbIcon from "@/../../public/tpb.png";
 import StreamBox from "./StreamBox";
@@ -132,33 +132,21 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
             <div className="flex relative gap-5 w-full md:h-[calc(100vh*0.8)] h-[calc(100vh*0.6)] items-center justify-center">
               <div
                 onClick={(e) => e.stopPropagation()}
-                className={`${selectedStream ? `md:w-2/5 w-[85%] top-2 left-2 md:h-2/3 h-[80%] ${expand ? "translate-x-0 opacity-100" : "-translate-x-[1000px] opacity-0"} ` : "md:left-auto md:top-auto md:w-1/2 md:h-2/3 w-full h-full"} z-10 absolute backdrop-blur-3xl appear flex flex-col p-5 sm:px-5 px-3 gap-3 transition-all items-center overflow-hidden rounded-[30px] bg-gray-950/70`}
+                className={`${selectedStream ? `md:w-2/5 w-[85%] top-2 left-2 md:h-2/3 h-[80%] ${expand ? "translate-x-0 opacity-100" : "-translate-x-[1000px] opacity-0"} ` : "md:left-auto md:top-auto md:w-1/2 md:h-2/3 w-full h-full"} z-10 absolute backdrop-blur-xl appear flex flex-col p-5 sm:px-5 px-3 gap-3 transition-all items-center overflow-hidden rounded-[30px] bg-gray-950/70`}
               >
-                <div className="flex relative items-baseline justify-center w-full gap-4">
+                <div className="flex relative items-baseline pl-4 w-full gap-4">
                   <div
                     onClick={() => setSelectedApi("tpb")}
-                    className={`text-white flex gap-2 items-center text-sm p-2 px-5 transition-all rounded-full hover:bg-gray-800/60 ${selectedApi === "tpb" ? "bg-gray-800/70" : " bg-gray-800/30"}`}
+                    className={`text-white flex gap-2 items-center text-sm p-2 px-6 transition-all rounded-2xl hover:bg-gray-800/60 ${selectedApi === "tpb" ? "bg-gray-800/70" : " bg-gray-800/30"}`}
                   >
-                    <Image
-                      src={tpbIcon}
-                      alt="TPB Icon"
-                      width={20}
-                      height={20}
-                      className="rounded-full size-5"
-                    />
+                    {/** <Image src={tpbIcon} alt="TPB Icon" width={20} height={20} className="rounded-full size-5" /> */}
                     TPB
                   </div>
                   <div
                     onClick={() => setSelectedApi("yts")}
-                    className={`text-white flex gap-2 text-sm items-center transition-all p-2 px-5 rounded-full hover:bg-gray-800/60 ${selectedApi === "yts" ? "bg-gray-800/70" : "bg-gray-800/30"}`}
+                    className={`text-white flex gap-2 text-sm items-center transition-all p-2 px-6 rounded-2xl hover:bg-gray-800/60 ${selectedApi === "yts" ? "bg-gray-800/70" : "bg-gray-800/30"}`}
                   >
-                    <Image
-                      src={ytsIcon}
-                      alt="YTS Icon"
-                      width={20}
-                      height={20}
-                      className="rounded-full size-5"
-                    />
+                    {/*<Image src={ytsIcon} alt="YTS Icon" width={20} height={20} className="rounded-full size-5" /> */}
                     YTS
                   </div>
                 </div>
@@ -178,52 +166,63 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
                             downloadList.map((item, index) => (
                               <div
                                 key={index}
-                                className="flex w-full gap-2 items-center rounded-3xl bggray800/5"
+                                className="flex w-full gap-2 items-center rounded-3xl bg-gray-800/10"
                               >
-                                <div className="flex flex-1 w-full items-center gap-3 p-2  transition-all px-4 bg-gray-800/30j jhover:bg-gray-800/60 rounded-full">
+                                <div className="flex flex-1 w-full gap-3 p-2  transition-all px-4 bg-gray-800/30j jhover:bg-gray-800/60 rounded-full">
                                   <div className="flex flex-col w-full gap-[7px] overflow-scroll scrollbar-hidden">
-                                    <div className=" text-xs sm:text-sm w-full text-nowrap overflow-scroll scrollbar-hidden">
+                                    <div className="p-1 px-3 rounded-full bg-gray-800/20 text-gray-400 text-xs w-max">
+                                      {monthNames[
+                                        parseInt(item.date.split("-")[0]) - 1
+                                      ] +
+                                        " " +
+                                        item.date.split("-")[2]}
+                                    </div>
+
+                                    <div className=" text-xs sm:text-base w-full text-nowrap overflow-scroll scrollbar-hidden">
                                       {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
                                     </div>
 
-                                    <div className="flex gap-3 w-full items-center justify-between overflow-scroll scrollbar-hidden text-xs text-gray-400">
-                                      <div className="flex items-center text-nowrap gap-1">
-                                        <TbDownload />
-                                        <div>{item.size}</div>
+                                    <div className="flex gap-3 w-full justify-between overflow-scroll scrollbar-hidden text-xs text-gray-400">
+                                      <div className="flex gap-3 items-start">
+                                        <div className="flex items-center text-nowrap gap-1">
+                                          <TbDownload />
+                                          <div>{item.size}</div>
+                                        </div>
+                                        <div className="sm:flex hidden itext-green-500 text-nowrap items-center gap-1">
+                                          <LuArrowUp />
+                                          <div>Seeders {item.seeds}</div>
+                                        </div>
+                                        <div className="sm:flex hidden ktext-red-500 text-nowrap items-center gap-1">
+                                          <LuArrowDown />
+                                          <div>Peers {item.peers}</div>
+                                        </div>
                                       </div>
-                                      {/*<div className="sm:flex hidden text-green-500 text-nowrap items-center gap-1">
-                                        <LuArrowUp />
-                                        <div>Seeders {item.seeds}</div>
-                                      </div>
-                                      <div className="sm: hidden text-red-500 text-nowrap items-center gap-1">
-                                        <LuArrowDown />
-                                        <div>Peers {item.peers}</div>
-                                      </div>*/}
-                                      <div className="flex items-center text-gray-500 text-nowrap gap-1">
-                                        <div>{item.date}</div>
+
+                                      <div className="flex gap-2 text-sm">
+                                        <Link
+                                          href={item.downloadLink}
+                                          className="flex p-2 sm:px-5 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
+                                        >
+                                          <LiaDownloadSolid size={23} />
+                                          <div className="sm:inline hidden">
+                                            Download
+                                          </div>
+                                        </Link>
+
+                                        <div
+                                          onClick={() =>
+                                            setSelectedStream(item.downloadLink)
+                                          }
+                                          className="flex p-2 sm:px-5 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
+                                        >
+                                          <FaPlay size={16} />
+                                          <div className="sm:inline hidden">
+                                            Stream
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-
-                                <Link
-                                  href={item.downloadLink}
-                                  className="flex p-2 sm:px-6 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
-                                >
-                                  <LiaDownloadSolid size={30} />
-                                  <div className="sm:inline hidden">
-                                    Download
-                                  </div>
-                                </Link>
-
-                                <div
-                                  onClick={() =>
-                                    setSelectedStream(item.downloadLink)
-                                  }
-                                  className="flex p-[18px] sm:px-6 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
-                                >
-                                  <FaPlay />
-                                  <div className="sm:inline hidden">Stream</div>
                                 </div>
                               </div>
                             ))
