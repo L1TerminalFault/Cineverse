@@ -69,7 +69,11 @@ export default function ({ page }) {
         <div></div>
       ) : (
         <div
-          onClick={() => router.push(`/movie/${movieData.id}`)}
+          onClick={() =>
+            router.push(
+              page === "Movies" ? `/movie/${movieData.id}` : `/tv/movieData.id`,
+            )
+          }
           className="w-full group transition-all relative flex lg:aspect-video max-h-[650px] overflow-hidden rounded-[30px]"
         >
           <div
