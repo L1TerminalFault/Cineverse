@@ -122,12 +122,8 @@ body {
 #webtor-player iframe,
 #webtor-player video {
   width: 100% !important;
-  height: 100% !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  object-fit: contain !important;
-  background-color: black;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .webtor-download-button,

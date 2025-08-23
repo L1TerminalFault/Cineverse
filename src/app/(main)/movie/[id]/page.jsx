@@ -18,6 +18,7 @@ import { LiaDownloadSolid } from "react-icons/lia";
 import { PiDotsThreeBold } from "react-icons/pi";
 import { FaSackDollar } from "react-icons/fa6";
 import { BiSolidDollarCircle } from "react-icons/bi";
+import { VscListSelection } from "react-icons/vsc";
 
 import fireIcon from "@/../public/fire-icon.png";
 import TopBar from "@/app/components/TopBar";
@@ -267,13 +268,17 @@ export default function () {
                   onClick={() => setDownloadBox(true)}
                   className="bg-black/40 backdrop-blur-md p-2 sm:px-5 rounded-full text-base text-white flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-all"
                 >
-                  <div>
-                    <LiaDownloadSolid
+                  <div className="relative">
+                    <VscListSelection
                       className="size-[21px]"
                       strokeWidth={0.1}
                     />
+                    <LiaDownloadSolid
+                      className="absolute -bottom-1 rounded-full bg-black/40k -right-[6px] p-1"
+                      size={18}
+                    />
                   </div>
-                  <div className="sm:inline hidden">Download</div>
+                  <div className="sm:inline hidden">Torrents</div>
                 </div>
 
                 <div

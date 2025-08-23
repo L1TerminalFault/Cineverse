@@ -6,6 +6,7 @@ import { LiaDownloadSolid } from "react-icons/lia";
 import { LuCalendar, LuArrowUp, LuArrowDown } from "react-icons/lu";
 import { TbDownload } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
+import { MdOutlineClose } from "react-icons/md";
 
 import { ytsUrl, formatBytes, ytsToMagnet, monthNames } from "@/lib/utils";
 import ytsIcon from "@/../../public/yts.png";
@@ -19,7 +20,6 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
   const [loading, setLoading] = useState(true);
   const [selectedApi, setSelectedApi] = useState("tpb");
   const [selectedStream, setSelectedStream] = useState(null);
-  const [expand, setExpand] = useState(false);
 
   const fetchDownloadData = async () => {
     setError(null);
@@ -92,159 +92,132 @@ export default function ({ movieDetail, downloadBox, setDownloadBox }) {
 
   return (
     <div
-      onClick={() => {
-        if (!selectedStream) setDownloadBox(false);
-      }}
-      className={`transition-all fixed z-40 top-0 left-0 h-screen w-screen`}
+      className={`transition-all fixed z-40 top-0 left-0 h-screen max-h-screen w-screen`}
     >
-      <div className="flex flex-col z-50 items-center justify-center w-full h-full backdrop-blur-md bg-black/50">
-        <div className="flex h-full w-full gap-2 items-center justify-center">
-          <div className="flex flex-col items-center justify-center w-full p-3 sm:p-6 lg:p-16 pt-0">
-            <div
-              className={`flex w-full justify-between p-4 pt-0 ${selectedStream ? "opacity-100" : "opacity-0"}`}
-            >
-              <div>
-                {selectedStream ? (
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setExpand((prev) => !prev);
-                    }}
-                    className="p-2 rounded-full hover:bg-gray-400/30 transition-all cursor-pointer"
-                  >
-                    {expand ? (
-                      <HiMiniBars3 size={30} />
-                    ) : (
-                      <HiMiniBars2 size={30} />
-                    )}
-                  </div>
-                ) : null}
-              </div>
+      <div className="pt-24 pb-0 p-1  w-full h-full backdrop-blur-md bg-black/50">
+        <div className="bg-black/85 flex flex-col gap-2 p-4 overflow-scroll scrollbar-hidden backdrop-blur-lg w-full h-full rounded-t-[30px]">
+          <div className="flex p-[2px] justify-between">
+            <div className="p-2 rounded-full text-gray-400 khover:bg-gray-900/40 w-1/5">
+              <div className="px-2 text-nowrap">Torrents</div>
+            </div>
 
-              <div
-                onClick={() => setDownloadBox(false)}
-                className="p-2 rounded-full hover:bg-gray-400/30 transition-all cursor-pointer"
-              >
-                <BsChevronLeft size={30} className="" />
+            <div
+              onClick={() => setDownloadBox(false)}
+              className="p-2 rounded-full hover:bg-gray-900/70 transition-all"
+            >
+              <MdOutlineClose size={25} />
+            </div>
+          </div>
+
+          <div className="w-full flex-1 flex lg:flex-row flex-col gap-3 overflow-scroll scrollbar-hidden">
+            <div className="lg:w-auto w-full lg:flex-1 lg:h-full aspect-video lg:aspect-auto">
+              <div className="w-full h-full rounded-[30px] overflow-hidden">
+                {selectedStream ? (
+                  <StreamBox magnetUri={selectedStream} />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center lg:text-2xl text-lg bg-black text-gray-400/70">
+                    Select torrent to stream
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="flex relative gap-5 w-full md:h-[calc(100vh*0.8)] h-[calc(100vh*0.6)] items-center justify-center">
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className={`${selectedStream ? `md:w-2/5 w-[85%] top-2 left-2 md:h-2/3 h-[80%] ${expand ? "translate-x-0 opacity-100" : "-translate-x-[1000px] opacity-0"} ` : "md:left-auto md:top-auto md:w-1/2 md:h-2/3 w-full h-full"} z-10 absolute backdrop-blur-xl appear flex flex-col p-5 sm:px-5 px-3 gap-3 transition-all items-center overflow-hidden rounded-[30px] bg-gray-950/70`}
-              >
-                <div className="flex relative items-baseline pl-4 w-full gap-4">
-                  <div
-                    onClick={() => setSelectedApi("tpb")}
-                    className={`text-white flex gap-2 items-center text-sm p-2 px-6 transition-all rounded-2xl hover:bg-gray-800/60 ${selectedApi === "tpb" ? "bg-gray-800/70" : " bg-gray-800/30"}`}
-                  >
-                    {/** <Image src={tpbIcon} alt="TPB Icon" width={20} height={20} className="rounded-full size-5" /> */}
-                    TPB
-                  </div>
-                  <div
-                    onClick={() => setSelectedApi("yts")}
-                    className={`text-white flex gap-2 text-sm items-center transition-all p-2 px-6 rounded-2xl hover:bg-gray-800/60 ${selectedApi === "yts" ? "bg-gray-800/70" : "bg-gray-800/30"}`}
-                  >
-                    {/*<Image src={ytsIcon} alt="YTS Icon" width={20} height={20} className="rounded-full size-5" /> */}
-                    YTS
-                  </div>
+            <div className="lg:w-[500px] w-full h-full overflow-scroll scrollbar-hidden backdrop-blur-xl appear flex flex-col p-5 sm:px-5 px-3 gap-3 transition-all items-center rounded-[30px] bg-gray-950/70">
+              <div className="flex relative items-baseline pl-4 w-full gap-4">
+                <div
+                  onClick={() => setSelectedApi("tpb")}
+                  className={`text-white flex gap-2 items-center text-sm p-2 px-6 transition-all rounded-2xl hover:bg-gray-800/60 ${selectedApi === "tpb" ? "bg-gray-800/70" : " bg-gray-800/30"}`}
+                >
+                  {/** <Image src={tpbIcon} alt="TPB Icon" width={20} height={20} className="rounded-full size-5" /> */}
+                  TPB
                 </div>
-                <div className="flex relative gap-3 w-full h-full pb-5">
-                  {loading ? (
-                    <div>loading</div>
-                  ) : error ? (
-                    <div>{error}</div>
-                  ) : (
-                    <div className="flex flex-col h-full w-full">
-                      <div className="text-white/70 text-sm p-3 pl-6">
-                        Available Torrents From {selectedApi.toUpperCase()}
-                      </div>
-                      <div className="overflow-scroll scrollbar-hidden w-full h-full">
-                        <div className="flex flex-col w-full h-full overflow-scroll scrollbar-hidden gap-3 px-1 pb-5 rounded-[30px]">
-                          {downloadList.length > 0 ? (
-                            downloadList.map((item, index) => (
-                              <div
-                                key={index}
-                                className="flex w-full gap-2 items-center rounded-3xl bg-gray-800/10"
-                              >
-                                <div className="flex flex-1 w-full gap-3 p-2  transition-all px-4 bg-gray-800/30j jhover:bg-gray-800/60 rounded-full">
-                                  <div className="flex flex-col w-full gap-[7px] overflow-scroll scrollbar-hidden">
-                                    <div className="p-1 px-3 rounded-full bg-gray-800/20 text-gray-400 text-xs w-max">
-                                      {monthNames[
-                                        parseInt(item.date.split("-")[0]) - 1
-                                      ] +
-                                        " " +
-                                        item.date.split("-")[2]}
+                <div
+                  onClick={() => setSelectedApi("yts")}
+                  className={`text-white flex gap-2 text-sm items-center transition-all p-2 px-6 rounded-2xl hover:bg-gray-800/60 ${selectedApi === "yts" ? "bg-gray-800/70" : "bg-gray-800/30"}`}
+                >
+                  {/*<Image src={ytsIcon} alt="YTS Icon" width={20} height={20} className="rounded-full size-5" /> */}
+                  YTS
+                </div>
+              </div>
+              <div className="flex relative flex-1 overflow-scroll scrollbar-hidden gap-3 w-full h-full">
+                {loading ? (
+                  <div>loading</div>
+                ) : error ? (
+                  <div>{error}</div>
+                ) : (
+                  <div className="flex flex-col w-full h-full">
+                    <div className="text-white/70 text-sm p-3 pl-6">
+                      Available Torrents From {selectedApi.toUpperCase()}
+                    </div>
+                    <div className="flex flex-col w-full h-full overflow-scroll scrollbar-hidden gap-3 px-1 rounded-[30px]">
+                      {downloadList.length > 0 ? (
+                        downloadList.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex w-full gap-2 items-center rounded-3xl bg-gray-800/10"
+                          >
+                            <div className="flex flex-1 w-full gap-3 p-2  transition-all px-4 bg-gray-800/30j jhover:bg-gray-800/60 rounded-full">
+                              <div className="flex flex-col w-full gap-[7px] overflow-scroll scrollbar-hidden">
+                                <div className="p-1 px-3 rounded-full bg-gray-800/20 text-gray-400 text-xs w-max">
+                                  {monthNames[
+                                    parseInt(item.date.split("-")[0]) - 1
+                                  ] +
+                                    " " +
+                                    item.date.split("-")[2]}
+                                </div>
+
+                                <div className=" text-xs sm:text-base w-full text-nowrap overflow-scroll scrollbar-hidden">
+                                  {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
+                                </div>
+
+                                <div className="flex gap-3 w-full justify-between overflow-scroll scrollbar-hidden text-xs text-gray-400">
+                                  <div className="flex gap-3 items-start">
+                                    <div className="flex items-center text-nowrap gap-1">
+                                      <TbDownload />
+                                      <div>{item.size}</div>
                                     </div>
-
-                                    <div className=" text-xs sm:text-base w-full text-nowrap overflow-scroll scrollbar-hidden">
-                                      {`${item.title}${item.quality && item.type ? ` (${item.quality} ${item.type})` : ""}`}
+                                    <div className="flex  itext-green-500 text-nowrap items-center gap-1">
+                                      <LuArrowUp />
+                                      <div>Seeders {item.seeds}</div>
                                     </div>
+                                    <div className="flex  ktext-red-500 text-nowrap items-center gap-1">
+                                      <LuArrowDown />
+                                      <div>Peers {item.peers}</div>
+                                    </div>
+                                  </div>
+                                </div>
 
-                                    <div className="flex gap-3 w-full justify-between overflow-scroll scrollbar-hidden text-xs text-gray-400">
-                                      <div className="flex gap-3 items-start">
-                                        <div className="flex items-center text-nowrap gap-1">
-                                          <TbDownload />
-                                          <div>{item.size}</div>
-                                        </div>
-                                        <div className="sm:flex hidden itext-green-500 text-nowrap items-center gap-1">
-                                          <LuArrowUp />
-                                          <div>Seeders {item.seeds}</div>
-                                        </div>
-                                        <div className="sm:flex hidden ktext-red-500 text-nowrap items-center gap-1">
-                                          <LuArrowDown />
-                                          <div>Peers {item.peers}</div>
-                                        </div>
-                                      </div>
+                                <div className="flex gap-3 w-full justify-end mt-1 overflow-scroll scrollbar-hidden text-xs text-gray-400">
+                                  <div className="flex gap-2 text-sm">
+                                    <Link
+                                      href={item.downloadLink}
+                                      className="flex p-2 px-5 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
+                                    >
+                                      <LiaDownloadSolid size={23} />
+                                      <div className="">Download</div>
+                                    </Link>
 
-                                      <div className="flex gap-2 text-sm">
-                                        <Link
-                                          href={item.downloadLink}
-                                          className="flex p-2 sm:px-5 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
-                                        >
-                                          <LiaDownloadSolid size={23} />
-                                          <div className="sm:inline hidden">
-                                            Download
-                                          </div>
-                                        </Link>
-
-                                        <div
-                                          onClick={() =>
-                                            setSelectedStream(item.downloadLink)
-                                          }
-                                          className="flex p-2 sm:px-5 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
-                                        >
-                                          <FaPlay size={16} />
-                                          <div className="sm:inline hidden">
-                                            Stream
-                                          </div>
-                                        </div>
-                                      </div>
+                                    <div
+                                      onClick={() =>
+                                        setSelectedStream(item.downloadLink)
+                                      }
+                                      className="flex p-2 px-5 gap-3 items-center justify-center h-full bg-gray-800/30 hover:bg-gray-800/60 rounded-full cursor-pointer"
+                                    >
+                                      <FaPlay size={16} />
+                                      <div className="">Stream</div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                            ))
-                          ) : (
-                            <p className="text-white">No downloads available</p>
-                          )}
-                        </div>
-                      </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="text-white">No downloads available</p>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-
-              <div
-                onClick={(e) => {
-                  if (selectedStream) e.stopPropagation();
-                }}
-                className={`${selectedStream ? "opacity-100" : "opacity-0"} w-full bg-black rounded-[30px] flex items-center justify-center transition-all h-full overflow-hidden`}
-              >
-                {selectedStream ? (
-                  <StreamBox magnetUri={selectedStream} />
-                ) : null}
+                  </div>
+                )}
               </div>
             </div>
           </div>

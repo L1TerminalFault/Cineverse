@@ -34,7 +34,7 @@ export default function WebtorPlayer({ magnetUri, poster, subtitles }) {
     <div
       id="webtor-player"
       ref={container}
-      className="w-auto aspect-video overflow-hidden h-full bg-gray-600 flex items-center justify-center"
+      className="w-full overflow-hidden h-full bg-black flex items-center justify-center"
     />
   );
 }
